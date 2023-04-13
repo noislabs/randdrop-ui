@@ -5,6 +5,7 @@ import {useState} from "react";
 import {Button,VStack,useToast,Text,Heading,SimpleGrid,Box,Container,Link} from "@chakra-ui/react";
 import {FaCheck,FaPlus,FaUserShield} from "react-icons/fa";
 import {ErrorAlert,ErrorData} from "@/lib/ErrorAlert";
+import { CloseIcon } from "@chakra-ui/icons";
 
 function capitalizeFirstLetter(s: string): string {
     return s.charAt(0).toUpperCase() + s.slice(1);
@@ -16,12 +17,17 @@ export default function Home() {
     const [testnetInstalled, setTestnetInstalled] = useState < boolean > ();
     const [mainnetInstalled, setMainnetInstalled] = useState < boolean > ();
     const [address, setAddress] = useState < string > ();
+    const [msg, setMsg] = useState < Object > ();
     const toast = useToast();
 
     function resetErrors() {
         toast.closeAll();
         setAddChainError(undefined);
         setLoadAddressError(undefined);
+    }
+    function resetAll() {
+      resetErrors();
+      setAddress(undefined);
     }
 
     function addNoisAsSuggestedChain(network: "testnet" | "mainnet") {
@@ -90,7 +96,7 @@ export default function Home() {
                     let msg = {
                         proof: proof,
                         address: address,
-                        amount: 3,
+                        amount: amount,
                         eligible: true,
                     }
                     console.log(msg)
@@ -108,7 +114,7 @@ export default function Home() {
                     let msg = {
                         proof: [""],
                         address: address,
-                        amount: 2,
+                        amount: 0,
                         eligible: false,
                     }
                     console.log(msg)
@@ -147,6 +153,7 @@ export default function Home() {
                             checkAirdrop(address).then(response => response)
                                 .then(data => {
                                     console.log(data);
+                                    setMsg(data);
                                 })
                                 .catch(error => {
                                     console.error(error);
@@ -257,13 +264,28 @@ export default function Home() {
             </Box>
           </SimpleGrid>
 
+          {msg && (
+               <>
+                 <Text>Address: {msg.address}</Text>
+                 <Text>Amount: {msg.amount}</Text>
+                 <Text>Eligible: {msg.eligible ? "Yes" : "No"}</Text>
+                 <Text>Proof: {msg.proof.join(", ")}</Text>
+               </>
+             )
+          }
 
-          {address  && (
-            <Text marginTop="100px" fontSize="2xl" align="center">
-              {}{" "}
-            </Text>
-          )}
+
+          {address && (
+          <Text marginTop="100px" fontSize="2xl" align="center">
+            {address}{" "}
+            <Button size="sm" onClick={() => resetAll()} title="Reset">
+              <CloseIcon />
+            </Button>
+          </Text>
+        )}
         </Container>
       </>
     );
 }
+
+
