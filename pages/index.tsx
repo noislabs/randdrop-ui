@@ -59,8 +59,8 @@ const claimAirdropMessage = ({
       msg: toUtf8(JSON.stringify({
         claim: {
           amount,
-          proof
-        }
+          proof,
+        },
       })),
       funds
     })
@@ -75,7 +75,7 @@ const Home: NextPage = () => {
   const [userAddress, setUserAddress] = useState('');
   const [status, setStatus] = useState<Status>('default');
   const [merkle, setMerkle] = useState<string[]>([]);
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState<string>("");
 
   // Airdrop contract address on nois-testnet-005 is nois19kfv6wdsmudx58a2hsktvegvtuyc4rakpsfsxqgmzg26p8ph4yrsteche4
   const checkAirdrop = async (address: string) => {
@@ -99,11 +99,11 @@ const Home: NextPage = () => {
         toast.dismiss();
         setStatus('hasclaim');
         sprayConfetti(Date.now() + 3 * 1000)
-        const amount = addressObject.amount;
-        setAmount(amount);
+        const amountx = String(addressObject.amount);
+        setAmount(amountx);
         const proof = airdrop.getMerkleProof({
             address: address,
-            amount: amount
+            amount: amountx
         });
         setMerkle(proof);
       };
