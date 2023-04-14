@@ -98,7 +98,7 @@ const Home: NextPage = () => {
         setLoading(false);
         toast.dismiss();
         setStatus('hasclaim');
-        sprayConfetti(Date.now() + 3 * 1000)
+        sprayConfetti(Date.now() + 1500)
         const amountx = String(addressObject.amount);
         setAmount(amountx);
         const proof = airdrop.getMerkleProof({
@@ -174,7 +174,7 @@ const Home: NextPage = () => {
   return (
     <div className="flex min-h-screen text-nois-white/90 h-screen flex-col py-2 bg-nois-blue">
       <Head>
-        <title>Create Next App</title>
+        <title>Nois Rand-drop Checker</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -190,14 +190,6 @@ const Home: NextPage = () => {
               className="scale-50"
               style={{objectFit: 'contain'}}
             />
-          </div>
-          <div className="bg-white/10 flex gap-x-4">
-            <span>
-              {`Merkle: ${merkle.length}`}
-            </span>
-            <span>
-              {`Amt: ${amount}`}
-            </span>
           </div>
           <button 
             className="border border-white/30 text-nois-white hover:bg-white/20 rounded-lg h-1/2 px-4 py-2"
@@ -220,37 +212,41 @@ const Home: NextPage = () => {
           />
           <div className="flex justify-center gap-x-4 font-mono text-xl ">
             <button 
-              className={`${loading === true ? "opacity-50" : ""} px-4 py-1 rounded-lg border border-white/30 text-nois-white hover:bg-white/20`}
+              className={`${loading === true ? "opacity-50" : "hover:bg-white/20"} px-4 py-1 rounded-lg border border-white/30 text-nois-white`}
               onClick={() => {
                 if (loading !== true) {
                   checkAirdrop(userAddress);
                 }
               }}
             >
-              {loading === true ? "..." : "Check"}
+              <span className={`${loading === true ? "animate-ping" : ""}`}>
+                {loading === true ? "..." : "Check"}
+              </span>
             </button>
             <button 
-              className={`${loading === true ? "opacity-50" : ""} px-4 py-1 rounded-lg border border-white/30 text-nois-white hover:bg-white/20`}
+              className={`${loading === true ? "opacity-50" : "hover:bg-white/20"} px-4 py-1 rounded-lg border border-white/30 text-nois-white`}
               onClick={() => {
                 if (loading !== true) {
                   claimAirdrop();
                 }
               }}
             >
-              {loading === true ? "..." : "Claim"}
+              <span className={`${loading === true ? "animate-ping" : ""}`}>
+                {loading === true ? "..." : "Claim"}
+              </span>
             </button>
           </div>
 
 
 
-          <div className={`${status === 'default' || loading === true ? 'hidden' : ''} flex gap-x-2 p-2 text-xl rounded-lg bg-[#FFFFFF10]`}>
+          <div className={`${status === 'default' || loading === true ? 'hidden' : ''} flex gap-x-2 p-2 text-xl rounded-lg bg-[#ffffff10]`}>
             {status === 'hasclaim' && (
               <>
                 <span className="text-white/40">
                   Congrats!
                 </span>
                 <span className="text-nois-white">
-                  {`${amount} NOIS`}
+                  {`${parseInt(amount) / 1000000} NOIS`}
                 </span>
               </>
             )}
