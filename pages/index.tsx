@@ -13,7 +13,8 @@ import noisLogo from '../public/nois_logo.png';
 import { confetti, ConfettiFirstParam } from 'tsparticles-confetti';
 import { Airdrop } from '@/lib/airdrop';
 
-const AirdropContractAddress = "nois19kfv6wdsmudx58a2hsktvegvtuyc4rakpsfsxqgmzg26p8ph4yrsteche4";
+//const AirdropContractAddress = "nois19kfv6wdsmudx58a2hsktvegvtuyc4rakpsfsxqgmzg26p8ph4yrsteche4";
+const AirdropContractAddress = "nois14wa2glah9t3c6x3cnfz2ys5t9er6zcrcvfvq8h0tfcv867q8n8tskvdplc";
 
 const colors = ["#0ef025", "#ff00f7", "#ff0022", "#0015fc", "#eeff00"];
 
@@ -57,9 +58,9 @@ const claimAirdropMessage = ({
       contract: AirdropContractAddress,
       msg: toUtf8(JSON.stringify({
         claim: {
-          amount: amount,
-          proof: proof
-        }
+          amount,
+          proof,
+        },
       })),
       funds
     })
@@ -74,14 +75,14 @@ const Home: NextPage = () => {
   const [userAddress, setUserAddress] = useState('');
   const [status, setStatus] = useState<Status>('default');
   const [merkle, setMerkle] = useState<string[]>([]);
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState<string>("");
 
   // Airdrop contract address on nois-testnet-005 is nois19kfv6wdsmudx58a2hsktvegvtuyc4rakpsfsxqgmzg26p8ph4yrsteche4
   const checkAirdrop = async (address: string) => {
 
     setLoading(true);
     toast.loading("Checking address...");
-    const res = await fetch('https://gist.githubusercontent.com/kaisbaccour/15a037e706c1bd50acc80fe0a89a72e3/raw/bbd96bdfb828b0aa5a5fffcdbdbbc32f2cf17cf2/snapshot_nois_test_005_list.json');
+    const res = await fetch('https://gist.githubusercontent.com/kaisbaccour/15a037e706c1bd50acc80fe0a89a72e3/raw/51bd2278f00fe9ccef03b6becc0f68aa42a6e390/snapshot_nois_test_005_list.json');
     const data = await res.json();
 
     const airdrop = new Airdrop(data)
@@ -98,11 +99,11 @@ const Home: NextPage = () => {
         toast.dismiss();
         setStatus('hasclaim');
         sprayConfetti(Date.now() + 3 * 1000)
-        const amount = addressObject.amount;
-        setAmount(amount);
+        const amountx = String(addressObject.amount);
+        setAmount(amountx);
         const proof = airdrop.getMerkleProof({
             address: address,
-            amount: amount
+            amount: amountx
         });
         setMerkle(proof);
       };
@@ -190,9 +191,17 @@ const Home: NextPage = () => {
               style={{objectFit: 'contain'}}
             />
           </div>
+          <div className="bg-white/10 flex gap-x-4">
+            <span>
+              {`Merkle: ${merkle.length}`}
+            </span>
+            <span>
+              {`Amt: ${amount}`}
+            </span>
+          </div>
           <button 
             className="border border-white/30 text-nois-white hover:bg-white/20 rounded-lg h-1/2 px-4 py-2"
-            onClick={handleConnect}
+            onClick={() => handleConnect()}
           >
             {walletAddress.length < 3 ? "Connect" : nickname}
           </button>
