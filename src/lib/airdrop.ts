@@ -26,18 +26,46 @@ class Airdrop {
     proof: string[],
     account: { address: string; amount: string }
   ): boolean {
-    let hashBuf = Buffer.from(sha256(account.address + account.amount).toString())
+    const encoder = new TextEncoder();
+    const decoder = new TextDecoder();
+
+    // let hashBuf = Buffer.from(sha256(account.address + account.amount).toString())
+    let hashBuf = encoder.encode(sha256(account.address + account.amount).toString())
 
     proof.forEach(proofElem => {
-      const proofBuf = Buffer.from(proofElem, 'hex')
-      if (hashBuf < proofBuf) {
-        hashBuf = Buffer.from(sha256(Buffer.concat([hashBuf, proofBuf]).toString()))
-      } else {
-        hashBuf = Buffer.from(sha256(Buffer.concat([proofBuf, hashBuf]).toString()))
-      }
-    })
+      const proofBuf = new Uint8Array(Uint8Array.from(proofElem, c => parseInt(c, 16)));
+      const newBuf = new Uint8Array(hashBuf.byteLength + proofBuf.byteLength);
+      newBuf.set(hashBuf, 0);
+      newBuf.set(proofBuf, hashBuf.byteLength);
+      hashBuf = encoder.encode(sha256(newBuf).toString());
+    });
+    
+    return this.getMerkleRoot() === decoder.decode(hashBuf);
 
-    return this.getMerkleRoot() === hashBuf.toString('hex')
+    // proof.forEach(proofElem => {
+    //   const proofBuf = new Uint8Array(Uint8Array.from(proofElem, c => parseInt(c, 16)));
+    //   if (hashBuf.byteLength < proofBuf.length) {
+    //     hashBuf = encoder.encode(sha256(Buffer.concat([hashBuf, proofBuf])).toString());
+    //   } else {
+    //     hashBuf = encoder.encode(sha256(Buffer.concat([proofBuf, hashBuf])).toString());
+    //   }
+    // });
+    
+    // return this.getMerkleRoot() === decoder.decode(hashBuf);
+
+    // proof.forEach(proofElem => {
+    //   //const proofBuf = Buffer.from(proofElem, 'hex')
+    //   //const proofBuf = decoder.decode(new Uint8Array(Buffer.from(proofElem, 'hex')));
+    //   const proofBuf = decoder.decode(new Uint8Array(Uint8Array.from(proofElem, c => parseInt(c, 16))));
+    //   if (hashBuf.byteLength < proofBuf.length) {
+    //     //hashBuf = Buffer.from(sha256(Buffer.concat([hashBuf, proofBuf]).toString()))
+    //     hashBuf = encoder.encode(sha256(Buffer.concat([hashBuf, proofBuf])).toString());
+    //   } else {
+    //     hashBuf = Buffer.from(sha256(Buffer.concat([proofBuf, hashBuf]).toString()))
+    //   }
+    // })
+
+    // return this.getMerkleRoot() === hashBuf.toString('hex')
   }
 }
 
