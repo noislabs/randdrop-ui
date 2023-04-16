@@ -91,43 +91,6 @@ export const useSigningCosmWasmClient = (): ISigningCosmWasmClientContext => {
 };
 
 
-
-
-
-
-
-
-
-
-
-// export const getNonSigningClient = async () => {
-//   //console.log(Math.round((Date.now() / 1000)));
-//   //current seconds
-
-//   // ~~~~~~ Random between 3 ~~~~~~~~
-//   const z = Math.round(Date.now() / 1000)
-//     .toString()
-//     .split("")
-//     .map(Number)
-//     .pop();
-//   if (z === 0 || z === 3 || z === 6) {
-//     const client = await CosmWasmClient.connect(config("rpcEndpoint"));
-//     return client;
-//   } else if (z === 1 || z === 4 || z === 7) {
-//     const client = await CosmWasmClient.connect(config("rpcEndpointTwo"));
-//     return client;
-//   } else {
-//     const client = await CosmWasmClient.connect(config("rpcEndpointThree"));
-//     return client;
-//   }
-
-//   // ~~~~~ Random between 2 ~~~~~~
-//   //const client = switcher
-//   //  ? await CosmWasmClient.connect(config("rpcEndpoint"))
-//   //  : await CosmWasmClient.connect(config("rpcEndpointTwo"));
-//   //return client;
-// };
-
 export const getBatchClient = async () => {
   const endpoints = [noisChainConfig.rpc];
   const endpoint = endpoints[Math.floor(Math.random() * endpoints.length)];

@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Head from 'next/head'
 import { useSigningClient } from '../contexts/cosmwasm'
 import { Coin } from "@cosmjs/amino";
-import { MsgExecuteContractEncodeObject } from "@cosmjs/cosmwasm-stargate";
+import { MsgExecuteContractEncodeObject, SigningCosmWasmClient, WasmExtension } from "@cosmjs/cosmwasm-stargate";
 import { MsgExecuteContract } from "cosmjs-types/cosmwasm/wasm/v1/tx";
 import { toUtf8 } from "@cosmjs/encoding";
 import { EncodeObject } from '@cosmjs/proto-signing'
@@ -12,6 +12,8 @@ import { toast } from 'react-hot-toast';
 import noisLogo from '../public/nois_logo.png';
 import { confetti, ConfettiFirstParam } from 'tsparticles-confetti';
 import { Airdrop } from '@/lib/airdrop';
+import { QueryClient } from '@cosmjs/stargate';
+import { getBatchClient } from '../hooks/cosmwasm';
 
 //const AirdropContractAddress = "nois19kfv6wdsmudx58a2hsktvegvtuyc4rakpsfsxqgmzg26p8ph4yrsteche4";
 const AirdropContractAddress = "nois14wa2glah9t3c6x3cnfz2ys5t9er6zcrcvfvq8h0tfcv867q8n8tskvdplc";
@@ -67,15 +69,43 @@ const claimAirdropMessage = ({
   };
 }
 
-type Status = "default" | "hasclaim" | "noclaim";
+interface ClaimedProps {
+  walletAddress: string,
+  batchClient: QueryClient & WasmExtension,
+}
+
+const checkClaimed = async ({walletAddress, batchClient}: ClaimedProps) => {
+
+  const res = await batchClient?.wasm.queryContractSmart(
+    AirdropContractAddress,
+    {
+      is_claimed: {
+        address: walletAddress
+      }
+    }
+  );
+  return res.is_claimed as boolean;
+}
+
+type Status = "default" | "hasclaim" | "noclaim" | "alreadyclaimed";
 
 const Home: NextPage = () => {
+  const [batchClient, setBatchClient] = useState<QueryClient & WasmExtension | undefined>(undefined);
+
+  useEffect(() => {
+    getBatchClient().then((c) => {
+      setBatchClient(c);
+    }).catch((e) => {
+      console.log(e);
+    });
+  }, []);
 
   const [loading, setLoading] = useState<boolean>(false);
   const [userAddress, setUserAddress] = useState('');
   const [status, setStatus] = useState<Status>('default');
   const [merkle, setMerkle] = useState<string[]>([]);
   const [amount, setAmount] = useState<string>("");
+  
 
   // Airdrop contract address on nois-testnet-005 is nois19kfv6wdsmudx58a2hsktvegvtuyc4rakpsfsxqgmzg26p8ph4yrsteche4
   const checkAirdrop = async (address: string) => {
@@ -88,26 +118,31 @@ const Home: NextPage = () => {
     const airdrop = new Airdrop(data)
     const addressObject = data.find(obj => obj.address === address);
 
-    setTimeout(() => {
       if (!addressObject) {
         setLoading(false);
         toast.dismiss();
         setStatus('noclaim');
         toast.error("No Airdrop available");
       } else {
-        setLoading(false);
-        toast.dismiss();
-        setStatus('hasclaim');
-        sprayConfetti(Date.now() + 1500)
-        const amountx = String(addressObject.amount);
-        setAmount(amountx);
-        const proof = airdrop.getMerkleProof({
-            address: address,
-            amount: amountx
-        });
-        setMerkle(proof);
+        const hasClaimed = await checkClaimed({walletAddress: address, batchClient: batchClient!});
+        if (hasClaimed === true) {
+          toast.dismiss();
+          setLoading(false);
+          setStatus('alreadyclaimed');
+        } else {
+          toast.dismiss();
+          setLoading(false);
+          setStatus('hasclaim');
+          sprayConfetti(Date.now() + 1500)
+          const amountx = String(addressObject.amount);
+          setAmount(amountx);
+          const proof = airdrop.getMerkleProof({
+              address: address,
+              amount: amountx
+          });
+          setMerkle(proof);
+        }
       };
-    }, 2000);
   }
 
   const claimAirdrop = () => {
@@ -149,6 +184,10 @@ const Home: NextPage = () => {
 
   const { walletAddress, signingClient, nickname, connectWallet, disconnect } =
     useSigningClient();
+
+  useEffect(() => {
+    setUserAddress(walletAddress);
+  }, [walletAddress])
 
   const handleConnect = () => {
     if (walletAddress.length < 3) {
@@ -209,13 +248,18 @@ const Home: NextPage = () => {
                 className="w-1/3 px-3 py-2 outline-none rounded-lg placeholder-white/50 bg-slate-500/10 border border-nois-white/30 focus:bg-slate-500/20 focus:border-nois-white/60" 
                 placeholder='nois1...' 
                 onChange={e => setUserAddress(e.target.value)}
+                value={userAddress}
           />
           <div className="flex justify-center gap-x-4 font-mono text-xl ">
             <button 
               className={`${loading === true ? "opacity-50" : "hover:bg-white/20"} px-4 py-1 rounded-lg border border-white/30 text-nois-white`}
               onClick={() => {
                 if (loading !== true) {
-                  checkAirdrop(userAddress);
+                  if (!batchClient) {
+                    console.log("No client to query with");
+                  } else {
+                    checkAirdrop(userAddress);
+                  }
                 }
               }}
             >
@@ -227,7 +271,11 @@ const Home: NextPage = () => {
               className={`${loading === true ? "opacity-50" : "hover:bg-white/20"} px-4 py-1 rounded-lg border border-white/30 text-nois-white`}
               onClick={() => {
                 if (loading !== true) {
-                  claimAirdrop();
+                  if (status === 'alreadyclaimed') {
+                    toast.error("Rand-drop already claimed");
+                  } else {
+                    claimAirdrop();
+                  }
                 }
               }}
             >
@@ -240,6 +288,13 @@ const Home: NextPage = () => {
 
 
           <div className={`${status === 'default' || loading === true ? 'hidden' : ''} flex gap-x-2 p-2 text-xl rounded-lg bg-[#ffffff10]`}>
+            {status === 'alreadyclaimed' && (
+              <>
+                <span className='text-white/40'>
+                  Looks like you've already claimed your rand-drop
+                </span>
+              </>
+            )}
             {status === 'hasclaim' && (
               <>
                 <span className="text-white/40">
