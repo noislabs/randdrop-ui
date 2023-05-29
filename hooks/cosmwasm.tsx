@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { getKeplr, suggestChain } from "../util/keplr";
+import { useCallback, useContext, useState } from "react";
+import { getKeplr, suggestChain } from "../services/keplr";
 import {
   SigningCosmWasmClient,
   CosmWasmClient,
@@ -9,7 +9,14 @@ import { GasPrice } from "@cosmjs/stargate/build/fee";
 import { toBase64, fromBase64, toUtf8, fromUtf8 } from "@cosmjs/encoding";
 import { HttpBatchClient, Tendermint34Client } from "@cosmjs/tendermint-rpc";
 import { QueryClient } from "@cosmjs/stargate";
-import { noisChainConfig } from "../services/noisConfig";
+// import { getChainConfig, stargazeChainConfig } from "../services/chainConfig";
+import { ChainSelectContext, availableChain } from "../contexts/chainSelect";
+import { 
+  getChainConfig, 
+  junoChainConfig, 
+  //noisChainConfig 
+} from "../services/chainConfig";
+
 export interface ISigningCosmWasmClientContext {
   walletAddress: string;
   signingClient: SigningCosmWasmClient | null;
@@ -21,6 +28,9 @@ export interface ISigningCosmWasmClientContext {
 }
 
 export const useSigningCosmWasmClient = (): ISigningCosmWasmClientContext => {
+  const { currentChain, changeChain } = useContext(ChainSelectContext);
+  const thisChain = getChainConfig(currentChain);
+
   const [walletAddress, setWalletAddress] = useState("");
   const [signingClient, setSigningClient] =
     useState<SigningCosmWasmClient | null>(null);
@@ -28,27 +38,26 @@ export const useSigningCosmWasmClient = (): ISigningCosmWasmClientContext => {
   const [error, setError] = useState<any | null>(null);
   const [nickname, setNickname] = useState("");
 
-  const connectWallet = async () => {
+  const connectWallet = useCallback(async () => {
     setLoading(true);
 
     try {
-      const chainId = noisChainConfig.chainId;
+
+      const chainId = thisChain.chainId;
       const keplr = await getKeplr();
       suggestChain();
 
-      // enable website to access keplr
       await keplr.enable(chainId);
 
-      // get offline signer for signing txs
       const offlineSigner = await keplr.getOfflineSigner(chainId);
 
-      const endpoint = noisChainConfig.rpc;
+      const endpoint = thisChain.rpc;
       const client = await SigningCosmWasmClient.connectWithSigner(
         endpoint,
         offlineSigner,
         {
           gasPrice: GasPrice.fromString(
-            `${noisChainConfig.feeCurrencies[0].gasPriceStep?.average}${noisChainConfig.currencies[0].coinMinimalDenom}`
+            `${thisChain.feeCurrencies[0].gasPriceStep?.average}${thisChain.currencies[0].coinMinimalDenom}`
           ),
         }
       );
@@ -67,9 +76,9 @@ export const useSigningCosmWasmClient = (): ISigningCosmWasmClientContext => {
     } catch (error) {
       setError(error);
     }
-  };
+  }, [currentChain]);
 
-  const disconnect = () => {
+  const disconnect = useCallback(() => {
     if (signingClient) {
       signingClient.disconnect();
     }
@@ -77,7 +86,7 @@ export const useSigningCosmWasmClient = (): ISigningCosmWasmClientContext => {
     setNickname("");
     setSigningClient(null);
     setLoading(false);
-  };
+  }, [currentChain]);
 
   return {
     walletAddress,
@@ -91,8 +100,10 @@ export const useSigningCosmWasmClient = (): ISigningCosmWasmClientContext => {
 };
 
 
-export const getBatchClient = async () => {
-  const endpoints = [noisChainConfig.rpc];
+export const getBatchClient = async (chain: availableChain) => {
+  //const { currentChain, changeChain } = useContext(ChainSelectContext);
+  const thisChain = getChainConfig(chain);
+  const endpoints = [thisChain.rpc];
   const endpoint = endpoints[Math.floor(Math.random() * endpoints.length)];
   const httpBatch = new HttpBatchClient(endpoint);
   const tmint = await Tendermint34Client.create(httpBatch);

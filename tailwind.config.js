@@ -9,7 +9,8 @@ module.exports = {
     extend: {
       colors: {
         'nois-blue': "#0c0914",
-        'nois-white': "#e0daee"
+        'nois-white': "#e0daee",
+        'nois-green': "#6ff2cf"
       },
       boxShadow: {
         'neon-sm': '0 0 3px 2px #6ff2cf20',
