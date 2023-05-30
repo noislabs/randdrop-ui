@@ -208,7 +208,7 @@ const Home: NextPage = () => {
           </div>
           <div className="flex flex-col gap-y-1 justify-center items-center">
             <span className="text-nois-white/60 text-base">
-              {"Claim window opens in:"}
+              {"Juno testnet claims available in:"}
             </span>
             <ClaimingWindowTimer dateNow={Date.now()} endTimer={ClaimWindowOpenTime} />
           </div>
