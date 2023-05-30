@@ -105,7 +105,6 @@ const Home: NextPage = () => {
         toast.dismiss();
         setLoading(false);
         if (!v) {
-          toast.error("No claim available");
           setSelectedChainAirdropAmount(undefined);
           setMerkle(undefined);
         } else {
@@ -128,7 +127,6 @@ const Home: NextPage = () => {
         toast.dismiss();
         setLoading(false);
         if (!v) {
-          toast.error("No claim available");
           setSelectedChainAirdropAmount(undefined);
           setMerkle(undefined);
         } else {
@@ -153,7 +151,7 @@ const Home: NextPage = () => {
     }
 
     if (!batchClient) {
-      toast.error("Setting up Client, try again in a few seconds");
+      toast.error("Setting up client, try again in a few seconds");
       return;
     }
 
@@ -189,31 +187,28 @@ const Home: NextPage = () => {
 
 
   return (
-    <div className="flex min-h-screen text-nois-white/90 h-screen flex-col py-2 bg-gradient-to-br from-black to-nois-blue">
+    <div className="flex min-h-screen text-nois-white/90 h-screen flex-col p-2 bg-gradient-to-br from-nois-blue to-black ">
       <Head>
         <title>Nois Rand-drop Checker</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="grid grid-rows-6 items-start w-full h-full">
+      <main className="flex flex-col justify-start items-center w-full h-full">
 
         {/* Connect wallet header */}
-        <div className="row-span-1 flex justify-between px-12 items-center">
+        <div className="flex justify-between h-[15vh] px-12 w-full border-b border-nois-white/10 ">
           <div
             onClick={() => routeNewTab()}
-            className="relative flex overflow-hidden hover:cursor-pointer">
+            className="relative flex overflow-hidden hover:cursor-pointer ">
             <Image
               src={noisLogo}
               alt="Nois"
-              unoptimized
-              className="scale-50"
+              //unoptimized
+              className="scale-75"
               style={{ objectFit: 'contain' }}
             />
           </div>
-          <div className="text-4xl flex justify-center">
-            Rand-drop Checker
-          </div>
-          <div className="h-full flex justify-center items-center gap-x-4">
+          <div className="h-full flex justify-center items-center gap-x-4 pr-8">
             <ChainSelector/>
             <button
               className={`${walletAddress.length < 3 && "shadow-neon-md animate-pulse"} border border-nois-green/80 text-nois-green/80 hover:bg-nois-green/30 rounded-lg px-4 py-2`}
@@ -225,7 +220,7 @@ const Home: NextPage = () => {
         </div>
 
         {/* Center component */}
-        <div className="row-span-5 pt-24 flex flex-col gap-y-8 justify-center items-center bgx-nois-blue">
+        <div className="w-full flex h-[70vh] flex-col gap-y-8 justify-center items-center bgx-nois-blue">
           <div className="flex gap-x-4 w-2/5 justify-center items-center">
             <input
               className="w-full px-3 py-2 outline-none rounded-lg placeholder-white/50 bg-slate-500/10 border border-nois-white/30 focus:bg-slate-500/20 focus:border-nois-white/60"
@@ -269,7 +264,7 @@ const Home: NextPage = () => {
         </div>
       </main>
 
-      <footer className="flex h-24 w-full items-center justify-center">
+      <footer className="flex h-[15vh] w-full items-center justify-center">
         <a
           className="flex items-center justify-center gap-2 link hover:underline hover:underline-offset-4"
           href="https://github.com/NoisLabs"

@@ -61,8 +61,10 @@ export const checkEligibleAmount = async ({
       amount: userEligibleAmt,
       proof
     } as EligibleTable
-  };
-  return undefined;
+  } else {
+    toast.error("No claim available | Account not eligible");
+    return undefined;
+  }
 }
 
 /** Query `airdropContract` to check if wallet won a Randdrop */
@@ -121,18 +123,21 @@ export const fullCheck = async ({
   airdropContract?: string;
 }) => {
 
+  const amt_and_proof = await checkEligibleAmount({walletAddress, chain});
+  if (!amt_and_proof) {
+    toast.error("No claim available | Account not eligible");
+    return undefined;
+  }
+
   const is_lucky = await isLucky({walletAddress, batchClient, airdropContract});
   if (!is_lucky) {
+    toast.error("No claim available | Account was eligible, but did not win");
     return undefined;
   }
 
   const has_claimed = await checkClaimed({walletAddress, batchClient, airdropContract});
   if (has_claimed) {
-    return undefined;
-  }
-
-  const amt_and_proof = await checkEligibleAmount({walletAddress, chain});
-  if (!amt_and_proof) {
+    toast.error("No claim available | Randdrop already claimed");
     return undefined;
   }
 
