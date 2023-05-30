@@ -52,7 +52,7 @@ export const checkEligibleAmount = async ({
   const userDrop = chainData.find((obj) => obj.address === validAddress);
 
   if (userDrop) {
-    const userEligibleAmt = String(userDrop.amount * 3);
+    const userEligibleAmt = String(userDrop.amount);
     const proof = airdrop.getMerkleProof({
       address: validAddress,
       amount: userEligibleAmt
