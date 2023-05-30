@@ -14,6 +14,7 @@ import { fromMicro, validateAddress } from '../util/addressConversion';
 import { ChainSelector } from '../components/chainSelector';
 import { ChainSelectContext } from '../contexts/chainSelect';
 import { sprayConfetti } from '../components/confetti';
+import { ClaimingWindowTimer } from '../components/timer';
 
 const routeNewTab = () => {
   window.open(`https://twitter.com/NoisRNG`, "_blank", "noopener noreferrer");
@@ -21,7 +22,14 @@ const routeNewTab = () => {
 
 
 // Set to false if Randdrop's not yet ready to be claimed
-const ClaimingWindowOpen: boolean = true;
+// const ClaimingWindowOpen: boolean = false;
+
+// Set to time claiming window opens, in milliseconds
+const ClaimWindowOpenTime: number = 1_685_500_001_000
+
+// Date.now()
+// 1685479580193
+// 1685500001
 
 
 const Home: NextPage = () => {
@@ -74,7 +82,7 @@ const Home: NextPage = () => {
   }, [walletAddress])
 
 
-  const handleCheck = () => {
+  const handleCheck = (dateNow: number) => {
     if (loading === true) {
       return;
     }
@@ -95,7 +103,7 @@ const Home: NextPage = () => {
     toast.loading("Processing check...");
     setLoading(true);
 
-    if (ClaimingWindowOpen) {
+    if (ClaimWindowOpenTime < dateNow) {
       fullCheck({
         walletAddress: valid,
         batchClient,
@@ -108,7 +116,8 @@ const Home: NextPage = () => {
           setMerkle(undefined);
         } else {
           sprayConfetti(Date.now() + 1500);
-          setSelectedChainAirdropAmount(v.amount);
+          const userAmt = Number(v.amount) * 3;
+          setSelectedChainAirdropAmount(userAmt.toString());
           setMerkle(v.proof);
         };
       }).catch((e) => {
@@ -129,7 +138,8 @@ const Home: NextPage = () => {
           setMerkle(undefined);
         } else {
           sprayConfetti(Date.now() + 1500);
-          setSelectedChainAirdropAmount(v.amount);
+          const userAmt = Number(v.amount) * 3;
+          setSelectedChainAirdropAmount(userAmt.toString());
           setMerkle(v.proof);
         };
       }).catch((e) => {
@@ -142,8 +152,8 @@ const Home: NextPage = () => {
     };
   }
 
-  const handleClaim = () => {
-    if (!ClaimingWindowOpen) {
+  const handleClaim = (dateNow: number) => {
+    if (ClaimWindowOpenTime < dateNow) {
       toast.error("Claim window not yet open");
       return;
     }
@@ -205,6 +215,12 @@ const Home: NextPage = () => {
               style={{ objectFit: 'contain' }}
             />
           </div>
+          <div className="flex flex-col gap-y-1 justify-center items-center">
+            <span className="text-nois-white/60 text-base">
+              {"Claim window opens in:"}
+            </span>
+            <ClaimingWindowTimer dateNow={Date.now()} endTimer={ClaimWindowOpenTime} />
+          </div>
           <div className="h-full flex justify-center items-center gap-x-4 pr-8">
             <ChainSelector/>
             <button
@@ -237,13 +253,21 @@ const Home: NextPage = () => {
               }
             </div>
             <div className={`${selectedChainAirdropAmount ? "text-green-500" : "hidden"} text-sm w-full flex justify-center`}>
-              {selectedChainAirdropAmount && `Amount: ${fromMicro(selectedChainAirdropAmount)}`}
+              {ClaimWindowOpenTime < Date.now() ? (
+                <span>
+                  {selectedChainAirdropAmount && `Claimable Amount: ${fromMicro(selectedChainAirdropAmount)} $NOIS`}
+                </span>
+              ):(
+                <span>
+                  {selectedChainAirdropAmount && `Eligible for: ${fromMicro(selectedChainAirdropAmount)} $NOIS`}
+                </span>
+              )}
             </div>
           </div>
           <div className="flex justify-center gap-x-4 text-xl ">
             <button
               className={`${loading === true ? "opacity-50" : "hover:bg-white/20"} px-4 py-2 rounded-lg border border-white/30 text-nois-white`}
-              onClick={() => handleCheck()}
+              onClick={() => handleCheck(Date.now())}
             >
               <span className={`${loading === true ? "animate-ping" : ""}`}>
                 {loading === true ? "..." : "Check"}
@@ -251,7 +275,7 @@ const Home: NextPage = () => {
             </button>
             <button
               className={`${(!merkle || walletAddress.length < 3 || !selectedChainAirdropAmount || walletAddress !== inputAddress || loading === true) ? "opacity-50 hover:cursor-default hover:bg-transparent" : "hover:bg-white/20"} px-4 py-2 rounded-lg border border-white/30 text-nois-white`}
-              onClick={() => handleClaim()}
+              onClick={() => handleClaim(Date.now())}
             >
               <span className={`${loading === true && "animate-ping"}`}>
                 {loading === true ? "..." : "Claim"}
