@@ -20,17 +20,8 @@ const routeNewTab = () => {
   window.open(`https://twitter.com/NoisRNG`, "_blank", "noopener noreferrer");
 }
 
-
-// Set to false if Randdrop's not yet ready to be claimed
-// const ClaimingWindowOpen: boolean = false;
-
 // Set to time claiming window opens, in milliseconds
 const ClaimWindowOpenTime: number = 1_685_500_001_000
-
-// Date.now()
-// 1685479580193
-// 1685500001
-
 
 const Home: NextPage = () => {
 
