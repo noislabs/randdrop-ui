@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { ChainSelectContext, availableChain } from "../contexts/chainSelect";
 import { toast } from "react-hot-toast";
+import { useKeplr } from "../hooks/useKeplr";
 
 export const ChainSelector = ({
   current,
@@ -15,9 +16,11 @@ export const ChainSelector = ({
 }) => {
   const { currentChain, changeChain } = useContext(ChainSelectContext);
   const [isOpen, setIsOpen] = useState(false);
+  const { disconnect } = useKeplr();
 
   const handleDropdownChange = (event) => {
     event.preventDefault();
+    disconnect();
     const selectedChain = event.target.value;
     cb ? cb(selectedChain) : changeChain(selectedChain)
     setIsOpen(false);
@@ -53,29 +56,32 @@ export const ChainSelector = ({
         <div className="py-1" role="none">
           <button 
             onClick={(e) => handleDropdownChange(e)} 
-            className="text-gray-100 hover:bg-nois-green/20  block px-4 py-2 text-sm w-full text-left rounded-md" 
+            className="text-gray-100 hover:bg-nois-green/20 block px-4 py-2 text-sm w-full text-left rounded-md" 
             value="juno"
           >
             Juno
           </button>
           <button 
-            //onClick={(e) => handleDropdownChange(e)}
-            onClick={() => toast.error("Coming soon")} 
-            className="text-gray-500 hover:cursor-not-allowed  block px-4 py-2 text-sm w-full text-left rounded-md" 
+            onClick={(e) => handleDropdownChange(e)}
+            className="text-gray-100 hover:bg-nois-green/20 block px-4 py-2 text-sm w-full text-left rounded-md" 
+            //onClick={() => toast.error("Coming soon")} 
+            // className="text-gray-500 hover:cursor-not-allowed  block px-4 py-2 text-sm w-full text-left rounded-md" 
             value="injective"
           >
             Injective
           </button>
           <button 
-            //onClick={(e) => handleDropdownChange(e)}
-            onClick={() => toast.error("Coming soon")}  
-            className="text-gray-500 hover:cursor-not-allowed block px-4 py-2 text-sm w-full text-left rounded-md" 
+            onClick={(e) => handleDropdownChange(e)}
+            className="text-gray-100 hover:bg-nois-green/20 block px-4 py-2 text-sm w-full text-left rounded-md" 
+            // onClick={() => toast.error("Coming soon")}  
+            // className="text-gray-500 hover:cursor-not-allowed block px-4 py-2 text-sm w-full text-left rounded-md" 
             value="stargaze"
           >
             Stargaze
           </button>
           <button 
-            //onClick={(e) => handleDropdownChange(e)} 
+            // onClick={(e) => handleDropdownChange(e)} 
+            // className="text-gray-100 hover:bg-nois-green/20 block px-4 py-2 text-sm w-full text-left rounded-md" 
             onClick={() => toast.error("Coming soon")} 
             className="text-gray-500 hover:cursor-not-allowed block px-4 py-2 text-sm w-full text-left rounded-md" 
             value="aura"

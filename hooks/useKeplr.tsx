@@ -26,5 +26,5 @@ export const useKeplr = () => {
     };
   }, [reconnect]);
 
-  return { walletAddress, signingClient, nickname, handleConnect };
+  return { walletAddress, signingClient, nickname, handleConnect, disconnect };
 }

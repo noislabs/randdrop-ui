@@ -9,7 +9,7 @@ import {
 //import { CosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { createContext } from "react";
 
-export type availableChain = "juno" //| "injective" | "stargaze" | "aura";
+export type availableChain = "juno" | "injective" | "stargaze";  //| "aura";
 
 type ChainSelectContextType = {
   currentChain: availableChain;

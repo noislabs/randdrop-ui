@@ -8,7 +8,6 @@ import { availableChain } from "../contexts/chainSelect";
 import { getAddressTable } from "./addressConversion";
 import { Airdrop } from "@/lib/airdrop";
 
-// const UniAirdropContractAddress = "juno140p2gyzfq7h0n36x8ldzcytjqtm5cj654gr9ema8sz8au2xf82nq9qvzez";
 const UniAirdropContractAddress = "juno1r0cqh70f7r0t8gw2gmxnlfnnu83s4gs0jcydwng8frft4evl54js4tw60g";
 
 //--------------------------------------------------------------------

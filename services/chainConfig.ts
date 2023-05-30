@@ -95,6 +95,50 @@ export const junoChainConfig: ChainInfo = {
   features: []
 };
 
+/** Mainnet */
+// export const junoChainConfig: ChainInfo = {
+//   chainId: "juno-1",
+//   chainName: "Juno Mainnet",
+//   rpc: "https://juno-rpc.polkachu.com/",
+//   rest: "https://juno-api.polkachu.com:443",
+//   bip44: {
+//     coinType: 118,
+//   },
+//   bech32Config: {
+//     bech32PrefixAccAddr: "juno",
+//     bech32PrefixAccPub: "junopub",
+//     bech32PrefixValAddr: "junovaloper",
+//     bech32PrefixValPub: "junovaloperpub",
+//     bech32PrefixConsAddr: "junovalcons",
+//     bech32PrefixConsPub: "junovalconspub"
+//   },
+//   currencies: [
+//     {
+//       coinDenom: "JUNO",
+//       coinMinimalDenom: "ujuno",
+//       coinDecimals: 6,
+//     },
+//   ],
+//   feeCurrencies: [
+//     {
+//       coinDenom: "JUNO",
+//       coinMinimalDenom: "ujuno",
+//       coinDecimals: 6,
+//       gasPriceStep: {
+//         low: 0.05,
+//         average: 0.05,
+//         high: 0.1,
+//       },
+//     },
+//   ],
+//   stakeCurrency: {
+//     coinDenom: "JUNO",
+//     coinMinimalDenom: "ujuno",
+//     coinDecimals: 6,
+//   },
+//   features: []
+// };
+
 export const stargazeChainConfig: ChainInfo = {
   chainId: "stargaze-1",
   chainName: "stargaze",
@@ -239,12 +283,12 @@ export const getChainConfig = (chain: availableChain) => {
     case "juno": {
       return junoChainConfig;
     }
-    // case "stargaze": {
-    //   return stargazeChainConfig;
-    // }
-    // case "injective": {
-    //   return injectiveChainConfig;
-    // }
+    case "stargaze": {
+      return stargazeChainConfig;
+    }
+    case "injective": {
+      return injectiveChainConfig;
+    }
     // case "aura": {
     //   return auraChainConfig;
     // }
