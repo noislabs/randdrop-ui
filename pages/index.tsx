@@ -102,7 +102,6 @@ const Home: NextPage = () => {
         chain: currentChain,
         //airdropContract, currently default to juno testnet
       }).then((v) => {
-        toast.dismiss();
         setLoading(false);
         if (!v) {
           setSelectedChainAirdropAmount(undefined);
@@ -124,7 +123,6 @@ const Home: NextPage = () => {
         walletAddress: valid,
         chain: currentChain
       }).then((v) => {
-        toast.dismiss();
         setLoading(false);
         if (!v) {
           setSelectedChainAirdropAmount(undefined);
@@ -176,7 +174,6 @@ const Home: NextPage = () => {
       //airdropContract, defaults to Juno Testnet
     }).then((v) => {
         setLoading(false);
-        toast.dismiss();
       })
       .catch((e) => {
         setLoading(false);
@@ -253,10 +250,10 @@ const Home: NextPage = () => {
               </span>
             </button>
             <button
-              className={`${(!merkle || walletAddress.length < 3 || !selectedChainAirdropAmount || walletAddress !== inputAddress) && "hidden"} ${loading === true ? "opacity-50" : "hover:bg-white/20"} px-4 py-2 rounded-lg border border-white/30 text-nois-white`}
+              className={`${(!merkle || walletAddress.length < 3 || !selectedChainAirdropAmount || walletAddress !== inputAddress || loading === true) ? "opacity-50 hover:cursor-default hover:bg-transparent" : "hover:bg-white/20"} px-4 py-2 rounded-lg border border-white/30 text-nois-white`}
               onClick={() => handleClaim()}
             >
-              <span className={`${loading === true ? "animate-ping" : ""}`}>
+              <span className={`${loading === true && "animate-ping"}`}>
                 {loading === true ? "..." : "Claim"}
               </span>
             </button>
