@@ -1,27 +1,60 @@
-# Next.js + Tailwind CSS Example
+# Nois Randdrop Frontend
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.2)](https://tailwindcss.com/blog/tailwindcss-v3-2) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+A simple UI to check if a wallet is eligible for the Nois Randdrop, and claim when available
 
-## Deploy your own
+</br>
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-tailwindcss)
+# Configuration
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
+## `./pages/index.tsx`
+**When testnet airdrop is over**
 
-## How to use
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
-
-```bash
-npx create-next-app --example with-tailwindcss with-tailwindcss-app
+Remove this
+```ts
+className={`${(currentChain !== "juno"...
 ```
 
-```bash
-yarn create next-app --example with-tailwindcss with-tailwindcss-app
+Update Timer Value(s?)
+```ts
+// Set to time claiming window opens, in milliseconds
+const ClaimWindowOpenTime: number = 1_685_500_001_000
 ```
 
-```bash
-pnpm create next-app --example with-tailwindcss with-tailwindcss-app
+## `./contexts/chainSelect.tsx`
+
+Edit for any new chain & update all instances throughout codebase. Typescript linter will alert you once you add or remove something
+```ts
+export type availableChain = "juno" | "injective" | "stargaze" | "aura";
 ```
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+## `./services/chainConfig.ts`
+
+Add applicable `ChainInfo` from [Keplr Chain Registry](https://github.com/chainapsis/keplr-chain-registry) for any new Chains
+
+## `./components/chainSelector.tsx`
+
+Update button values with any new Chains
+
+## `./util/msg.ts`
+
+Replace with applicable Randdrop contract addresses 
+```ts
+const UniAirdropAddr = "";
+const JunoAirdropAddr = "";
+const InjectiveAirdropAddr = "";
+const StargazeAirdropAddr = "";
+const AuraAirdropAddr = "";
+```
+
+## `./util/addressConversion`
+
+Update with any new chains and modify functions
+```ts
+interface AddressTable {
+  injective: string,
+  juno: string,
+  stargaze: string,
+  aura: string,
+  nois: string
+}
+```

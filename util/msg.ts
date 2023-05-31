@@ -8,8 +8,34 @@ import { availableChain } from "../contexts/chainSelect";
 import { getAddressTable } from "./addressConversion";
 import { Airdrop } from "@/lib/airdrop";
 
-const UniAirdropContractAddress = "juno1r0cqh70f7r0t8gw2gmxnlfnnu83s4gs0jcydwng8frft4evl54js4tw60g";
+//--------------------------------------------------------------------
+// Randdrop contract address mapping
+//--------------------------------------------------------------------
 
+const UniAirdropAddr = "juno1r0cqh70f7r0t8gw2gmxnlfnnu83s4gs0jcydwng8frft4evl54js4tw60g";
+const JunoAirdropAddr = "";
+const InjectiveAirdropAddr = "";
+const StargazeAirdropAddr = "";
+const AuraAirdropAddr = "";
+
+
+/** Returns Randdrop Contract address for `chain` */
+export const getRanddropAddr = (chain: availableChain) => {
+  switch (chain) {
+    case "juno": {
+      return UniAirdropAddr;
+    }
+    case "stargaze": {
+      return StargazeAirdropAddr;
+    }
+    case "injective": {
+      return InjectiveAirdropAddr;
+    }
+    case "aura": {
+      return AuraAirdropAddr;
+    }
+  }
+};
 //--------------------------------------------------------------------
 // Queries
 //--------------------------------------------------------------------
@@ -72,7 +98,7 @@ export const checkEligibleAmount = async ({
 export const isLucky = async ({
   walletAddress,
   batchClient,
-  airdropContract = UniAirdropContractAddress
+  airdropContract = UniAirdropAddr
 }:{
   walletAddress: string;
   batchClient: QueryClient & WasmExtension;
@@ -93,7 +119,7 @@ export const isLucky = async ({
 export const checkClaimed = async ({
   walletAddress,
   batchClient,
-  airdropContract = UniAirdropContractAddress
+  airdropContract = UniAirdropAddr
 }:{
   walletAddress: string;
   batchClient: QueryClient & WasmExtension;
@@ -116,7 +142,7 @@ export const fullCheck = async ({
   walletAddress,
   batchClient,
   chain,
-  airdropContract = UniAirdropContractAddress
+  airdropContract = UniAirdropAddr
 }:{
   walletAddress: string;
   batchClient: QueryClient & WasmExtension;
@@ -159,7 +185,7 @@ const claimAirdropMessage = ({
   walletAddress,
   amount,
   proof,
-  airdropContract = UniAirdropContractAddress
+  airdropContract = UniAirdropAddr
 }:{
   walletAddress: string;
   amount: string;
@@ -190,7 +216,7 @@ export const claimAirdrop = async ({
   proof,
   batchClient,
   signingClient,
-  airdropContract = UniAirdropContractAddress
+  airdropContract = UniAirdropAddr
 }:{
   walletAddress: string;
   amount: string;

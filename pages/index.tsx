@@ -9,7 +9,7 @@ import { toast } from 'react-hot-toast';
 import noisLogo from '../public/nois_logo.png';
 import { QueryClient } from '@cosmjs/stargate';
 import { getBatchClient } from '../hooks/cosmwasm';
-import { checkEligibleAmount, claimAirdrop, fullCheck } from '../util/msg';
+import { checkEligibleAmount, claimAirdrop, fullCheck, getRanddropAddr } from '../util/msg';
 import { fromMicro, validateAddress } from '../util/addressConversion';
 import { ChainSelector } from '../components/chainSelector';
 import { ChainSelectContext } from '../contexts/chainSelect';
@@ -99,6 +99,7 @@ const Home: NextPage = () => {
         walletAddress: valid,
         batchClient,
         chain: currentChain,
+        airdropContract: getRanddropAddr(currentChain)
         //airdropContract, currently default to juno testnet
       }).then((v) => {
         setLoading(false);
@@ -173,6 +174,7 @@ const Home: NextPage = () => {
       batchClient,
       signingClient,
       //airdropContract, defaults to Juno Testnet
+      airdropContract: getRanddropAddr(currentChain)
     }).then((v) => {
         setLoading(false);
       })

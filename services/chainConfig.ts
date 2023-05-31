@@ -26,7 +26,6 @@ export const noisChainConfig: ChainInfo = {
       coinDenom: "NOIS",
       coinMinimalDenom: "unois",
       coinDecimals: 6,
-      coinGeckoId: "unknown",
     },
   ],
   feeCurrencies: [
@@ -34,7 +33,6 @@ export const noisChainConfig: ChainInfo = {
       coinDenom: "NOIS",
       coinMinimalDenom: "unois",
       coinDecimals: 6,
-      coinGeckoId: "unknown",
       gasPriceStep: {
         low: 0.05,
         average: 0.05,
@@ -46,7 +44,6 @@ export const noisChainConfig: ChainInfo = {
     coinDenom: "NOIS",
     coinMinimalDenom: "unois",
     coinDecimals: 6,
-    coinGeckoId: "unknown",
   },
   features: [],
 };
@@ -160,7 +157,6 @@ export const stargazeChainConfig: ChainInfo = {
       coinDenom: "STARS",
       coinMinimalDenom: "ustars",
       coinDecimals: 6,
-      //coinGeckoId: "unknown",
     },
   ],
   feeCurrencies: [
@@ -168,7 +164,6 @@ export const stargazeChainConfig: ChainInfo = {
       coinDenom: "STARS",
       coinMinimalDenom: "ustars",
       coinDecimals: 6,
-      //coinGeckoId: "unknown",
       gasPriceStep: {
         low: 0.05,
         average: 0.05,
@@ -180,7 +175,6 @@ export const stargazeChainConfig: ChainInfo = {
     coinDenom: "STARS",
     coinMinimalDenom: "ustars",
     coinDecimals: 6,
-    //coinGeckoId: "unknown",
   },
   features: [],
 };
@@ -206,7 +200,6 @@ export const injectiveChainConfig: ChainInfo = {
       coinDenom: "INJ",
       coinMinimalDenom: "uinj",
       coinDecimals: 18,
-      //coinGeckoId: "unknown",
     },
   ],
   feeCurrencies: [
@@ -214,7 +207,6 @@ export const injectiveChainConfig: ChainInfo = {
       coinDenom: "INJ",
       coinMinimalDenom: "uinj",
       coinDecimals: 6,
-      //coinGeckoId: "unknown",
       gasPriceStep: {
         low: 500000000,
         average: 1000000000,
@@ -226,16 +218,15 @@ export const injectiveChainConfig: ChainInfo = {
     coinDenom: "INJ",
     coinMinimalDenom: "uinj",
     coinDecimals: 18,
-    //coinGeckoId: "unknown",
   },
   features: [],
 };
 
 export const auraChainConfig: ChainInfo = {
   chainId: "xstaxy-1",
-  chainName: "aura",
-  rpc: "https://aura-rpc.lavenderfive.com",
-  rest: "https://aura-api.lavenderfive.com",
+  chainName: "Aura Xstaxy Mainnet",
+  rpc: "https://rpc.aura.network",
+  rest: "https://lcd.aura.network",
   bip44: {
     coinType: 118,
   },
@@ -252,7 +243,6 @@ export const auraChainConfig: ChainInfo = {
       coinDenom: "AURA",
       coinMinimalDenom: "uaura",
       coinDecimals: 6,
-      //coinGeckoId: "unknown",
     },
   ],
   feeCurrencies: [
@@ -260,11 +250,10 @@ export const auraChainConfig: ChainInfo = {
       coinDenom: "AURA",
       coinMinimalDenom: "uaura",
       coinDecimals: 6,
-      //coinGeckoId: "unknown",
       gasPriceStep: {
-        low: 0.05,
-        average: 0.05,
-        high: 0.1,
+        low: 0.001,
+        average: 0.0025,
+        high: 0.004
       },
     },
   ],
@@ -272,12 +261,11 @@ export const auraChainConfig: ChainInfo = {
     coinDenom: "AURA",
     coinMinimalDenom: "uaura",
     coinDecimals: 6,
-    //coinGeckoId: "unknown",
   },
-  features: [],
+  features: ['no-legacy-stdTx'],
 };
 
-
+/** Returns chainConfig for `chain` */
 export const getChainConfig = (chain: availableChain) => {
   switch (chain) {
     case "juno": {
@@ -289,8 +277,8 @@ export const getChainConfig = (chain: availableChain) => {
     case "injective": {
       return injectiveChainConfig;
     }
-    // case "aura": {
-    //   return auraChainConfig;
-    // }
+    case "aura": {
+      return auraChainConfig;
+    }
   }
-}
+};

@@ -1,5 +1,8 @@
 import { useCallback, useContext, useState } from "react";
-import { getKeplr, suggestChain } from "../services/keplr";
+import { 
+  getKeplr, 
+  suggestChain 
+} from "../services/keplr";
 import {
   SigningCosmWasmClient,
   CosmWasmClient,
@@ -13,8 +16,6 @@ import { QueryClient } from "@cosmjs/stargate";
 import { ChainSelectContext, availableChain } from "../contexts/chainSelect";
 import { 
   getChainConfig, 
-  junoChainConfig, 
-  //noisChainConfig 
 } from "../services/chainConfig";
 
 export interface ISigningCosmWasmClientContext {
@@ -45,7 +46,7 @@ export const useSigningCosmWasmClient = (): ISigningCosmWasmClientContext => {
 
       const chainId = thisChain.chainId;
       const keplr = await getKeplr();
-      suggestChain();
+      suggestChain(currentChain);
 
       await keplr.enable(chainId);
 

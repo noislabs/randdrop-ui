@@ -50,26 +50,6 @@ export function validateAddress(address: string): string | undefined {
   }
 }
 
-// export function validateAddresses(injA: string, junoA: string, starsA: string, auraA: string): AddressTable | undefined {
-//   try {
-//     const injective = normalizeBech32(injA);
-//     const juno = normalizeBech32(junoA);
-//     const stargaze = normalizeBech32(starsA);
-//     const aura = normalizeBech32(auraA);
-//     const nois = normalizeBech32()
-//     return {
-//       injective,
-//       juno,
-//       stargaze,
-//       aura
-//     };
-//   } catch (e) {
-//     toast.error("ERROR: Invalid Address Format!");
-//     return undefined;
-//   }
-// }
-
-
 /** Divide by 1_000_000 */
 export function fromMicro(amount: number | string) {
   if (typeof amount === "string") {
@@ -78,17 +58,3 @@ export function fromMicro(amount: number | string) {
   amount = amount / 1_000_000;
   return isNaN(amount) ? 0 : amount;
 }
-
-// export function validateAddressestwo(
-//   //injA: string, 
-//   junoA: string, 
-//   // starsA: string, 
-//   // auraA: string
-// ): string | undefined {
-//   try {
-//     const juno = normalizeBech32(junoA);
-//     return juno;
-//   } catch (e) {
-//     return undefined;
-//   }
-// }

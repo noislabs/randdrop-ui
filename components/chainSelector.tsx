@@ -80,10 +80,10 @@ export const ChainSelector = ({
             Stargaze
           </button>
           <button 
-            // onClick={(e) => handleDropdownChange(e)} 
-            // className="text-gray-100 hover:bg-nois-green/20 block px-4 py-2 text-sm w-full text-left rounded-md" 
-            onClick={() => toast.error("Coming soon")} 
-            className="text-gray-500 hover:cursor-not-allowed block px-4 py-2 text-sm w-full text-left rounded-md" 
+            onClick={(e) => handleDropdownChange(e)} 
+            className="text-gray-100 hover:bg-nois-green/20 block px-4 py-2 text-sm w-full text-left rounded-md" 
+            // onClick={() => toast.error("Coming soon")} 
+            // className="text-gray-500 hover:cursor-not-allowed block px-4 py-2 text-sm w-full text-left rounded-md" 
             value="aura"
           >
             Aura
