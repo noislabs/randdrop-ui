@@ -36,8 +36,10 @@ const Home: NextPage = () => {
   // Merkle Proof
   const [merkle, setMerkle] = useState<string[] | undefined>();
 
-  // Selected Chain Airdrop amount for user, undefined by default
+  // Selected Chain Airdrop amount for user, undefined by default (JSON gist amount * 3)
   const [selectedChainAirdropAmount, setSelectedChainAirdropAmount] = useState<string | undefined>(undefined);
+  // Amount of airdrop from JSON gist (not * 3)
+  const [jsonAmount, setJsonAmount] = useState<string | undefined>(undefined);
 
   // Input address inside text field
   const [inputAddress, setInputAddress] = useState("");
@@ -46,6 +48,7 @@ const Home: NextPage = () => {
   useEffect(() => {
     setInputAddress("");
     setSelectedChainAirdropAmount(undefined);
+    setJsonAmount(undefined);
     setMerkle(undefined);
     setLoading(true);
     getBatchClient(currentChain).then((c) => {
@@ -70,6 +73,7 @@ const Home: NextPage = () => {
       setInputAddress(walletAddress);
     };
     setSelectedChainAirdropAmount(undefined);
+    setJsonAmount(undefined);
   }, [walletAddress])
 
 
@@ -105,9 +109,11 @@ const Home: NextPage = () => {
         setLoading(false);
         if (!v) {
           setSelectedChainAirdropAmount(undefined);
+          setJsonAmount(undefined);
           setMerkle(undefined);
         } else {
           sprayConfetti(Date.now() + 1500);
+          setJsonAmount(v.amount);
           const userAmt = Number(v.amount) * 3;
           setSelectedChainAirdropAmount(userAmt.toString());
           setMerkle(v.proof);
@@ -116,6 +122,7 @@ const Home: NextPage = () => {
         toast.dismiss();
         setLoading(false);
         setSelectedChainAirdropAmount(undefined);
+        setJsonAmount(undefined);
         setMerkle(undefined);
         toast.error("Error Checking Eligibility, please try again later");
       });
@@ -127,9 +134,11 @@ const Home: NextPage = () => {
         setLoading(false);
         if (!v) {
           setSelectedChainAirdropAmount(undefined);
+          setJsonAmount(undefined);
           setMerkle(undefined);
         } else {
           sprayConfetti(Date.now() + 1500);
+          setJsonAmount(v.amount);
           const userAmt = Number(v.amount) * 3;
           setSelectedChainAirdropAmount(userAmt.toString());
           setMerkle(v.proof);
@@ -138,6 +147,7 @@ const Home: NextPage = () => {
         toast.dismiss();
         setLoading(false);
         setSelectedChainAirdropAmount(undefined);
+        setJsonAmount(undefined);
         setMerkle(undefined);
         toast.error("Error Checking Eligibility, please try again later");
       });
@@ -160,7 +170,7 @@ const Home: NextPage = () => {
       return;
     }
 
-    if (!selectedChainAirdropAmount || !merkle) {
+    if (!selectedChainAirdropAmount || !jsonAmount || !merkle) {
       toast.error("Please click 'Check' before trying to Claim");
       return;
     }
@@ -169,7 +179,7 @@ const Home: NextPage = () => {
 
     claimAirdrop({
       walletAddress,
-      amount: selectedChainAirdropAmount,
+      amount: jsonAmount,
       proof: merkle,
       batchClient,
       signingClient,
@@ -267,7 +277,7 @@ const Home: NextPage = () => {
               </span>
             </button>
             <button
-              className={`${(currentChain !== "uni" || !merkle || walletAddress.length < 3 || !selectedChainAirdropAmount || walletAddress !== inputAddress || loading === true) ? "opacity-50 hover:cursor-default hover:bg-transparent" : "hover:bg-white/20"} px-4 py-2 rounded-lg border border-white/30 text-nois-white`}
+              className={`${(currentChain !== "uni" || !merkle || walletAddress.length < 3 || !selectedChainAirdropAmount || !jsonAmount || walletAddress !== inputAddress || loading === true) ? "opacity-50 hover:cursor-default hover:bg-transparent" : "hover:bg-white/20"} px-4 py-2 rounded-lg border border-white/30 text-nois-white`}
               onClick={() => handleClaim(Date.now())}
             >
               <span className={`${loading === true && "animate-ping"}`}>
