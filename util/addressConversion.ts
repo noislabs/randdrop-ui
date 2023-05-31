@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast';
 interface AddressTable {
   injective: string,
   juno: string,
+  uni: string,
   stargaze: string,
   aura: string,
   nois: string
@@ -25,6 +26,7 @@ export function getAddressTable(address: string): AddressTable {
     return {
       injective,
       juno,
+      uni: juno,
       stargaze,
       aura,
       nois
@@ -33,6 +35,7 @@ export function getAddressTable(address: string): AddressTable {
     return {
       injective: "",
       juno: "",
+      uni: "",
       stargaze: "",
       aura: "",
       nois: ""

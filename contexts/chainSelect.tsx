@@ -9,7 +9,7 @@ import {
 //import { CosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { createContext } from "react";
 
-export type availableChain = "juno" | "injective" | "stargaze" | "aura";
+export type availableChain = "uni" | "juno" | "injective" | "stargaze" | "aura";
 
 type ChainSelectContextType = {
   currentChain: availableChain;
@@ -17,12 +17,12 @@ type ChainSelectContextType = {
 }
 
 export const ChainSelectContext = createContext<ChainSelectContextType>({
-  currentChain: "juno",
+  currentChain: "uni",
   changeChain: (newChain: availableChain) => {}
 });
 
 export const ChainSelectProvider = ({ children }:{children: ReactNode}) => {
-  const [chain, setChain] = useState<availableChain>("juno");
+  const [chain, setChain] = useState<availableChain>("uni");
 
   const handleChangeChain = (newChain: availableChain) => {
     setChain(newChain);

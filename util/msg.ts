@@ -22,8 +22,11 @@ const AuraAirdropAddr = "";
 /** Returns Randdrop Contract address for `chain` */
 export const getRanddropAddr = (chain: availableChain) => {
   switch (chain) {
-    case "juno": {
+    case "uni": {
       return UniAirdropAddr;
+    }
+    case "juno": {
+      return JunoAirdropAddr;
     }
     case "stargaze": {
       return StargazeAirdropAddr;
@@ -41,6 +44,7 @@ export const getRanddropAddr = (chain: availableChain) => {
 //--------------------------------------------------------------------
 
 const AirdropRegistryUrls = {
+  "uni": 'https://gist.githubusercontent.com/kaisbaccour/5a2f102ef476d533a3112b016aa45db4/raw/aa94b4d6682536ac518d1e98367b6bbc0eac5740/juno-randdrop.json',
   "juno": 'https://gist.githubusercontent.com/kaisbaccour/5a2f102ef476d533a3112b016aa45db4/raw/aa94b4d6682536ac518d1e98367b6bbc0eac5740/juno-randdrop.json',
   "injective": 'https://gist.githubusercontent.com/kaisbaccour/c26ede9d4219896bc03fb0fdfce310a3/raw/fa0825eb75607afad08ffb0fdead8567795150ad/injective-randdrop.json',
   "stargaze": 'https://gist.githubusercontent.com/kaisbaccour/ac8002e0329b4f54407e702c5dc4aa47/raw/1c8a75bdabf3dc04f77ed0d2c1cefedbba4fa060/stargaze-randdrop.json',
@@ -227,6 +231,7 @@ export const claimAirdrop = async ({
 }) => {
 
   if (proof.length < 1) {
+    toast.dismiss();
     toast.error("No claim available");
     return;
   }
@@ -234,13 +239,15 @@ export const claimAirdrop = async ({
   const checkLucky = await isLucky({walletAddress, batchClient, airdropContract});
 
   if (checkLucky === false) {
-    toast.error("No claim available");
+    toast.dismiss();
+    toast.error("No claim available | Account was eligible but did not win");
     return;
   }
 
   const checkHasClaimed = await checkClaimed({walletAddress, batchClient, airdropContract});
 
   if (checkHasClaimed === true) {
+    toast.dismiss();
     toast.error("Randdrop already claimed");
     return;
   }

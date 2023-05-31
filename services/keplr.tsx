@@ -5,7 +5,8 @@ import {
   junoChainConfig,
   stargazeChainConfig,
   injectiveChainConfig,
-  auraChainConfig
+  auraChainConfig,
+  uniChainConfig
 } from "./chainConfig";
 import { Keplr } from "@keplr-wallet/types";
 
@@ -58,11 +59,11 @@ export async function getKeplr(): Promise<Keplr> {
 export async function suggestChain(chain: availableChain): Promise<void> {
   const keplr = await getKeplr();
   switch (chain) {
-    case "aura": {
+    case "uni": {
       try {
-        await keplr.experimentalSuggestChain(auraChainConfig);
+        await keplr.experimentalSuggestChain(uniChainConfig);
       } catch {
-        toast.error("Failed to add Aura to Keplr");
+        toast.error("Failed to add Juno Testnet to Keplr");
       };
       break;
     }
@@ -87,6 +88,14 @@ export async function suggestChain(chain: availableChain): Promise<void> {
         await keplr.experimentalSuggestChain(injectiveChainConfig);
       } catch {
         toast.error("Failed to add Injective to Keplr");
+      };
+      break;
+    }
+    case "aura": {
+      try {
+        await keplr.experimentalSuggestChain(auraChainConfig);
+      } catch {
+        toast.error("Failed to add Aura to Keplr");
       };
       break;
     }

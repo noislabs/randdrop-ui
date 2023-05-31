@@ -54,6 +54,13 @@ export const ChainSelector = ({
         aria-labelledby="menu-button"
       >
         <div className="py-1" role="none">
+         <button 
+            onClick={(e) => handleDropdownChange(e)} 
+            className="text-gray-100 hover:bg-nois-green/20 block px-4 py-2 text-sm w-full text-left rounded-md" 
+            value="uni"
+          >
+            Juno Testnet
+          </button>
           <button 
             onClick={(e) => handleDropdownChange(e)} 
             className="text-gray-100 hover:bg-nois-green/20 block px-4 py-2 text-sm w-full text-left rounded-md" 

@@ -49,7 +49,7 @@ export const noisChainConfig: ChainInfo = {
 };
 
 /** Testnet */
-export const junoChainConfig: ChainInfo = {
+export const uniChainConfig: ChainInfo = {
   chainId: "uni-6",
   chainName: "Juno Testnet",
   rpc: "https://juno-testnet-rpc.polkachu.com/",
@@ -93,48 +93,48 @@ export const junoChainConfig: ChainInfo = {
 };
 
 /** Mainnet */
-// export const junoChainConfig: ChainInfo = {
-//   chainId: "juno-1",
-//   chainName: "Juno Mainnet",
-//   rpc: "https://juno-rpc.polkachu.com/",
-//   rest: "https://juno-api.polkachu.com:443",
-//   bip44: {
-//     coinType: 118,
-//   },
-//   bech32Config: {
-//     bech32PrefixAccAddr: "juno",
-//     bech32PrefixAccPub: "junopub",
-//     bech32PrefixValAddr: "junovaloper",
-//     bech32PrefixValPub: "junovaloperpub",
-//     bech32PrefixConsAddr: "junovalcons",
-//     bech32PrefixConsPub: "junovalconspub"
-//   },
-//   currencies: [
-//     {
-//       coinDenom: "JUNO",
-//       coinMinimalDenom: "ujuno",
-//       coinDecimals: 6,
-//     },
-//   ],
-//   feeCurrencies: [
-//     {
-//       coinDenom: "JUNO",
-//       coinMinimalDenom: "ujuno",
-//       coinDecimals: 6,
-//       gasPriceStep: {
-//         low: 0.05,
-//         average: 0.05,
-//         high: 0.1,
-//       },
-//     },
-//   ],
-//   stakeCurrency: {
-//     coinDenom: "JUNO",
-//     coinMinimalDenom: "ujuno",
-//     coinDecimals: 6,
-//   },
-//   features: []
-// };
+export const junoChainConfig: ChainInfo = {
+  chainId: "juno-1",
+  chainName: "Juno Mainnet",
+  rpc: "https://juno-rpc.polkachu.com/",
+  rest: "https://juno-api.polkachu.com:443",
+  bip44: {
+    coinType: 118,
+  },
+  bech32Config: {
+    bech32PrefixAccAddr: "juno",
+    bech32PrefixAccPub: "junopub",
+    bech32PrefixValAddr: "junovaloper",
+    bech32PrefixValPub: "junovaloperpub",
+    bech32PrefixConsAddr: "junovalcons",
+    bech32PrefixConsPub: "junovalconspub"
+  },
+  currencies: [
+    {
+      coinDenom: "JUNO",
+      coinMinimalDenom: "ujuno",
+      coinDecimals: 6,
+    },
+  ],
+  feeCurrencies: [
+    {
+      coinDenom: "JUNO",
+      coinMinimalDenom: "ujuno",
+      coinDecimals: 6,
+      gasPriceStep: {
+        low: 0.05,
+        average: 0.05,
+        high: 0.1,
+      },
+    },
+  ],
+  stakeCurrency: {
+    coinDenom: "JUNO",
+    coinMinimalDenom: "ujuno",
+    coinDecimals: 6,
+  },
+  features: []
+};
 
 export const stargazeChainConfig: ChainInfo = {
   chainId: "stargaze-1",
@@ -268,6 +268,9 @@ export const auraChainConfig: ChainInfo = {
 /** Returns chainConfig for `chain` */
 export const getChainConfig = (chain: availableChain) => {
   switch (chain) {
+    case "uni": {
+      return uniChainConfig;
+    }
     case "juno": {
       return junoChainConfig;
     }

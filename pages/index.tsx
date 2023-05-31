@@ -145,7 +145,7 @@ const Home: NextPage = () => {
   }
 
   const handleClaim = (dateNow: number) => {
-    if (ClaimWindowOpenTime < dateNow) {
+    if (ClaimWindowOpenTime > dateNow) {
       toast.error("Claim window not yet open");
       return;
     }
@@ -267,7 +267,7 @@ const Home: NextPage = () => {
               </span>
             </button>
             <button
-              className={`${(currentChain !== "juno" || !merkle || walletAddress.length < 3 || !selectedChainAirdropAmount || walletAddress !== inputAddress || loading === true) ? "opacity-50 hover:cursor-default hover:bg-transparent" : "hover:bg-white/20"} px-4 py-2 rounded-lg border border-white/30 text-nois-white`}
+              className={`${(currentChain !== "uni" || !merkle || walletAddress.length < 3 || !selectedChainAirdropAmount || walletAddress !== inputAddress || loading === true) ? "opacity-50 hover:cursor-default hover:bg-transparent" : "hover:bg-white/20"} px-4 py-2 rounded-lg border border-white/30 text-nois-white`}
               onClick={() => handleClaim(Date.now())}
             >
               <span className={`${loading === true && "animate-ping"}`}>
