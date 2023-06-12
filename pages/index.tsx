@@ -21,7 +21,8 @@ const routeNewTab = () => {
 }
 
 // Set to time claiming window opens, in milliseconds
-const ClaimWindowOpenTime: number = 1_685_500_001_000
+// const ClaimWindowOpenTime: number = 1_685_500_001_000
+const ClaimWindowOpenTime: number = Number.MAX_SAFE_INTEGER;
 
 const Home: NextPage = () => {
 
