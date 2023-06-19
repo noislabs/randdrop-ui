@@ -48,7 +48,7 @@ export const ChainSelector = ({
         </button>
       </div>
       <div
-        className={`${!isOpen && "hidden"} transition-transform ease-in-out duration-1000 absolute right-0 z-10 mt-2 w-[12vw] p-1 origin-top-right rounded-md bg-neutral-900 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`} 
+        className={`${!isOpen && "hidden"} transition-transform ease-in-out duration-1000 absolute right-0 z-10 mt-2 w-full p-1 origin-top-right rounded-md bg-neutral-900 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`} 
         role="menu" 
         aria-orientation="vertical" 
         aria-labelledby="menu-button"

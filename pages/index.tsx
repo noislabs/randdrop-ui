@@ -210,7 +210,7 @@ const Home: NextPage = () => {
         <div className="flex justify-between h-[15vh] px-12 w-full border-b border-nois-white/10 ">
           <div
             onClick={() => routeNewTab()}
-            className="relative flex overflow-hidden hover:cursor-pointer ">
+            className="hidden md:flex md:relative overflow-hidden hover:cursor-pointer ">
             <Image
               src={noisLogo}
               alt="Nois"
@@ -225,8 +225,8 @@ const Home: NextPage = () => {
             </span>
             <ClaimingWindowTimer dateNow={Date.now()} endTimer={ClaimWindowOpenTime} />
           </div> */}
-          <div className="h-full flex justify-center items-center gap-x-4 pr-8">
-            <ChainSelector/>
+          <div className="h-full w-full md:w-auto flex justify-center items-center gap-x-4 md:pr-8">
+            <ChainSelector width='w-[40vw] sm:w-[30vw] md:w-[20vw]'/>
             <button
               className={`${walletAddress.length < 3 && "shadow-neon-md animate-pulse"} border border-nois-green/80 text-nois-green/80 hover:bg-nois-green/30 rounded-lg px-4 py-2`}
               onClick={() => handleConnect()}
@@ -238,7 +238,7 @@ const Home: NextPage = () => {
 
         {/* Center component */}
         <div className="w-full flex h-[70vh] flex-col gap-y-8 justify-center items-center bgx-nois-blue">
-          <div className="flex gap-x-4 w-2/5 justify-center items-center">
+          <div className="flex gap-x-4 w-4/5 md:w-2/5 justify-center items-center">
             <input
               className="w-full px-3 py-2 outline-none rounded-lg placeholder-white/50 bg-slate-500/10 border border-nois-white/30 focus:bg-slate-500/20 focus:border-nois-white/60"
               placeholder={`${currentChain}1...`}
@@ -246,14 +246,16 @@ const Home: NextPage = () => {
               value={inputAddress}
             />
           </div>
-          <div className="flex flex-col gap-y-2 w-2/5 justify-center items-center borderx">
-            <div className="p-2 flex w-full justify-start gap-x-4 text-nois-white/90 border border-nois-white/20 bg-slate-600/10">
+          <div className="flex flex-col gap-y-2 w-4/5 md:w-2/5 justify-center items-center borderx">
+            <div className="p-2 flex w-full justify-start gap-x-4 overflow-hidden text-ellipsis truncate text-nois-white/90 border border-nois-white/20 bg-slate-600/10">
               <span className="text-nois-white/30">
                 {`${currentChain.slice(0, 1).toUpperCase() + currentChain.slice(1)}:`}
               </span>
               {inputAddress.length > 3 ?
                 inputAddress :
-                <div className="text-nois-white/50">Connect wallet or Enter address above</div>
+                <div className="text-nois-white/50 text-sm sm:text-base">
+                  Connect wallet or Enter address above
+                </div>
               }
             </div>
             <div className={`${selectedChainAirdropAmount ? "text-green-500" : "hidden"} text-sm w-full flex justify-center`}>
