@@ -40,9 +40,6 @@ function MyApp({ Component, pageProps }: AppProps) {
                   border: "1px solid #39FF0060",
                   padding: "16px",
                   color: "#39FF00",
-                  background: `linear-gradient(to bottom right, rgba(57, 255, 0, 0.1), rgba(57, 255, 0, 0.01))`,
-                  backdropFilter:
-                    "blur(1px) brightness(20%) saturate(150%)",
                   textShadow: "1px 1px 1px rgba(0, 0, 0, 0.5)",
                 },
               },
@@ -56,9 +53,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                   border: "1px solid #FF000060",
                   padding: "16px",
                   color: "#FF0000",
-                  background: `linear-gradient(to bottom right, rgba(255, 0, 0, 0.1), rgba(255, 0, 0, 0.01))`,
-                  backdropFilter:
-                    "blur(1px) brightness(20%) saturate(150%)",
+                  background: "#000",
                   textShadow: "1px 1px 1px rgba(0, 0, 0, 0.5)",
                 },
               },
@@ -71,9 +66,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                   border: "1px solid #ddff0060",
                   padding: "16px",
                   color: "#ddff00",
-                  background: `linear-gradient(to bottom right, rgba(221, 255, 0, 0.1), rgba(221, 255, 0, 0.01))`,
-                  backdropFilter:
-                    "blur(1px) brightness(20%) saturate(150%)",
+                  background: "#000",
                   textShadow: "1px 1px 1px rgba(0, 0, 0, 0.5)",
                 },
               },
