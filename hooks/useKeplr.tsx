@@ -1,22 +1,31 @@
 import { useCallback, useEffect } from 'react';
-import { useSigningClient } from '../contexts/cosmwasm';
+import { useAllSigningClients } from './cosmwasm';
 
-export const useKeplr = () => {
-  const { walletAddress, signingClient, nickname, connectWallet, disconnect } =
-    useSigningClient();
+export const useMultiKeplr = () => {
+  const {
+    uniClient,
+    junoClient,
+    injectiveClient,
+    stargazeClient,
+    auraClient,
+    loading,
+    nickname,
+    connectAll,
+    disconnectAll
+  } = useAllSigningClients();
 
-  const handleConnect = () => {
-    if (walletAddress.length < 3) {
-      connectWallet();
+  const handleConnectAll = () => {
+    if ([uniClient, junoClient, injectiveClient, stargazeClient, auraClient].some((v) => v != undefined)) {
+      disconnectAll();
     } else {
-      disconnect();
+      connectAll();
     }
   };
 
   const reconnect = useCallback(() => {
-    disconnect();
-    connectWallet();
-  }, [disconnect, connectWallet]);
+    disconnectAll();
+    connectAll();
+  }, [disconnectAll, connectAll]);
 
   useEffect(() => {
     window.addEventListener("keplr_keystorechange", reconnect);
@@ -26,5 +35,15 @@ export const useKeplr = () => {
     };
   }, [reconnect]);
 
-  return { walletAddress, signingClient, nickname, handleConnect, disconnect };
+  return {
+    uniClient,
+    junoClient,
+    injectiveClient,
+    stargazeClient,
+    auraClient,
+    loading,
+    nickname,
+    handleConnectAll,
+    disconnectAll
+  };
 }

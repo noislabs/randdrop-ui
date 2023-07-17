@@ -1,120 +1,128 @@
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useState } from "react";
 import { 
   getKeplr, 
-  suggestChain 
 } from "../services/keplr";
 import {
   SigningCosmWasmClient,
-  CosmWasmClient,
   setupWasmExtension,
 } from "@cosmjs/cosmwasm-stargate";
 import { GasPrice } from "@cosmjs/stargate/build/fee";
 import { toBase64, fromBase64, toUtf8, fromUtf8 } from "@cosmjs/encoding";
-import { HttpBatchClient, Tendermint34Client } from "@cosmjs/tendermint-rpc";
+import { HttpBatchClient, Tendermint34Client, Tendermint37Client } from "@cosmjs/tendermint-rpc";
 import { QueryClient } from "@cosmjs/stargate";
-// import { getChainConfig, stargazeChainConfig } from "../services/chainConfig";
-import { ChainSelectContext, availableChain } from "../contexts/chainSelect";
 import { 
-  getChainConfig, 
+  getChainConfig,
 } from "../services/chainConfig";
+import { toast } from "react-hot-toast";
+import {
+  ChainType
+} from "../pages/api/check";
 
-export interface ISigningCosmWasmClientContext {
+const chains: ChainType[] = ["uni", "juno", "injective", "stargaze", "aura"];
+
+export interface ChainSigningClient {
+  chain: ChainType;
   walletAddress: string;
-  signingClient: SigningCosmWasmClient | null;
-  loading: boolean;
-  error: any;
-  nickname: string;
-  connectWallet: any;
-  disconnect: Function;
+  signingClient: SigningCosmWasmClient;
 }
 
-export const useSigningCosmWasmClient = (): ISigningCosmWasmClientContext => {
-  const { currentChain, changeChain } = useContext(ChainSelectContext);
-  const thisChain = getChainConfig(currentChain);
+export interface UserSigningClientsContext {
+  uniClient?: ChainSigningClient;
+  junoClient?: ChainSigningClient;
+  injectiveClient?: ChainSigningClient;
+  stargazeClient?: ChainSigningClient;
+  auraClient?: ChainSigningClient;
+  loading: boolean;
+  nickname: string;
+  connectAll: any;
+  disconnectAll: Function;
+}
 
-  const [walletAddress, setWalletAddress] = useState("");
-  const [signingClient, setSigningClient] =
-    useState<SigningCosmWasmClient | null>(null);
+export const useAllSigningClients = (): UserSigningClientsContext => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<any | null>(null);
   const [nickname, setNickname] = useState("");
+  const [userSigningClients, setUserSigningClients] = useState<ChainSigningClient[] | undefined>();
 
-  const connectWallet = useCallback(async () => {
+  const connectAll = useCallback(async () => {
     setLoading(true);
+    const keplr = await getKeplr();
+    // Connect user to all chains
+    for (const chain of chains) {
+      try {
+        let chainInfo = getChainConfig(chain);
+        await keplr.experimentalSuggestChain(chainInfo);
+        await keplr.enable(chainInfo.chainId);
+        const offlineSigner = await keplr.getOfflineSigner(chainInfo.chainId);
+        const client = await SigningCosmWasmClient.connectWithSigner(
+          chainInfo.rpc,
+          offlineSigner,
+          {
+            gasPrice: GasPrice.fromString(
+              `${chainInfo.feeCurrencies[0].gasPriceStep?.average}${chainInfo.currencies[0].coinMinimalDenom}`
+            ),
+          }
+        );
+        const [{ address }] = await offlineSigner.getAccounts();  
+        const nickname = await keplr.getKey(chainInfo.chainId);
+        setNickname(nickname.name);
 
-    try {
+        const chainClient = {
+          chain: chain,
+          walletAddress: address,
+          signingClient: client,
+        } as ChainSigningClient;
 
-      const chainId = thisChain.chainId;
-      const keplr = await getKeplr();
-      suggestChain(currentChain);
-
-      await keplr.enable(chainId);
-
-      const offlineSigner = await keplr.getOfflineSigner(chainId);
-
-      const endpoint = thisChain.rpc;
-      const client = await SigningCosmWasmClient.connectWithSigner(
-        endpoint,
-        offlineSigner,
-        {
-          gasPrice: GasPrice.fromString(
-            `${thisChain.feeCurrencies[0].gasPriceStep?.average}${thisChain.currencies[0].coinMinimalDenom}`
-          ),
-        }
-      );
-
-      setSigningClient(client);
-
-      // get user address
-      const [{ address }] = await offlineSigner.getAccounts();
-      setWalletAddress(address);
-
-      //get user wallet nickname
-      const nicky = await keplr.getKey(chainId);
-      setNickname(nicky.name);
-
-      setLoading(false);
-    } catch (error) {
-      setError(error);
-    }
-  }, [currentChain]);
-
-  const disconnect = useCallback(() => {
-    if (signingClient) {
-      signingClient.disconnect();
-    }
-    setWalletAddress("");
-    setNickname("");
-    setSigningClient(null);
+        setUserSigningClients((old) => old ? [...old, chainClient] : [chainClient]);
+      } catch(e) {
+        console.log(`Error connecting to ${chain}`);
+        console.log(`ERR: ${e}`);
+        toast.error(`Error connecting to ${chain}`);
+      }
+    };
     setLoading(false);
-  }, [currentChain]);
+  }, [])
+
+  const disconnectAll = useCallback(() => {
+    setLoading(true);
+    if (userSigningClients) {
+      for (const client of userSigningClients) {
+        client.signingClient.disconnect();
+      }
+    }
+    setUserSigningClients(undefined);
+    setNickname("");
+    setLoading(false);
+  }, []);
 
   return {
-    walletAddress,
-    signingClient,
+    uniClient: userSigningClients?.find((c) => c.chain === "uni"),
+    junoClient: userSigningClients?.find((c) => c.chain === "juno"),
+    injectiveClient: userSigningClients?.find((c) => c.chain === "injective"),
+    stargazeClient: userSigningClients?.find((c) => c.chain === "stargaze"),
+    auraClient: userSigningClients?.find((c) => c.chain === "aura"),
     loading,
-    error,
     nickname,
-    connectWallet,
-    disconnect,
+    connectAll,
+    disconnectAll
   };
-};
+}
 
 
-export const getBatchClient = async (chain: availableChain) => {
-  //const { currentChain, changeChain } = useContext(ChainSelectContext);
+export const getBatchClient = async (chain: ChainType) => {
   const thisChain = getChainConfig(chain);
   const endpoints = [thisChain.rpc];
   const endpoint = endpoints[Math.floor(Math.random() * endpoints.length)];
   const httpBatch = new HttpBatchClient(endpoint);
-  const tmint = await Tendermint34Client.create(httpBatch);
+  const tmint = await Tendermint37Client.create(httpBatch);
   const queryClient = QueryClient.withExtensions(tmint, setupWasmExtension);
   return queryClient;
 }
 
+
 export function toBinary(obj: any): string {
   return toBase64(toUtf8(JSON.stringify(obj)));
 }
+
 
 export function fromBinary(base64: string): any {
   return JSON.parse(fromUtf8(fromBase64(base64)));

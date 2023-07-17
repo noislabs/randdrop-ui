@@ -1,204 +1,89 @@
+'use client'
 import type { NextPage } from 'next'
-import { useState, useEffect, useContext } from 'react'
+import { useMemo } from 'react'
 import Head from 'next/head'
-// import { useSigningClient } from '../contexts/cosmwasm'
-import { useKeplr } from '../hooks/useKeplr'
-import { WasmExtension } from "@cosmjs/cosmwasm-stargate";
+import { useMultiKeplr } from '../hooks/useKeplr'
 import Image from 'next/image';
 import { toast } from 'react-hot-toast';
 import noisLogo from '../public/nois_logo.png';
-import { QueryClient } from '@cosmjs/stargate';
-import { getBatchClient } from '../hooks/cosmwasm';
-import { checkEligibleAmount, claimAirdrop, fullCheck, getRanddropAddr } from '../util/msg';
-import { fromMicro, validateAddress } from '../util/addressConversion';
-import { ChainSelector } from '../components/chainSelector';
-import { ChainSelectContext } from '../contexts/chainSelect';
-import { sprayConfetti } from '../components/confetti';
-import { ClaimingWindowTimer } from '../components/timer';
+import DotLoader from '../components/dotLoader';
+import { useQuery } from '@tanstack/react-query';
+import { fetchUserStatus } from '../hooks/fetchUserStatus';
+import { NoisFooter } from '../components/footer'
+import { WalletNotConnected } from '../components/noWallet'
+import { ChainCard } from '../components/chainCards'
 
 const routeNewTab = () => {
   window.open(`https://twitter.com/NoisRNG`, "_blank", "noopener noreferrer");
 }
 
-// Set to time claiming window opens, in milliseconds
-// const ClaimWindowOpenTime: number = 1_685_500_001_000
-const ClaimWindowOpenTime: number = Number.MAX_SAFE_INTEGER;
-
 const Home: NextPage = () => {
 
-  // Generic Loading State
-  const [loading, setLoading] = useState<boolean>(false);
+  const {
+    uniClient,
+    junoClient,
+    injectiveClient,
+    stargazeClient,
+    auraClient,
+    loading: walletLoading,
+    nickname,
+    handleConnectAll,
+    disconnectAll
+  } = useMultiKeplr();
 
-  // The current chain the user has selected
-  const { currentChain } = useContext(ChainSelectContext);
-  // Setting up Batch Client because who doesn't use Batch Clients these days
-  const [batchClient, setBatchClient] = useState<QueryClient & WasmExtension | undefined>(undefined);
+  // True if any client is connected
+  const walletIsConnected = useMemo(() => {
+    return !(!uniClient && !junoClient && !injectiveClient && !auraClient && !stargazeClient)
+  }, [uniClient, junoClient, injectiveClient, auraClient, stargazeClient])
 
-  // Merkle Proof
-  const [merkle, setMerkle] = useState<string[] | undefined>();
+  // Hitting /api/check for user's status
+  const {
+    data: uniData,
+    status: uniStatus
+  } = useQuery(
+    ["uni"],
+    () => fetchUserStatus({walletAddr: uniClient!.walletAddress, chain: "uni"}),
+    {enabled: !!uniClient}
+  );
 
-  // Selected Chain Airdrop amount for user, undefined by default (JSON gist amount * 3)
-  const [selectedChainAirdropAmount, setSelectedChainAirdropAmount] = useState<string | undefined>(undefined);
-  // Amount of airdrop from JSON gist (not * 3)
-  const [jsonAmount, setJsonAmount] = useState<string | undefined>(undefined);
+  const {
+    data: junoData,
+    status: junoStatus
+  } = useQuery(
+    ["juno"],
+    () => fetchUserStatus({walletAddr: junoClient!.walletAddress, chain: "juno"}),
+    {enabled: !!junoClient}
+  );
 
-  // Input address inside text field
-  const [inputAddress, setInputAddress] = useState("");
+  const {
+    data: injectiveData,
+    status: injectiveStatus
+  } = useQuery(
+    ["injective"],
+    () => fetchUserStatus({walletAddr: injectiveClient!.walletAddress, chain: "injective"}),
+    {enabled: !!injectiveClient}
+  );
 
-  // Any time the selected Chain changes, reset
-  useEffect(() => {
-    setInputAddress("");
-    setSelectedChainAirdropAmount(undefined);
-    setJsonAmount(undefined);
-    setMerkle(undefined);
-    setLoading(true);
-    getBatchClient(currentChain).then((c) => {
-      setBatchClient(c);
-      setLoading(false);
-    }).catch((e) => {
-      console.log(e);
-      setLoading(false);
-    });
-  }, [currentChain]);
+  const {
+    data: auraData,
+    status: auraStatus
+  } = useQuery(
+    ["aura"],
+    () => fetchUserStatus({walletAddr: auraClient!.walletAddress, chain: "aura"}),
+    {enabled: !!auraClient}
+  );
 
-
-  // walletAddress + signingClient are updated automatically via React Context
-  // whenever SelectedChain is changed
-  const { walletAddress, signingClient, nickname, handleConnect } = useKeplr();
-
-  // When walletAddress changes, if it's < 3 (meaning wallet has been connected,
-  // we set userInput to the walletAddress to autopopulate the text field,
-  // and reset claimable amount
-  useEffect(() => {
-    if (walletAddress.length > 3) {
-      setInputAddress(walletAddress);
-    };
-    setSelectedChainAirdropAmount(undefined);
-    setJsonAmount(undefined);
-  }, [walletAddress])
-
-
-  const handleCheck = (dateNow: number) => {
-    if (loading === true) {
-      return;
-    }
-    // If input address invalid, error and return
-    const valid = validateAddress(inputAddress);
-    if (!valid) {
-      toast.error("Error: Invalid address");
-      return;
-    }
-
-    if (!batchClient) {
-      toast.error("No query client, try again in a few seconds");
-      return;
-    }
-
-    // if ClaimingWindowOpen is false, query Gist for selected chain
-    // if ClaimingWindowOpen is true, query contracts for selected chain
-    toast.loading("Processing check...");
-    setLoading(true);
-
-    if (ClaimWindowOpenTime < dateNow) {
-      fullCheck({
-        walletAddress: valid,
-        batchClient,
-        chain: currentChain,
-        airdropContract: getRanddropAddr(currentChain)
-        //airdropContract, currently default to juno testnet
-      }).then((v) => {
-        setLoading(false);
-        if (!v) {
-          setSelectedChainAirdropAmount(undefined);
-          setJsonAmount(undefined);
-          setMerkle(undefined);
-        } else {
-          sprayConfetti(Date.now() + 1500);
-          setJsonAmount(v.amount);
-          const userAmt = Number(v.amount) * 3;
-          setSelectedChainAirdropAmount(userAmt.toString());
-          setMerkle(v.proof);
-        };
-      }).catch((e) => {
-        toast.dismiss();
-        setLoading(false);
-        setSelectedChainAirdropAmount(undefined);
-        setJsonAmount(undefined);
-        setMerkle(undefined);
-        toast.error("Error Checking Eligibility, please try again later");
-      });
-    } else {
-      checkEligibleAmount({
-        walletAddress: valid,
-        chain: currentChain
-      }).then((v) => {
-        setLoading(false);
-        if (!v) {
-          setSelectedChainAirdropAmount(undefined);
-          setJsonAmount(undefined);
-          setMerkle(undefined);
-        } else {
-          sprayConfetti(Date.now() + 1500);
-          setJsonAmount(v.amount);
-          const userAmt = Number(v.amount) * 3;
-          setSelectedChainAirdropAmount(userAmt.toString());
-          setMerkle(v.proof);
-        };
-      }).catch((e) => {
-        toast.dismiss();
-        setLoading(false);
-        setSelectedChainAirdropAmount(undefined);
-        setJsonAmount(undefined);
-        setMerkle(undefined);
-        toast.error("Error Checking Eligibility, please try again later");
-      });
-    };
-  }
-
-  const handleClaim = (dateNow: number) => {
-    if (ClaimWindowOpenTime > dateNow) {
-      toast.error("Claim window not yet open");
-      return;
-    }
-
-    if (!batchClient) {
-      toast.error("Setting up client, try again in a few seconds");
-      return;
-    }
-
-    if (!signingClient || walletAddress.length < 3) {
-      toast.error("Wallet not connected");
-      return;
-    }
-
-    if (!selectedChainAirdropAmount || !jsonAmount || !merkle) {
-      toast.error("Please click 'Check' before trying to Claim");
-      return;
-    }
-    setLoading(true);
-    toast.loading("Processing claim");
-
-    claimAirdrop({
-      walletAddress,
-      amount: jsonAmount,
-      proof: merkle,
-      batchClient,
-      signingClient,
-      //airdropContract, defaults to Juno Testnet
-      airdropContract: getRanddropAddr(currentChain)
-    }).then((v) => {
-        setLoading(false);
-      })
-      .catch((e) => {
-        setLoading(false);
-        toast.dismiss();
-        toast.error("Problem claiming Randdrop, please try again later");
-      });
-  }
-
+  const {
+    data: stargazeData,
+    status: stargazeStatus
+  } = useQuery(
+    ["stargaze"],
+    () => fetchUserStatus({walletAddr: stargazeClient!.walletAddress, chain: "stargaze"}),
+    {enabled: !!stargazeClient}
+  );
 
   return (
-    <div className="flex min-h-screen text-nois-white/90 h-screen flex-col p-2 bg-gradient-to-br from-nois-blue to-black ">
+    <div className="flex min-h-screen text-nois-white/90 h-screen flex-col p-2 bg-nois-blue ">
       <Head>
         <title>Nois Rand-drop Checker</title>
         <link rel="icon" href="/favicon.ico" />
@@ -219,90 +104,42 @@ const Home: NextPage = () => {
               style={{ objectFit: 'contain' }}
             />
           </div>
-          {/* <div className="flex flex-col gap-y-1 justify-center items-center">
-            <span className="text-nois-white/60 text-base">
-              {"Juno testnet claims available in:"}
-            </span>
-            <ClaimingWindowTimer dateNow={Date.now()} endTimer={ClaimWindowOpenTime} />
-          </div> */}
           <div className="h-full w-full md:w-auto flex justify-center items-center gap-x-4 md:pr-8">
-            <ChainSelector width='w-[40vw] sm:w-[30vw] md:w-[20vw]'/>
             <button
-              className={`${walletAddress.length < 3 && "shadow-neon-md animate-pulse"} border border-nois-green/80 text-nois-green/80 hover:bg-nois-green/30 rounded-lg px-4 py-2`}
-              onClick={() => handleConnect()}
+              className={`flex justify-center items-center w-[11vw] h-[7.5vh] rounded-xl px-4 py-2 border border-nois-white/30 text-nois-white/80 hover:text-nois-white hover:bg-gray-700/30`}
+              onClick={() => walletLoading ? {} : handleConnectAll()}
             >
-              {walletAddress.length < 3 ? "Connect" : nickname}
+              {walletLoading ? (
+                  <DotLoader/>
+              ):(
+                <span className="w-full overflow-hidden overflow-ellipsis">
+                  {nickname == "" ? "Connect Wallet" : nickname}
+                </span>
+              )}
             </button>
           </div>
         </div>
 
         {/* Center component */}
         <div className="w-full flex h-[70vh] flex-col gap-y-8 justify-center items-center bgx-nois-blue">
-          <div className="flex gap-x-4 w-4/5 md:w-2/5 justify-center items-center">
-            <input
-              className="w-full px-3 py-2 outline-none rounded-lg placeholder-white/50 bg-slate-500/10 border border-nois-white/30 focus:bg-slate-500/20 focus:border-nois-white/60"
-              placeholder={`${currentChain}1...`}
-              onChange={(e) => setInputAddress(e.target.value)}
-              value={inputAddress}
-            />
-          </div>
-          <div className="flex flex-col gap-y-2 w-4/5 md:w-2/5 justify-center items-center borderx">
-            <div className="p-2 flex w-full justify-start gap-x-4 overflow-hidden text-ellipsis truncate text-nois-white/90 border border-nois-white/20 bg-slate-600/10">
-              <span className="text-nois-white/30">
-                {`${currentChain.slice(0, 1).toUpperCase() + currentChain.slice(1)}:`}
-              </span>
-              {inputAddress.length > 3 ?
-                inputAddress :
-                <div className="text-nois-white/50 text-sm sm:text-base">
-                  Connect wallet or Enter address above
-                </div>
-              }
+          {/* No signingClients connected */}
+          {!walletIsConnected ? (
+            <WalletNotConnected handleConnectAll={handleConnectAll} walletLoading={walletLoading} />
+          ):(
+            <div className="bg-red-800/0 w-full h-full grid grid-cols-4 px-8 py-4">
+              <ChainCard chain='uni' chainStatus={uniStatus} client={uniClient} checkResponse={uniData} walletLoading={walletLoading}/>
+              {/* <ChainCard chain='juno' chainStatus={junoStatus} client={junoClient} checkResponse={junoData} walletLoading={walletLoading}/> */}
+              <ChainCard chain='injective' chainStatus={injectiveStatus} client={injectiveClient} checkResponse={injectiveData} walletLoading={walletLoading}/>
+              <ChainCard chain='aura' chainStatus={auraStatus} client={auraClient} checkResponse={auraData} walletLoading={walletLoading}/>
+              <ChainCard chain='stargaze' chainStatus={stargazeStatus} client={stargazeClient} checkResponse={stargazeData} walletLoading={walletLoading}/>
             </div>
-            <div className={`${selectedChainAirdropAmount ? "text-green-500" : "hidden"} text-sm w-full flex justify-center`}>
-              {ClaimWindowOpenTime < Date.now() ? (
-                <span>
-                  {selectedChainAirdropAmount && `Claimable Amount: ${fromMicro(selectedChainAirdropAmount)} $NOIS`}
-                </span>
-              ):(
-                <span>
-                  {selectedChainAirdropAmount && `Eligible for: ${fromMicro(selectedChainAirdropAmount)} $NOIS`}
-                </span>
-              )}
-            </div>
-          </div>
-          <div className="flex justify-center gap-x-4 text-xl ">
-            <button
-              className={`${loading === true ? "opacity-50" : "hover:bg-white/20"} px-4 py-2 rounded-lg border border-white/30 text-nois-white`}
-              onClick={() => handleCheck(Date.now())}
-            >
-              <span className={`${loading === true ? "animate-ping" : ""}`}>
-                {loading === true ? "..." : "Check"}
-              </span>
-            </button>
-            <button
-              className={`${(currentChain !== "uni" || !merkle || walletAddress.length < 3 || !selectedChainAirdropAmount || !jsonAmount || walletAddress !== inputAddress || loading === true) ? "opacity-50 hover:cursor-default hover:bg-transparent" : "hover:bg-white/20"} px-4 py-2 rounded-lg border border-white/30 text-nois-white`}
-              onClick={() => handleClaim(Date.now())}
-            >
-              <span className={`${loading === true && "animate-ping"}`}>
-                {loading === true ? "..." : "Claim"}
-              </span>
-            </button>
-          </div>
+          )}
         </div>
       </main>
-
-      <footer className="flex h-[15vh] w-full items-center justify-center">
-        <a
-          className="flex items-center justify-center gap-2 link hover:underline hover:underline-offset-4"
-          href="https://github.com/NoisLabs"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Github
-        </a>
-      </footer>
+      <NoisFooter/>
     </div>
   )
 }
 
 export default Home
+
