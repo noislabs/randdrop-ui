@@ -41,7 +41,7 @@ const Home: NextPage = () => {
     data: uniData,
     status: uniStatus
   } = useQuery(
-    ["uni"],
+    ["uni", uniClient?.walletAddress],
     () => fetchUserStatus({walletAddr: uniClient!.walletAddress, chain: "uni"}),
     {enabled: !!uniClient}
   );
@@ -50,7 +50,7 @@ const Home: NextPage = () => {
     data: junoData,
     status: junoStatus
   } = useQuery(
-    ["juno"],
+    ["juno", junoClient?.walletAddress],
     () => fetchUserStatus({walletAddr: junoClient!.walletAddress, chain: "juno"}),
     {enabled: !!junoClient}
   );
@@ -59,7 +59,7 @@ const Home: NextPage = () => {
     data: injectiveData,
     status: injectiveStatus
   } = useQuery(
-    ["injective"],
+    ["injective", injectiveClient?.walletAddress],
     () => fetchUserStatus({walletAddr: injectiveClient!.walletAddress, chain: "injective"}),
     {enabled: !!injectiveClient}
   );
@@ -68,7 +68,7 @@ const Home: NextPage = () => {
     data: auraData,
     status: auraStatus
   } = useQuery(
-    ["aura"],
+    ["aura", auraClient?.walletAddress],
     () => fetchUserStatus({walletAddr: auraClient!.walletAddress, chain: "aura"}),
     {enabled: !!auraClient}
   );
@@ -77,7 +77,7 @@ const Home: NextPage = () => {
     data: stargazeData,
     status: stargazeStatus
   } = useQuery(
-    ["stargaze"],
+    ["stargaze", stargazeClient?.walletAddress],
     () => fetchUserStatus({walletAddr: stargazeClient!.walletAddress, chain: "stargaze"}),
     {enabled: !!stargazeClient}
   );

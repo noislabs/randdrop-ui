@@ -159,6 +159,7 @@ const ifEligibleGetProof = async (addr: string, chain: ChainType) => {
   const userDrop = chainData.find((obj) => obj.address === addr);
 
   if (!userDrop) {
+    console.log(`${addr} not eligible for ${chain} | Gist lookup not found`)
     return undefined;
   } else {
     // Address found, generate proof & return it
