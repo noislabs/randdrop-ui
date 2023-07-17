@@ -13,7 +13,7 @@ export const randdropClaimMsg = ({
   contract: string;
   amount: string;
   proof: string[]
-}): MsgExecuteContractEncodeObject => {
+}, funds?: Coin[]): MsgExecuteContractEncodeObject => {
   return {
     typeUrl: "/cosmwasm.wasm.v1.MsgExecuteContract",
     value: MsgExecuteContract.fromPartial({
@@ -24,31 +24,8 @@ export const randdropClaimMsg = ({
           amount: amount,
           proof: proof
         }
-      }))
+      })),
+      funds
     })
   }
 }
-
-
-
-// const claimRewardsMsg = ({
-//   sender,
-//   round_id
-// }:{
-//   sender: string;
-//   round_id: string[];
-// }, funds?: Coin[]): MsgExecuteContractEncodeObject => {
-//   return {
-//     typeUrl: "/cosmwasm.wasm.v1.MsgExecuteContract",
-//     value: MsgExecuteContract.fromPartial({
-//       sender: sender,
-//       contract: PredMarketAddress,
-//       msg: toUtf8(JSON.stringify({
-//         collect_winnings: {
-//           rounds: round_id
-//         }
-//       })),
-//       funds
-//     })
-//   };
-// }
