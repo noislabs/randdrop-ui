@@ -1,29 +1,31 @@
 import { createContext, useContext, ReactNode } from "react";
 import {
-  useSigningCosmWasmClient,
-  ISigningCosmWasmClientContext,
+  UserSigningClientsContext,
+  useAllSigningClients,
 } from "../hooks/cosmwasm";
 
-let CosmWasmContext: any;
-let { Provider } = (CosmWasmContext =
-  createContext<ISigningCosmWasmClientContext>({
-    walletAddress: "",
-    signingClient: null,
+let AllClientsContext: any;
+let { Provider: ClientsProvider } = (AllClientsContext = 
+  createContext<UserSigningClientsContext>({
+    uniClient: undefined,
+    junoClient: undefined,
+    injectiveClient: undefined,
+    stargazeClient: undefined,
+    auraClient: undefined,
     loading: false,
-    error: null,
     nickname: "",
-    connectWallet: () => {},
-    disconnect: () => {},
+    connectAll: () => {},
+    disconnectAll: () => {}
   }));
 
-export const useSigningClient = (): ISigningCosmWasmClientContext =>
-  useContext(CosmWasmContext);
+export const useAllClients = (): UserSigningClientsContext => 
+  useContext(AllClientsContext);
 
-export const SigningCosmWasmProvider = ({
-  children,
-}: {
+export const MultiClientProvider = ({
+  children
+}:{
   children: ReactNode;
 }) => {
-  const value = useSigningCosmWasmClient();
-  return <Provider value={value}>{children}</Provider>;
-};
+  const value = useAllSigningClients();
+  return <ClientsProvider value={value}>{children}</ClientsProvider>
+}

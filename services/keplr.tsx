@@ -1,5 +1,4 @@
 import { toast } from "react-hot-toast";
-import { availableChain } from "../contexts/chainSelect";
 import { 
   noisChainConfig,
   junoChainConfig,
@@ -9,6 +8,7 @@ import {
   uniChainConfig
 } from "./chainConfig";
 import { Keplr } from "@keplr-wallet/types";
+import { ChainType } from "../pages/api/check";
 
 declare global {
   interface Window {
@@ -56,7 +56,7 @@ export async function getKeplr(): Promise<Keplr> {
   return gotKeplr;
 }
 
-export async function suggestChain(chain: availableChain): Promise<void> {
+export async function suggestChain(chain: ChainType): Promise<void> {
   const keplr = await getKeplr();
   switch (chain) {
     case "uni": {

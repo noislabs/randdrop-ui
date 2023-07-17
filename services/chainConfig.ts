@@ -1,5 +1,5 @@
 import { Keplr, ChainInfo } from "@keplr-wallet/types";
-import { availableChain } from "../contexts/chainSelect";
+import { ChainType } from "../pages/api/check";
 
 export const noisChainConfig: ChainInfo = {
   chainId: "nois-testnet-005",
@@ -52,8 +52,10 @@ export const noisChainConfig: ChainInfo = {
 export const uniChainConfig: ChainInfo = {
   chainId: "uni-6",
   chainName: "Juno Testnet",
-  rpc: "https://juno-testnet-rpc.polkachu.com/",
-  rest: "https://juno-testnet-rpc.polkachu.com:443",
+  rpc: "https://uni-rpc.reece.sh",
+  rest: "https://uni-rpc.reece.sh:443",
+  // rpc: "https://juno-testnet-rpc.polkachu.com/",
+  // rest: "https://juno-testnet-rpc.polkachu.com:443",
   bip44: {
     coinType: 118,
   },
@@ -95,9 +97,11 @@ export const uniChainConfig: ChainInfo = {
 /** Mainnet */
 export const junoChainConfig: ChainInfo = {
   chainId: "juno-1",
-  chainName: "Juno Mainnet",
-  rpc: "https://juno-rpc.polkachu.com/",
-  rest: "https://juno-api.polkachu.com:443",
+  chainName: "juno",
+  rpc: "https://juno-rpc.reece.sh",
+  rest: "https://juno-rpc.reece.sh:443",
+  // rpc: "https://juno-rpc.polkachu.com/",
+  // rest: "https://juno-api.polkachu.com:443",
   bip44: {
     coinType: 118,
   },
@@ -122,10 +126,10 @@ export const junoChainConfig: ChainInfo = {
       coinMinimalDenom: "ujuno",
       coinDecimals: 6,
       gasPriceStep: {
-        low: 0.05,
-        average: 0.05,
-        high: 0.1,
-      },
+        "low": 0.075,
+        "average": 0.075,
+        "high": 0.075
+      }
     },
   ],
   stakeCurrency: {
@@ -224,7 +228,8 @@ export const injectiveChainConfig: ChainInfo = {
 
 export const auraChainConfig: ChainInfo = {
   chainId: "xstaxy-1",
-  chainName: "Aura Xstaxy Mainnet",
+  chainName: "aura",
+  //chainName: "Aura Xstaxy Mainnet",
   rpc: "https://rpc.aura.network",
   rest: "https://lcd.aura.network",
   bip44: {
@@ -262,11 +267,11 @@ export const auraChainConfig: ChainInfo = {
     coinMinimalDenom: "uaura",
     coinDecimals: 6,
   },
-  features: ['no-legacy-stdTx'],
+  features: [],
 };
 
 /** Returns chainConfig for `chain` */
-export const getChainConfig = (chain: availableChain) => {
+export const getChainConfig = (chain: ChainType) => {
   switch (chain) {
     case "uni": {
       return uniChainConfig;
