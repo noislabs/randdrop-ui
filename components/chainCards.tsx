@@ -58,7 +58,7 @@ export const ChainCard = ({
         return {
           logoClassName: "ring-4 ring-gray-700 ring-offset-4 ring-offset-nois-blue grayscale-50 brightness-50",
           titleClassName: "text-gray-500 text-sm",
-          title: "Did not qualify"
+          title: "Not eligible"
         }
       }
       // User has submitted & waiting for randomness callback

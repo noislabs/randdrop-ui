@@ -12,7 +12,7 @@ export const WalletNotConnected = ({
   return (
     <div className="flex flex-col p-4 justify-around h-full w-full items-center">
       <span className="flex items-center text-2xl lg:text-3xl text-nois-white h-1/5">
-        {'Welcome to the NoisRNG Randdrop!'}
+        {'Welcome to the Nois Randdrop!'}
       </span>
       <div className="flex justify-center items-start w-full h-4/5 py-14">
         <div className="flex justify-center items-center gap-x-2">
