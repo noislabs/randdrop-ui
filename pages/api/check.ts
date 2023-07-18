@@ -113,26 +113,27 @@ const validAddr = (addr: string): boolean => {
   }
 }
 
+// Currently all set to uni testing contract
 const AirdropRegistry = {
   "uni": {
     "url": 'https://gist.githubusercontent.com/kaisbaccour/5a2f102ef476d533a3112b016aa45db4/raw/aa94b4d6682536ac518d1e98367b6bbc0eac5740/juno-randdrop.json',
-    "contract": 'juno13qtdjhhltza8w2972fchk7fdkareadesat0907vfz6za7v84tznqr2uazr',
+    "contract": 'juno17uw8j7ff20k9gfqckqntg5zd3zujurl8wk5d4nj0x3rew0mc737s3z6af4',
   },
   "juno": {
     "url": 'https://gist.githubusercontent.com/kaisbaccour/5a2f102ef476d533a3112b016aa45db4/raw/aa94b4d6682536ac518d1e98367b6bbc0eac5740/juno-randdrop.json',
-    "contract": 'juno13qtdjhhltza8w2972fchk7fdkareadesat0907vfz6za7v84tznqr2uazr'
+    "contract": 'juno17uw8j7ff20k9gfqckqntg5zd3zujurl8wk5d4nj0x3rew0mc737s3z6af4'
   },
   "injective": {
     "url": 'https://gist.githubusercontent.com/kaisbaccour/c26ede9d4219896bc03fb0fdfce310a3/raw/fa0825eb75607afad08ffb0fdead8567795150ad/injective-randdrop.json',
-    "contract": 'juno13qtdjhhltza8w2972fchk7fdkareadesat0907vfz6za7v84tznqr2uazr'
+    "contract": 'juno17uw8j7ff20k9gfqckqntg5zd3zujurl8wk5d4nj0x3rew0mc737s3z6af4'
   },
   "stargaze": {
     "url": 'https://gist.githubusercontent.com/kaisbaccour/ac8002e0329b4f54407e702c5dc4aa47/raw/1c8a75bdabf3dc04f77ed0d2c1cefedbba4fa060/stargaze-randdrop.json',
-    "contract": 'juno13qtdjhhltza8w2972fchk7fdkareadesat0907vfz6za7v84tznqr2uazr'
+    "contract": 'juno17uw8j7ff20k9gfqckqntg5zd3zujurl8wk5d4nj0x3rew0mc737s3z6af4'
   },
   "aura": {
     "url": 'https://gist.githubusercontent.com/kaisbaccour/edf03e2486d1f6a609e2d8918cfcb4a9/raw/99ce180cc8e082615d0c010e0192d3d829693c48/aura-randdrop.json',
-    "contract": 'juno13qtdjhhltza8w2972fchk7fdkareadesat0907vfz6za7v84tznqr2uazr'
+    "contract": 'juno17uw8j7ff20k9gfqckqntg5zd3zujurl8wk5d4nj0x3rew0mc737s3z6af4'
   }
 }
 
