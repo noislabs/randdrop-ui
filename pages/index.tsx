@@ -150,6 +150,9 @@ const Home: NextPage = () => {
             />
           </div>
           <div className="h-full w-full md:w-auto flex justify-center items-center gap-x-4 md:pr-8">
+            <div className={`${nickname == "" ? "hidden" : "text-nois-white/60 text-sm"}`}>
+              {`${nickname}`}
+            </div>
             <button
               className={`flex justify-center items-center w-[30vw] md:w-[20vw] lg:w-[11vw] h-[7.5vh] rounded-xl px-4 py-2 border border-nois-white/30 text-nois-white/80 hover:text-nois-white hover:bg-gray-700/30`}
               onClick={() => walletLoading ? {} : handleConnectAll()}
@@ -158,7 +161,7 @@ const Home: NextPage = () => {
                   <DotLoader/>
               ):(
                 <span className="w-full overflow-hidden overflow-ellipsis">
-                  {nickname == "" ? "Connect Wallet" : nickname}
+                  {nickname == "" ? "Connect Wallet" : "Disconnect"}
                 </span>
               )}
             </button>
