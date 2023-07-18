@@ -88,6 +88,7 @@ export default async function handler(
       submitted_at: participationStatusRes.submitted_at,
       claimed_at: participationStatusRes.claimed_at,
       amount_claimed: participationStatusRes.amount_claimed,
+      claim_contract: participationStatusRes.claim_contract
     });
     
   } catch(e) {
