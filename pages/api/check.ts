@@ -225,16 +225,16 @@ const checkParticipationStatus = async (addr: string, chain: ChainType): Promise
   if (res.participant.has_claimed === false && !res.participant.nois_randomness) {
     return {
       status: "waiting_randomness" as ParticipationStatus,
-      submitted_at: res.participate_time
+      submitted_at: res.participant.participate_time
     }
   };
 
   if (res.participant.is_winner === true) {
     return {
       status: "already_won" as ParticipationStatus,
-      submitted_at: res.participate_time,
-      claimed_at: res.claim_time,
-      amount_claimed: res.amount_claimed
+      submitted_at: res.participant.participate_time,
+      claimed_at: res.participant.claim_time,
+      amount_claimed: res.participant.amount_claimed
     }
   };
 
@@ -242,8 +242,8 @@ const checkParticipationStatus = async (addr: string, chain: ChainType): Promise
   if (!!res.participant.nois_randomness && res.participant.is_winner === false) {
     return {
       status: "already_lost" as ParticipationStatus,
-      submitted_at: res.participate_time,
-      claimed_at: res.claim_time
+      submitted_at: res.participant.participate_time,
+      claimed_at: res.participant.claim_time
     }
   };
 

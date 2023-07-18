@@ -98,7 +98,7 @@ export const ChainCard = ({
 
 
   return (
-    <div className="col-span-1 flex flex-col">
+    <div className="row-span-1 lg:col-span-1 lg:row-span-4 flex flex-col">
       {/* Image */}
       <div className="h-[40%] flex justify-center p-1">
         <div className="relative aspect-square ">
@@ -132,7 +132,7 @@ export const ChainCard = ({
         )}
       </div>
       {/* Dice Loader */}
-      <div className="h-[44%] flex justify-center items-center bg-black/20">
+      <div className="h-[44%] flex justify-center items-center ">
         {!checkResponse || !client ? (
           <div className="w-full h-full flex justify-center items-center pb-10">
             <DiceLoader chain={chain} />
@@ -167,7 +167,7 @@ export const ClaimInfo = ({
       claimed,
       amount_claimed
     }
-  }, [checkResponse.userStatus])
+  }, [])
 
   const handleClaimRanddrop = useCallback(() => {
     if (client) {
@@ -240,7 +240,7 @@ export const ClaimInfo = ({
         return (
           <div className="w-full h-full flex flex-col justify-start gap-y-9 items-center border">
             <div className="text-nois-white/80 text-sm">
-              {`Submitted: ${submitted}`}
+              {`Submitted at: ${submitted}`}
             </div>
             <DiceLoader chain={checkResponse.chain} />
           </div>

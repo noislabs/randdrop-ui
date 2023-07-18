@@ -12,8 +12,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         defaultOptions: {
           queries: {
             retry: 3,
-            // 5 mins
-            staleTime: 300000,
+            // 30 secs
+            staleTime: 30_000,
             retryDelay: 4000,
           },
         },
