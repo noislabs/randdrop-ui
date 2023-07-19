@@ -47,7 +47,7 @@ const Home: NextPage = () => {
       enabled: !!uniClient,
       refetchInterval: (data) => {
         if (data && data.userStatus === "waiting_randomness") {
-          return 30_000;
+          return 10_000;
         } else {
           return false;
         }
@@ -65,7 +65,7 @@ const Home: NextPage = () => {
       enabled: !!junoClient,
       refetchInterval: (data) => {
         if (data && data.userStatus === "waiting_randomness") {
-          return 30_000;
+          return 10_000;
         } else {
           return false;
         }
@@ -83,7 +83,7 @@ const Home: NextPage = () => {
       enabled: !!injectiveClient,
       refetchInterval: (data) => {
         if (data && data.userStatus === "waiting_randomness") {
-          return 30_000;
+          return 10_000;
         } else {
           return false;
         }
@@ -101,7 +101,7 @@ const Home: NextPage = () => {
       enabled: !!auraClient,
       refetchInterval: (data) => {
         if (data && data.userStatus === "waiting_randomness") {
-          return 30_000;
+          return 10_000;
         } else {
           return false;
         }
@@ -119,7 +119,7 @@ const Home: NextPage = () => {
       enabled: !!stargazeClient,
       refetchInterval: (data) => {
         if (data && data.userStatus === "waiting_randomness") {
-          return 30_000;
+          return 10_000;
         } else {
           return false;
         }
