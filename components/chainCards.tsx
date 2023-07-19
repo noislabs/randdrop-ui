@@ -171,7 +171,7 @@ export const ClaimInfo = ({
       claimed,
       winning_amount
     }
-  }, [])
+  }, [checkResponse?.userStatus])
 
   const handleClaimRanddrop = useCallback(() => {
     if (client) {
