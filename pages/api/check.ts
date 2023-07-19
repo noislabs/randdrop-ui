@@ -211,6 +211,10 @@ const checkParticipationStatus = async (addr: string, chain: ChainType): Promise
   if (!res) {
     throw new Error("Error querying Randdrop contract")
   };
+
+//   null: randomness not yet there
+// true: did win
+// false: did not win
   
   // This function is only called if address was in Github gist file,
   // So if res is undefined it means that user is eligible but hasn't participated yet
@@ -239,7 +243,7 @@ const checkParticipationStatus = async (addr: string, chain: ChainType): Promise
     }
   };
 
-  // If randomness is some && winning_amount is 0, user didn't win
+  // If randomness is some && is_winner === false, user lost
   if (!!res.participant.nois_randomness && res.participant.is_winner === false) {
     return {
       status: "already_lost" as ParticipationStatus,
