@@ -19,7 +19,7 @@ export const ChainCard = ({
   walletLoading
 }:{
   chain: ChainType;
-  chainStatus: "loading" | "error" | "success";
+  chainStatus: string;
   client: ChainSigningClient | undefined;
   checkResponse: CheckResponse | undefined;
   walletLoading: boolean;

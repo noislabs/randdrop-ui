@@ -39,7 +39,8 @@ const Home: NextPage = () => {
   // Hitting /api/check for user's status
   const {
     data: uniData,
-    status: uniStatus
+    status: uniStatus,
+    fetchStatus: uniFetchStatus
   } = useQuery(
     ["uni", uniClient?.walletAddress],
     () => fetchUserStatus({walletAddr: uniClient!.walletAddress, chain: "uni"}),
@@ -57,7 +58,8 @@ const Home: NextPage = () => {
 
   const {
     data: junoData,
-    status: junoStatus
+    status: junoStatus,
+    fetchStatus: junoFetchStatus
   } = useQuery(
     ["juno", junoClient?.walletAddress],
     () => fetchUserStatus({walletAddr: junoClient!.walletAddress, chain: "juno"}),
@@ -75,7 +77,8 @@ const Home: NextPage = () => {
 
   const {
     data: injectiveData,
-    status: injectiveStatus
+    status: injectiveStatus,
+    fetchStatus: injectiveFetchStatus
   } = useQuery(
     ["injective", injectiveClient?.walletAddress],
     () => fetchUserStatus({walletAddr: injectiveClient!.walletAddress, chain: "injective"}),
@@ -93,7 +96,8 @@ const Home: NextPage = () => {
 
   const {
     data: auraData,
-    status: auraStatus
+    status: auraStatus,
+    fetchStatus: auraFetchStatus
   } = useQuery(
     ["aura", auraClient?.walletAddress],
     () => fetchUserStatus({walletAddr: auraClient!.walletAddress, chain: "aura"}),
@@ -111,7 +115,8 @@ const Home: NextPage = () => {
 
   const {
     data: stargazeData,
-    status: stargazeStatus
+    status: stargazeStatus,
+    fetchStatus: stargazeFetchStatus
   } = useQuery(
     ["stargaze", stargazeClient?.walletAddress],
     () => fetchUserStatus({walletAddr: stargazeClient!.walletAddress, chain: "stargaze"}),
@@ -175,11 +180,11 @@ const Home: NextPage = () => {
             <WalletNotConnected handleConnectAll={handleConnectAll} walletLoading={walletLoading} />
           ):(
             <div className="bg-red-800/0 w-full h-[100vh] overflow-y-auto md:h-full grid grid-rows-4 lg:grid-cols-4 lg:px-8 lg:py-4">
-              <ChainCard chain='uni' chainStatus={uniStatus} client={uniClient} checkResponse={uniData} walletLoading={walletLoading}/>
-              {/* <ChainCard chain='juno' chainStatus={junoStatus} client={junoClient} checkResponse={junoData} walletLoading={walletLoading}/> */}
-              <ChainCard chain='injective' chainStatus={injectiveStatus} client={injectiveClient} checkResponse={injectiveData} walletLoading={walletLoading}/>
-              <ChainCard chain='aura' chainStatus={auraStatus} client={auraClient} checkResponse={auraData} walletLoading={walletLoading}/>
-              <ChainCard chain='stargaze' chainStatus={stargazeStatus} client={stargazeClient} checkResponse={stargazeData} walletLoading={walletLoading}/>
+              <ChainCard chain='uni' chainStatus={`${uniStatus}_${uniFetchStatus}`} client={uniClient} checkResponse={uniData} walletLoading={walletLoading}/>
+              {/* <ChainCard chain='juno' chainStatus={`${junoStatus}_${junoFetchStatus}`} client={junoClient} checkResponse={junoData} walletLoading={walletLoading}/> */}
+              <ChainCard chain='injective' chainStatus={`${injectiveStatus}_${injectiveFetchStatus}`} client={injectiveClient} checkResponse={injectiveData} walletLoading={walletLoading}/>
+              <ChainCard chain='aura' chainStatus={`${auraStatus}_${auraFetchStatus}`} client={auraClient} checkResponse={auraData} walletLoading={walletLoading}/>
+              <ChainCard chain='stargaze' chainStatus={`${stargazeStatus}_${stargazeFetchStatus}`} client={stargazeClient} checkResponse={stargazeData} walletLoading={walletLoading}/>
             </div>
           )}
         </div>
