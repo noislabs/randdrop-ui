@@ -14,12 +14,14 @@ import { randdropClaimMsg } from '../services/contractTx'
 export const ChainCard = ({
   chain,
   chainStatus,
+  refetch,
   client,
   checkResponse,
   walletLoading
 }:{
   chain: ChainType;
   chainStatus: string;
+  refetch: () => {};
   client: ChainSigningClient | undefined;
   checkResponse: CheckResponse | undefined;
   walletLoading: boolean;
@@ -138,7 +140,7 @@ export const ChainCard = ({
             <DiceLoader chain={chain} />
           </div>
         ):(
-          <ClaimInfo client={client} checkResponse={checkResponse}/>
+          <ClaimInfo client={client} checkResponse={checkResponse} refetch={refetch}/>
         )}
       </div>
     </div>
@@ -147,10 +149,12 @@ export const ChainCard = ({
 
 export const ClaimInfo = ({
   client,
-  checkResponse
+  checkResponse,
+  refetch
 }:{
   client: ChainSigningClient | undefined;
   checkResponse: CheckResponse;
+  refetch: () => {}
 }) => {
 
   const {
@@ -182,6 +186,7 @@ export const ClaimInfo = ({
         [msg], 
         "auto"
       ).then((r) => {
+        refetch();
         toast.success(`Dice are rolling!`);
         toast.success(`Check back in a few minutes to view your result`);
       }).catch((e) => {
