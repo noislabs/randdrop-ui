@@ -222,8 +222,8 @@ const checkParticipationStatus = async (addr: string, chain: ChainType): Promise
     }
   };
 
-  // If user hasn't claimed && randomness is none, then must be waiting on randomness
-  if (res.participant.has_claimed === false && !res.participant.nois_randomness) {
+  // If randomness is none, then must be waiting on randomness
+  if (!res.participant.nois_randomness) {
     return {
       status: "waiting_randomness" as ParticipationStatus,
       submitted_at: res.participant.participate_time
