@@ -238,7 +238,7 @@ export const ClaimInfo = ({
       }
       case "waiting_randomness": {
         return (
-          <div className="w-full h-full flex flex-col justify-start gap-y-9 items-center border">
+          <div className="w-full h-full flex flex-col justify-start gap-y-9 items-center">
             <div className="text-nois-white/80 text-sm">
               {`Submitted at: ${submitted}`}
             </div>
