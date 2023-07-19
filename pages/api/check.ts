@@ -27,7 +27,7 @@ export const CheckResponse = z.object({
   proof: z.string().array(),
   submitted_at: z.string().optional(),
   claimed_at: z.string().optional(),
-  amount_claimed: z.string().optional(),
+  winning_amount: z.string().optional(),
   claim_contract: z.string().optional()
 }).strict()
 export type CheckResponse = z.infer<typeof CheckResponse>;
@@ -87,7 +87,7 @@ export default async function handler(
       proof: amtAndProof.proof,
       submitted_at: participationStatusRes.submitted_at,
       claimed_at: participationStatusRes.claimed_at,
-      amount_claimed: participationStatusRes.amount_claimed,
+      winning_amount: participationStatusRes.winning_amount,
       claim_contract: participationStatusRes.claim_contract
     });
     
@@ -182,7 +182,7 @@ type ParRes = {
   status: ParticipationStatus,
   submitted_at?: string | null | undefined,
   claimed_at?: string | null | undefined,
-  amount_claimed?: string,
+  winning_amount?: string,
   claim_contract?: string
 }
 
@@ -235,11 +235,11 @@ const checkParticipationStatus = async (addr: string, chain: ChainType): Promise
       status: "already_won" as ParticipationStatus,
       submitted_at: res.participant.participate_time,
       claimed_at: res.participant.claim_time,
-      amount_claimed: res.participant.amount_claimed
+      winning_amount: res.participant.winning_amount
     }
   };
 
-  // If randomness is some && amount_claimed is 0, user didn't win
+  // If randomness is some && winning_amount is 0, user didn't win
   if (!!res.participant.nois_randomness && res.participant.is_winner === false) {
     return {
       status: "already_lost" as ParticipationStatus,
