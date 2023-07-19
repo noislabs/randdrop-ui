@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { 
-  getKeplr, 
+  getKeplr, getLeap, 
 } from "../services/keplr";
 import {
   SigningCosmWasmClient,
@@ -36,6 +36,152 @@ export interface UserSigningClientsContext {
   nickname: string;
   connectAll: any;
   disconnectAll: Function;
+}
+
+
+
+
+
+
+export const useAllSigningClientsKeplr = (): UserSigningClientsContext => {
+  const [loading, setLoading] = useState(false);
+  const [nickname, setNickname] = useState("");
+  const [userSigningClients, setUserSigningClients] = useState<ChainSigningClient[] | undefined>();
+
+  const connectAll = useCallback(async () => {
+    setLoading(true);
+    const keplr = await getKeplr();
+    // Connect user to all chains
+    for (const chain of chains) {
+      try {
+        let chainInfo = getChainConfig(chain);
+        await keplr.experimentalSuggestChain(chainInfo);
+        await keplr.enable(chainInfo.chainId);
+        const offlineSigner = await keplr.getOfflineSigner(chainInfo.chainId);
+        const client = await SigningCosmWasmClient.connectWithSigner(
+          chainInfo.rpc,
+          offlineSigner,
+          {
+            gasPrice: GasPrice.fromString(
+              `${chainInfo.feeCurrencies[0].gasPriceStep?.average}${chainInfo.currencies[0].coinMinimalDenom}`
+            ),
+          }
+        );
+        const [{ address }] = await offlineSigner.getAccounts();  
+        const nickname = await keplr.getKey(chainInfo.chainId);
+        setNickname(nickname.name);
+        toast.success(`${chain} | ${address}`);
+
+        const chainClient = {
+          chain: chain,
+          walletAddress: address,
+          signingClient: client,
+        } as ChainSigningClient;
+
+        setUserSigningClients((old) => old ? [...old, chainClient] : [chainClient]);
+      } catch(e) {
+        console.log(`Error connecting to ${chain}`);
+        console.log(`ERR: ${e}`);
+        toast.error(`Error connecting to ${chain}`);
+      }
+    };
+    setLoading(false);
+  }, [])
+
+  const disconnectAll = useCallback(() => {
+    setLoading(true);
+    if (userSigningClients) {
+      for (const client of userSigningClients) {
+        client.signingClient.disconnect();
+      }
+    }
+    setUserSigningClients(undefined);
+    setNickname("");
+    setLoading(false);
+  }, []);
+
+  return {
+    uniClient: userSigningClients?.find((c) => c.chain === "uni"),
+    junoClient: userSigningClients?.find((c) => c.chain === "juno"),
+    injectiveClient: userSigningClients?.find((c) => c.chain === "injective"),
+    stargazeClient: userSigningClients?.find((c) => c.chain === "stargaze"),
+    auraClient: userSigningClients?.find((c) => c.chain === "aura"),
+    loading,
+    nickname,
+    connectAll,
+    disconnectAll
+  };
+}
+
+// Pass in Wallet Type here
+// Modify functions based on that
+export const useAllSigningClientsLeap = (): UserSigningClientsContext => {
+  const [loading, setLoading] = useState(false);
+  const [nickname, setNickname] = useState("");
+  const [userSigningClients, setUserSigningClients] = useState<ChainSigningClient[] | undefined>();
+
+  const connectAll = useCallback(async () => {
+    setLoading(true);
+    const leap = await getLeap();
+    // Connect user to all chains
+    for (const chain of chains) {
+      try {
+        let chainInfo = getChainConfig(chain);
+        await leap.experimentalSuggestChain(chainInfo);
+        await leap.enable(chainInfo.chainId);
+        const offlineSigner = await leap.getOfflineSigner(chainInfo.chainId);
+        const client = await SigningCosmWasmClient.connectWithSigner(
+          chainInfo.rpc,
+          offlineSigner,
+          {
+            gasPrice: GasPrice.fromString(
+              `${chainInfo.feeCurrencies[0].gasPriceStep?.average}${chainInfo.currencies[0].coinMinimalDenom}`
+            ),
+          }
+        );
+        const [{ address }] = await offlineSigner.getAccounts();  
+        const nickname = await leap.getKey(chainInfo.chainId);
+        setNickname(nickname.name);
+
+        const chainClient = {
+          chain: chain,
+          walletAddress: address,
+          signingClient: client,
+        } as ChainSigningClient;
+
+        setUserSigningClients((old) => old ? [...old, chainClient] : [chainClient]);
+      } catch(e) {
+        console.log(`Error connecting to ${chain}`);
+        console.log(`ERR: ${e}`);
+        toast.error(`Error connecting to ${chain}`);
+      }
+    };
+    setLoading(false);
+  }, [])
+
+  const disconnectAll = useCallback(() => {
+    setLoading(true);
+    if (userSigningClients) {
+      for (const client of userSigningClients) {
+        client.signingClient.disconnect();
+      }
+    }
+    setUserSigningClients(undefined);
+    setNickname("");
+    setLoading(false);
+  }, []);
+
+  return {
+    uniClient: userSigningClients?.find((c) => c.chain === "uni"),
+    junoClient: userSigningClients?.find((c) => c.chain === "juno"),
+    injectiveClient: userSigningClients?.find((c) => c.chain === "injective"),
+    stargazeClient: userSigningClients?.find((c) => c.chain === "stargaze"),
+    auraClient: userSigningClients?.find((c) => c.chain === "aura"),
+    loading,
+    nickname,
+    connectAll,
+    disconnectAll
+  };
 }
 
 export const useAllSigningClients = (): UserSigningClientsContext => {
@@ -105,7 +251,15 @@ export const useAllSigningClients = (): UserSigningClientsContext => {
     connectAll,
     disconnectAll
   };
+
 }
+
+export const useAllSigningClientsLedgerUsb = (): any => {
+
+}
+
+
+
 
 
 export const getBatchClient = async (chain: ChainType) => {

@@ -111,7 +111,6 @@ export const ChainCard = ({
             className={`rounded-full ${logoClassName}`}
           />
         </div>
-
       </div>
       {/* Wallet Address */}
       <div className="h-[8%] w-full block text-center items-center text-nois-white/50 text-sm font-mono overflow-hidden text-ellipsis py-2 px-8">

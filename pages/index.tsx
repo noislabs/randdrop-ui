@@ -1,8 +1,8 @@
 'use client'
 import type { NextPage } from 'next'
-import { useMemo } from 'react'
+import { useContext, useMemo } from 'react'
 import Head from 'next/head'
-import { useMultiKeplr } from '../hooks/useKeplr'
+import { useMultiKeplr, useMultiWallet } from '../hooks/useKeplr'
 import Image from 'next/image';
 import { toast } from 'react-hot-toast';
 import noisLogo from '../public/nois_logo.png';
@@ -12,12 +12,32 @@ import { fetchUserStatus } from '../hooks/fetchUserStatus';
 import { NoisFooter } from '../components/footer'
 import { WalletNotConnected } from '../components/noWallet'
 import { ChainCard } from '../components/chainCards'
+import { WalletConnectModal } from '../components/connectWalletModal'
+import { useMultiLeap } from '../hooks/useLeap'
+import { WalletSelectContext } from '../contexts/cosmwasm'
 
 const routeNewTab = () => {
   window.open(`https://twitter.com/NoisRNG`, "_blank", "noopener noreferrer");
 }
 
 const Home: NextPage = () => {
+
+  const {currentWalletType, changeWalletType} = useContext(WalletSelectContext);
+
+  // const {
+  //   uniClient,
+  //   junoClient,
+  //   injectiveClient,
+  //   stargazeClient,
+  //   auraClient,
+  //   loading: walletLoading,
+  //   nickname,
+  //   handleConnectAll,
+  //   disconnectAll
+  // } = useMemo(() => {
+  //   return useMultiWallet(currentWalletType);
+  //   //return v;
+  // }, [currentWalletType]);
 
   const {
     uniClient,
@@ -29,7 +49,7 @@ const Home: NextPage = () => {
     nickname,
     handleConnectAll,
     disconnectAll
-  } = useMultiKeplr();
+  } = useMultiWallet();
 
   // True if any client is connected
   const walletIsConnected = useMemo(() => {
@@ -165,6 +185,7 @@ const Home: NextPage = () => {
                 </span>
               )}
             </button>
+            <WalletConnectModal />
           </div>
         </div>
 
