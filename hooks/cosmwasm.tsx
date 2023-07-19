@@ -38,6 +38,29 @@ export interface UserSigningClientsContext {
   disconnectAll: Function;
 }
 
+// outer context stores the walletType
+
+// inner context stores the signing clients etc.
+
+// inside the inner context:
+// export const MultiClientProvider = ({
+//   children
+// }:{
+//   children: ReactNode;
+// }) => {
+//   const walletType = useContext(WalletTypeContext);
+//   const {uniClient, junoClient...} = useMemo(() => {
+//     call FUNCTION (not hook) that takes in walletType, and returns
+//     the correct clients
+//
+//   }, [walletType])
+//   return <ClientsProvider value={value}>{children}</ClientsProvider>
+// }
+
+
+
+
+
 
 
 
@@ -184,7 +207,7 @@ export const useAllSigningClientsLeap = (): UserSigningClientsContext => {
   };
 }
 
-export const useAllSigningClients = (): UserSigningClientsContext => {
+const useAllSigningClients = (): UserSigningClientsContext => {
   const [loading, setLoading] = useState(false);
   const [nickname, setNickname] = useState("");
   const [userSigningClients, setUserSigningClients] = useState<ChainSigningClient[] | undefined>();
