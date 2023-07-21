@@ -1,6 +1,10 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { MultiClientProvider, WalletSelectProvider } from "../contexts/cosmwasm";
+//import { MultiClientProvider, WalletSelectProvider } from "../contexts/cosmwasm";
+import { 
+  //WalletSelectProvider, 
+  MultiClientProvider 
+} from '../contexts/userClients';
 import { Toaster } from 'react-hot-toast';
 import { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -21,7 +25,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
   return (
     <QueryClientProvider client={queryClient}>
-      <WalletSelectProvider>
         <MultiClientProvider>
           <Toaster
             position="bottom-center"
@@ -74,7 +77,6 @@ function MyApp({ Component, pageProps }: AppProps) {
           />
           <Component {...pageProps} />
         </MultiClientProvider>
-      </WalletSelectProvider>
     </QueryClientProvider>
   )
 }

@@ -2,19 +2,16 @@
 import type { NextPage } from 'next'
 import { useContext, useMemo } from 'react'
 import Head from 'next/head'
-import { useMultiKeplr, useMultiWallet } from '../hooks/useKeplr'
+// import { useMultiKeplr, useMultiWallet } from '../hooks/useKeplr'
 import Image from 'next/image';
 import { toast } from 'react-hot-toast';
 import noisLogo from '../public/nois_logo.png';
-import DotLoader from '../components/dotLoader';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserStatus } from '../hooks/fetchUserStatus';
 import { NoisFooter } from '../components/footer'
-import { WalletNotConnected } from '../components/noWallet'
 import { ChainCard } from '../components/chainCards'
 import { WalletConnectModal } from '../components/connectWalletModal'
-import { useMultiLeap } from '../hooks/useLeap'
-import { WalletSelectContext } from '../contexts/cosmwasm'
+import { useAllMultiClients } from '../contexts/userClients'
 
 const routeNewTab = () => {
   window.open(`https://twitter.com/NoisRNG`, "_blank", "noopener noreferrer");
@@ -22,35 +19,18 @@ const routeNewTab = () => {
 
 const Home: NextPage = () => {
 
-  const {currentWalletType, changeWalletType} = useContext(WalletSelectContext);
-
-  // const {
-  //   uniClient,
-  //   junoClient,
-  //   injectiveClient,
-  //   stargazeClient,
-  //   auraClient,
-  //   loading: walletLoading,
-  //   nickname,
-  //   handleConnectAll,
-  //   disconnectAll
-  // } = useMemo(() => {
-  //   return useMultiWallet(currentWalletType);
-  //   //return v;
-  // }, [currentWalletType]);
-
-  const {
-    uniClient,
-    junoClient,
-    injectiveClient,
-    stargazeClient,
-    auraClient,
-    loading: walletLoading,
-    nickname,
-    handleConnectAll,
-    disconnectAll
-  } = useMultiWallet();
-
+    const {
+      uniClient,
+      junoClient,
+      injectiveClient,
+      stargazeClient,
+      auraClient,
+      loading: walletLoading,
+      nickname,
+      handleConnectAll,
+      disconnectAll
+    } = useAllMultiClients();
+  
   // True if any client is connected
   const walletIsConnected = useMemo(() => {
     return !(!uniClient && !junoClient && !injectiveClient && !auraClient && !stargazeClient)
@@ -170,21 +150,9 @@ const Home: NextPage = () => {
             />
           </div>
           <div className="h-full w-full md:w-auto flex justify-center items-center gap-x-4 md:pr-8">
-            <div className={`${nickname == "" ? "hidden" : "text-nois-white/60 text-sm"}`}>
+            <div className={`${nickname == "" ? "hidden" : "text-nois-light-green/60 text-sm"}`}>
               {`${nickname}`}
             </div>
-            <button
-              className={`flex justify-center items-center w-[30vw] md:w-[20vw] lg:w-[11vw] h-[7.5vh] rounded-xl px-4 py-2 border border-nois-white/30 text-nois-white/80 hover:text-nois-white hover:bg-gray-700/30`}
-              onClick={() => walletLoading ? {} : handleConnectAll()}
-            >
-              {walletLoading ? (
-                  <DotLoader/>
-              ):(
-                <span className="w-full overflow-hidden overflow-ellipsis">
-                  {nickname == "" ? "Connect Wallet" : "Disconnect"}
-                </span>
-              )}
-            </button>
             <WalletConnectModal />
           </div>
         </div>
@@ -193,7 +161,19 @@ const Home: NextPage = () => {
         <div className="w-full flex h-full md:h-[70vh] flex-col gap-y-8 justify-center items-center bgx-nois-blue">
           {/* No signingClients connected */}
           {!walletIsConnected ? (
-            <WalletNotConnected handleConnectAll={handleConnectAll} walletLoading={walletLoading} />
+            <div className="flex flex-col p-4 justify-around h-full w-full items-center">
+              <span className="flex items-center text-2xl lg:text-3xl text-nois-white h-1/5">
+                {'Welcome to the Nois Randdrop!'}
+              </span>
+              <div className="flex justify-center items-start w-full h-4/5 py-14">
+                <div className="flex justify-center items-center gap-x-2">
+                  <WalletConnectModal />
+                  <div className="">
+                    {`to see if you're eligible for some $NOIS tokens!`}
+                  </div>
+                </div>
+              </div>
+            </div>
           ):(
             <div className="bg-red-800/0 w-full h-[100vh] overflow-y-auto md:h-full grid grid-rows-4 lg:grid-cols-4 lg:px-8 lg:py-4">
               <ChainCard chain='uni' chainStatus={uniStatus} client={uniClient} checkResponse={uniData} walletLoading={walletLoading}/>
