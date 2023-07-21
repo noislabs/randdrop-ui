@@ -27,7 +27,7 @@ export const CheckResponse = z.object({
   proof: z.string().array(),
   submitted_at: z.string().optional(),
   claimed_at: z.string().optional(),
-  amount_claimed: z.string().optional(),
+  winning_amount: z.string().optional(),
   claim_contract: z.string().optional()
 }).strict()
 export type CheckResponse = z.infer<typeof CheckResponse>;
@@ -87,7 +87,7 @@ export default async function handler(
       proof: amtAndProof.proof,
       submitted_at: participationStatusRes.submitted_at,
       claimed_at: participationStatusRes.claimed_at,
-      amount_claimed: participationStatusRes.amount_claimed,
+      winning_amount: participationStatusRes.winning_amount,
       claim_contract: participationStatusRes.claim_contract
     });
     
@@ -129,7 +129,7 @@ const AirdropRegistry = {
   },
   "stargaze": {
     "url": 'https://gist.githubusercontent.com/kaisbaccour/ac8002e0329b4f54407e702c5dc4aa47/raw/1c8a75bdabf3dc04f77ed0d2c1cefedbba4fa060/stargaze-randdrop.json',
-    "contract": 'juno17uw8j7ff20k9gfqckqntg5zd3zujurl8wk5d4nj0x3rew0mc737s3z6af4'
+    "contract": 'stars1yz42c7muydtk30zwkp83psfl5svcvj0gact380c7e9gdhxp36cws9mep38'
   },
   "aura": {
     "url": 'https://gist.githubusercontent.com/kaisbaccour/edf03e2486d1f6a609e2d8918cfcb4a9/raw/99ce180cc8e082615d0c010e0192d3d829693c48/aura-randdrop.json',
@@ -182,7 +182,7 @@ type ParRes = {
   status: ParticipationStatus,
   submitted_at?: string | null | undefined,
   claimed_at?: string | null | undefined,
-  amount_claimed?: string,
+  winning_amount?: string,
   claim_contract?: string
 }
 
@@ -211,7 +211,7 @@ const checkParticipationStatus = async (addr: string, chain: ChainType): Promise
   if (!res) {
     throw new Error("Error querying Randdrop contract")
   };
-  
+
   // This function is only called if address was in Github gist file,
   // So if res is undefined it means that user is eligible but hasn't participated yet
   // Participated means Submit to Randdrop contract to "roll the dice"
@@ -222,25 +222,26 @@ const checkParticipationStatus = async (addr: string, chain: ChainType): Promise
     }
   };
 
-  // If randomness is none, then must be waiting on randomness
-  if (!res.participant.nois_randomness) {
+  // If is_winner is null or undefined, then still waiting on randomess
+  if (res.participant.is_winner === null || res.participant.is_winner === undefined) {
     return {
       status: "waiting_randomness" as ParticipationStatus,
       submitted_at: res.participant.participate_time
     }
   };
 
+  // User won
   if (res.participant.is_winner === true) {
     return {
       status: "already_won" as ParticipationStatus,
       submitted_at: res.participant.participate_time,
       claimed_at: res.participant.claim_time,
-      amount_claimed: res.participant.amount_claimed
+      winning_amount: res.participant.winning_amount
     }
   };
 
-  // If randomness is some && amount_claimed is 0, user didn't win
-  if (!!res.participant.nois_randomness && res.participant.is_winner === false) {
+  // User lost
+  if (res.participant.is_winner === false) {
     return {
       status: "already_lost" as ParticipationStatus,
       submitted_at: res.participant.participate_time,

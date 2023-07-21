@@ -15,12 +15,14 @@ import { randdropClaimMsg } from '../services/contractTx'
 export const ChainCard = ({
   chain,
   chainStatus,
+  refetch,
   client,
   checkResponse,
   walletLoading
 }:{
   chain: ChainType;
-  chainStatus: "loading" | "error" | "success";
+  chainStatus: string;
+  refetch: () => {};
   client: ChainSigningClient | undefined;
   checkResponse: CheckResponse | undefined;
   walletLoading: boolean;
@@ -138,7 +140,7 @@ export const ChainCard = ({
             <DiceLoader chain={chain} />
           </div>
         ):(
-          <ClaimInfo client={client} checkResponse={checkResponse}/>
+          <ClaimInfo client={client} checkResponse={checkResponse} refetch={refetch}/>
         )}
       </div>
     </div>
@@ -147,27 +149,29 @@ export const ChainCard = ({
 
 export const ClaimInfo = ({
   client,
-  checkResponse
+  checkResponse,
+  refetch
 }:{
   client: ChainSigningClient | undefined;
   checkResponse: CheckResponse;
+  refetch: () => {}
 }) => {
 
   const {
     submitted,
     claimed,
-    amount_claimed
+    winning_amount
   } = useMemo(() => {
     const submitted = checkResponse.submitted_at ? parseTimestamp(checkResponse.submitted_at) : "";
     const claimed = checkResponse.claimed_at ? parseTimestamp(checkResponse.claimed_at) : "";
-    const amount_claimed = checkResponse.amount_claimed ? 
-      `${checkResponse.amount_claimed.slice(0, -6) + '.' + checkResponse.amount_claimed.slice(-6, -3)}` : "";
+    const winning_amount = checkResponse.winning_amount ? 
+      `${checkResponse.winning_amount.slice(0, -6) + '.' + checkResponse.winning_amount.slice(-6, -3)}` : "";
     return {
       submitted,
       claimed,
-      amount_claimed
+      winning_amount
     }
-  }, [])
+  }, [checkResponse?.userStatus])
 
   const handleClaimRanddrop = useCallback(() => {
     if (client && client.signingClient) {
@@ -182,6 +186,7 @@ export const ClaimInfo = ({
         [msg], 
         "auto"
       ).then((r) => {
+        refetch();
         toast.success(`Dice are rolling!`);
         toast.success(`Check back in a few minutes to view your result`);
       }).catch((e) => {
@@ -219,7 +224,7 @@ export const ClaimInfo = ({
               {`Finalized at: ${claimed}`}
             </div>
             <div className="text-nois-white text-lg">
-              {`Amount: ${amount_claimed}`}
+              {`Amount: ${winning_amount}`}
             </div>
           </div>
         )
@@ -238,7 +243,7 @@ export const ClaimInfo = ({
       }
       case "waiting_randomness": {
         return (
-          <div className="w-full h-full flex flex-col justify-start gap-y-9 items-center border">
+          <div className="w-full h-full flex flex-col justify-start gap-y-9 items-center">
             <div className="text-nois-white/80 text-sm">
               {`Submitted at: ${submitted}`}
             </div>
@@ -265,5 +270,5 @@ const mockChainRes = {
   proof: ["fj", "slfj"],
   submitted_at: parseTimestamp("1689561497121000000"),
   claimed_at: parseTimestamp("1689561503121000000"),
-  amount_claimed: `${"234323523523523".slice(0, -6) + '.' + "234323523523523".slice(-6)}`
+  winning_amount: `${"234323523523523".slice(0, -6) + '.' + "234323523523523".slice(-6)}`
 } as CheckResponse;
