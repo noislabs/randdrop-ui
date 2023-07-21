@@ -10,7 +10,8 @@ module.exports = {
       colors: {
         'nois-blue': "#0C0914",
         'nois-white': "#e0daee",
-        'nois-green': "#6ff2cf"
+        'nois-green': "#6ff2cf",
+        'nois-light-green': "#d4fff6"
       },
       boxShadow: {
         'neon-sm': '0 0 3px 2px #6ff2cf20',

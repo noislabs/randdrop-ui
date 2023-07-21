@@ -1,6 +1,7 @@
 import { useMemo, useCallback } from 'react'
 import { toast } from 'react-hot-toast';
-import { ChainSigningClient } from '../hooks/cosmwasm';
+//import { ChainSigningClient } from '../hooks/cosmwasm';
+import { ChainSigningClient } from '../contexts/userClients';
 import NextImage from "next/image";
 import StargazeLogo from "../public/BIGstars.png";
 import InjectiveLogo from "../public/INJECTIVE400x400.jpg";
@@ -113,7 +114,6 @@ export const ChainCard = ({
             className={`rounded-full ${logoClassName}`}
           />
         </div>
-
       </div>
       {/* Wallet Address */}
       <div className="h-[8%] w-full block text-center items-center text-nois-white/50 text-sm font-mono overflow-hidden text-ellipsis py-2 px-8">
@@ -174,7 +174,7 @@ export const ClaimInfo = ({
   }, [checkResponse?.userStatus])
 
   const handleClaimRanddrop = useCallback(() => {
-    if (client) {
+    if (client && client.signingClient) {
       let msg = randdropClaimMsg({
         wallet: client.walletAddress,
         contract: checkResponse.claim_contract ?? "x",

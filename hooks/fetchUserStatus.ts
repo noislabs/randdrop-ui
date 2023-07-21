@@ -14,7 +14,6 @@ export const fetchUserStatus = async ({
     if (!validateChain.success) {
       throw new Error("Invalid chain");
     }
-    // eligible wallet: juno18qw9ydpewh405w4lvmuhlg9gtaep79vy2gmtr2
     const queryParams = new URLSearchParams({
       address: walletAddr,
       chain: validateChain.data
