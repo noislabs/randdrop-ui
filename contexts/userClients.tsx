@@ -13,6 +13,7 @@ import {
 } from "../services/keplr";
 import { toast } from "react-hot-toast";
 import { makeCosmosPath, makeEthereumPath } from "../services/ledgerHelpers";
+import EthereumApp from '@ledgerhq/hw-app-eth'
 
 const chains: ChainType[] = ["uni", "juno", "injective", "stargaze", "aura"];
 export type WalletType = "keplr" | "leap" | "ledger";

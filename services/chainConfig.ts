@@ -141,10 +141,14 @@ export const junoChainConfig: ChainInfo = {
 };
 
 export const stargazeChainConfig: ChainInfo = {
-  chainId: "stargaze-1",
-  chainName: "stargaze",
-  rpc: "https://stargaze-rpc.polkachu.com",
-  rest: "https://stargaze-api.polkachu.com",
+  chainId: "elgafar-1",
+  chainName: "stargazetestnet",
+  rpc: "https://rpc.elgafar-1.stargaze-apis.com",
+  rest: "https://rest.elgafar-1.stargaze-apis.com",
+  // chainId: "stargaze-1",
+  // chainName: "stargaze",
+  // rpc: "https://stargaze-rpc.polkachu.com",
+  // rest: "https://stargaze-api.polkachu.com",
   bip44: {
     coinType: 118,
   },
