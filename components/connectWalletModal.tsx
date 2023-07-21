@@ -49,7 +49,6 @@ export const WalletConnectModal = () => {
     if (!checked || walletType === "") {
       toast.error("Select a wallet type before connecting")
     } else {
-      toast.success(`Connecting to ${walletType}`);
       handleConnectAll();
       handleCloseModal();
     }
