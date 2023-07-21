@@ -223,7 +223,7 @@ export const injectiveChainConfig: ChainInfo = {
     coinMinimalDenom: "uinj",
     coinDecimals: 18,
   },
-  features: [],
+  features: ["eth-address-gen", "eth-key-sign"],
 };
 
 export const auraChainConfig: ChainInfo = {
