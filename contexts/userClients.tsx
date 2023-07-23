@@ -21,7 +21,15 @@ export interface ChainSigningClient {
   walletType: WalletType;
   chain: ChainType;
   walletAddress: string;
+  // Everything except Injective via LedgerUSB
   signingClient?: SigningCosmWasmClient;
+  // Injective LedgerUSB
+  ethLedgerClient?: EthLedgerAccount;
+}
+
+export interface EthLedgerAccount {
+  ethApp: EthereumApp,
+  pubKey: string
 }
 
 export interface UserSigningClientsContext {
@@ -260,37 +268,63 @@ const getLedgerUsbClient = async (chain: ChainType) => {
   // Get chainInfo
   let chainInfo = getChainConfig(chain);
 
-  // Setting up Ledger connection
+  // Setting up Ledger Transport
   const ledgerTransport = await TransportWebUSB.create(120_000, 120_000);
-  const hdPaths = chain === "injective" ? [makeEthereumPath(0)] : [makeCosmosPath(0)];
 
-  // Setting up the LedgerSigner will also be different for injective - TODO
-  const offlineSigner = new LedgerSigner(ledgerTransport, {
-    hdPaths: hdPaths,
-    prefix: chainInfo.bech32Config.bech32PrefixAccAddr
-  });
+  // Setting up Ledger Connection
+  if (chain === "injective") {
+    // Injective uses the Ethereum App on Ledger Live so setup is different
+    const ledger = new EthereumApp(ledgerTransport);
 
-  // create cosmwasmSigningClient
-  const client = await SigningCosmWasmClient.connectWithSigner(
-    chainInfo.rpc,
-    offlineSigner,
-    {
-      gasPrice: GasPrice.fromString(
-        `${chainInfo.feeCurrencies[0].gasPriceStep?.average}${chainInfo.currencies[0].coinMinimalDenom}`
-      ),
+    // Assumes account & address_index of 0
+    const {publicKey, address} = await ledger.getAddress("44'/60'/0'/0/0");
+    const ethLedgerAccount: EthLedgerAccount = {
+      ethApp: ledger,
+      pubKey: publicKey
     }
-  ); 
-  const addressAndKey = await offlineSigner.showAddress();
-  
-  const chainClient = {
-    chain: chain,
-    walletAddress: addressAndKey.address,
-    signingClient: client,
-    walletType: "ledger",
-  } as ChainSigningClient;
 
-  return {
-    client: chainClient,
-    nickname: "LedgerUSB"
+    const chainClient = {
+      chain: chain,
+      walletAddress: address,
+      ethLedgerClient: ethLedgerAccount,
+      walletType: "ledger",
+    } as ChainSigningClient;
+  
+    return {
+      client: chainClient,
+      nickname: "LedgerUSB"
+    }
+
+  } else {
+    const hdPaths = [makeCosmosPath(0)];
+
+    const offlineSigner = new LedgerSigner(ledgerTransport, {
+      hdPaths: hdPaths,
+      prefix: chainInfo.bech32Config.bech32PrefixAccAddr
+    });
+
+    // create cosmwasmSigningClient
+    const client = await SigningCosmWasmClient.connectWithSigner(
+      chainInfo.rpc,
+      offlineSigner,
+      {
+        gasPrice: GasPrice.fromString(
+          `${chainInfo.feeCurrencies[0].gasPriceStep?.average}${chainInfo.currencies[0].coinMinimalDenom}`
+        ),
+      }
+    ); 
+    const addressAndKey = await offlineSigner.showAddress();
+    
+    const chainClient = {
+      chain: chain,
+      walletAddress: addressAndKey.address,
+      signingClient: client,
+      walletType: "ledger",
+    } as ChainSigningClient;
+
+    return {
+      client: chainClient,
+      nickname: "LedgerUSB"
+    }
   }
 }

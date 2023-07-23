@@ -11,6 +11,7 @@ import DiceLoader from '../components/diceLoader';
 import { ChainType, CheckResponse } from '../pages/api/check';
 import { parseTimestamp } from '../services/parsing'
 import { randdropClaimMsg } from '../services/contractTx'
+import { ethLedgerTxHelper } from '../services/ledgerHelpers';
 
 export const ChainCard = ({
   chain,
@@ -174,7 +175,38 @@ export const ClaimInfo = ({
   }, [checkResponse?.userStatus])
 
   const handleClaimRanddrop = useCallback(() => {
-    if (client && client.signingClient) {
+
+    // If no client
+    if (!client || (!client.ethLedgerClient && !client.signingClient)) {
+      toast.error(`Wallet or Ledger not connected for ${checkResponse.chain}`);
+      return;
+    }
+
+    // Assert claim_contract exists
+    if (!checkResponse.claim_contract) {
+      toast.error(`No randdrop contract available for ${checkResponse.chain}`);
+      return;
+    }
+
+    // If walletType is ledger && chain is injective, use helper
+    if (client.walletType === "ledger" && client.chain === "injective") {
+      toast.loading("Processing your request...");
+      ethLedgerTxHelper({
+        client,
+        checkResponse
+      }).then((txhash) => {
+        toast.dismiss();
+        refetch();
+        console.log(`Transaction broadcasted | TxHash: ${txhash}`);
+        toast.success(`Transaction broadcasted | TxHash: ${txhash}`);
+      }).catch((e) => {
+        toast.dismiss();
+        console.log(`Error: ${e}`);
+        toast.error("Failure broadcasting transaction");
+        toast.error(`Error: ${e}`);
+      });
+    } else if (client.signingClient !== undefined) {
+      toast.loading("Processing your request...");
       let msg = randdropClaimMsg({
         wallet: client.walletAddress,
         contract: checkResponse.claim_contract ?? "x",
@@ -186,16 +218,17 @@ export const ClaimInfo = ({
         [msg], 
         "auto"
       ).then((r) => {
+        toast.dismiss();
         refetch();
         toast.success(`Dice are rolling!`);
         toast.success(`Check back in a few minutes to view your result`);
       }).catch((e) => {
+        toast.dismiss();
         console.log(e);
         toast.error(`Problem submitting transaction`)
         toast.error(`Visit our Discord for assistance`);
-      })
+      });
     }
-
   }, [client?.walletAddress])
 
   if (!client || checkResponse.userStatus === "not_eligible") {

@@ -1,54 +1,42 @@
 import { Keplr, ChainInfo } from "@keplr-wallet/types";
 import { ChainType } from "../pages/api/check";
 
-export const noisChainConfig: ChainInfo = {
-  chainId: "nois-testnet-005",
-  chainName: "Nois Testnet",
-  rpc: "https://nois-testnet-rpc.polkachu.com/",
-  rest: "https://nois-004.api.bccnodes.com",
-  // chainId: "nois-1",
-  // chainName: "Nois",
-  // rpc: "https://nois-mainnet-rpc.bccnodes.com/",
-  // rest: "https://nois-mainnet-api.bccnodes.com/",
-  bip44: {
-    coinType: 118,
-  },
-  bech32Config: {
-    bech32PrefixAccAddr: "nois",
-    bech32PrefixAccPub: "noispub",
-    bech32PrefixValAddr: "noisvaloper",
-    bech32PrefixValPub: "noisvaloperpub",
-    bech32PrefixConsAddr: "noisvalcons",
-    bech32PrefixConsPub: "noisvalconspub",
-  },
-  currencies: [
-    {
-      coinDenom: "NOIS",
-      coinMinimalDenom: "unois",
-      coinDecimals: 6,
-    },
-  ],
-  feeCurrencies: [
-    {
-      coinDenom: "NOIS",
-      coinMinimalDenom: "unois",
-      coinDecimals: 6,
-      gasPriceStep: {
-        low: 0.05,
-        average: 0.05,
-        high: 0.1,
-      },
-    },
-  ],
-  stakeCurrency: {
-    coinDenom: "NOIS",
-    coinMinimalDenom: "unois",
-    coinDecimals: 6,
-  },
-  features: [],
+/** 
+ * - Returns chainConfig for `chain` 
+ * - To change Testnet/Mainnet, swap out commented lines
+ * */
+export const getChainConfig = (chain: ChainType) => {
+  switch (chain) {
+    case "uni": {
+      return uniChainConfig;
+    }
+    case "juno": {
+      return junoChainConfig;
+    }
+    case "stargaze": {
+      return elgafarChainConfig;
+      //return stargazeChainConfig;
+    }
+    case "injective": {
+      return injective888ChainConfig;
+      //return injectiveChainConfig;
+    }
+    case "aura": {
+      return auraChainConfig;
+    }
+  }
 };
 
-/** Testnet */
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Chain Infos 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Testnets
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// Juno Testnet (uni-6)
 export const uniChainConfig: ChainInfo = {
   chainId: "uni-6",
   chainName: "Juno Testnet",
@@ -93,54 +81,52 @@ export const uniChainConfig: ChainInfo = {
   },
   features: []
 };
-
-/** Mainnet */
-export const junoChainConfig: ChainInfo = {
-  chainId: "juno-1",
-  chainName: "juno",
-  rpc: "https://juno-rpc.reece.sh",
-  rest: "https://juno-rpc.reece.sh:443",
-  // rpc: "https://juno-rpc.polkachu.com/",
-  // rest: "https://juno-api.polkachu.com:443",
+// Injective Testnet (injective-888)
+export const injective888ChainConfig: ChainInfo = {
+  chainId: "injective-888",
+  chainName: "injectivetestnet",
+  rpc: "https://injective-testnet-rpc.polkachu.com",
+  rest: "https://injective-testnet-api.polkachu.com",
   bip44: {
-    coinType: 118,
+    coinType: 60,
   },
   bech32Config: {
-    bech32PrefixAccAddr: "juno",
-    bech32PrefixAccPub: "junopub",
-    bech32PrefixValAddr: "junovaloper",
-    bech32PrefixValPub: "junovaloperpub",
-    bech32PrefixConsAddr: "junovalcons",
-    bech32PrefixConsPub: "junovalconspub"
+    bech32PrefixAccAddr: "inj",
+    bech32PrefixAccPub: "injpub",
+    bech32PrefixValAddr: "injvaloper",
+    bech32PrefixValPub: "injvaloperpub",
+    bech32PrefixConsAddr: "injvalcons",
+    bech32PrefixConsPub: "injvalconspub",
   },
   currencies: [
     {
-      coinDenom: "JUNO",
-      coinMinimalDenom: "ujuno",
-      coinDecimals: 6,
+      coinDenom: "INJ",
+      coinMinimalDenom: "uinj",
+      coinDecimals: 18,
     },
   ],
   feeCurrencies: [
     {
-      coinDenom: "JUNO",
-      coinMinimalDenom: "ujuno",
+      coinDenom: "INJ",
+      coinMinimalDenom: "uinj",
       coinDecimals: 6,
       gasPriceStep: {
-        "low": 0.075,
-        "average": 0.075,
-        "high": 0.075
-      }
+        low: 500000000,
+        average: 1000000000,
+        high: 1500000000,
+      },
     },
   ],
   stakeCurrency: {
-    coinDenom: "JUNO",
-    coinMinimalDenom: "ujuno",
-    coinDecimals: 6,
+    coinDenom: "INJ",
+    coinMinimalDenom: "uinj",
+    coinDecimals: 18,
   },
-  features: []
+  features: ["eth-address-gen", "eth-key-sign"],
 };
 
-export const stargazeChainConfig: ChainInfo = {
+// Stargaze Testnet (elgafar-1)
+export const elgafarChainConfig: ChainInfo = {
   chainId: "elgafar-1",
   chainName: "stargazetestnet",
   rpc: "https://rpc.elgafar-1.stargaze-apis.com",
@@ -187,6 +173,104 @@ export const stargazeChainConfig: ChainInfo = {
   features: [],
 };
 
+// Aura Testnet
+
+
+// Nois Testnet
+export const noistestnetChainConfig: ChainInfo = {
+  chainId: "nois-testnet-005",
+  chainName: "Nois Testnet",
+  rpc: "https://nois-testnet-rpc.polkachu.com/",
+  rest: "https://nois-004.api.bccnodes.com",
+  bip44: {
+    coinType: 118,
+  },
+  bech32Config: {
+    bech32PrefixAccAddr: "nois",
+    bech32PrefixAccPub: "noispub",
+    bech32PrefixValAddr: "noisvaloper",
+    bech32PrefixValPub: "noisvaloperpub",
+    bech32PrefixConsAddr: "noisvalcons",
+    bech32PrefixConsPub: "noisvalconspub",
+  },
+  currencies: [
+    {
+      coinDenom: "NOIS",
+      coinMinimalDenom: "unois",
+      coinDecimals: 6,
+    },
+  ],
+  feeCurrencies: [
+    {
+      coinDenom: "NOIS",
+      coinMinimalDenom: "unois",
+      coinDecimals: 6,
+      gasPriceStep: {
+        low: 0.05,
+        average: 0.05,
+        high: 0.1,
+      },
+    },
+  ],
+  stakeCurrency: {
+    coinDenom: "NOIS",
+    coinMinimalDenom: "unois",
+    coinDecimals: 6,
+  },
+  features: [],
+};
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Mainnets
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// Juno Mainnet
+export const junoChainConfig: ChainInfo = {
+  chainId: "juno-1",
+  chainName: "juno",
+  rpc: "https://juno-rpc.reece.sh",
+  rest: "https://juno-rpc.reece.sh:443",
+  // rpc: "https://juno-rpc.polkachu.com/",
+  // rest: "https://juno-api.polkachu.com:443",
+  bip44: {
+    coinType: 118,
+  },
+  bech32Config: {
+    bech32PrefixAccAddr: "juno",
+    bech32PrefixAccPub: "junopub",
+    bech32PrefixValAddr: "junovaloper",
+    bech32PrefixValPub: "junovaloperpub",
+    bech32PrefixConsAddr: "junovalcons",
+    bech32PrefixConsPub: "junovalconspub"
+  },
+  currencies: [
+    {
+      coinDenom: "JUNO",
+      coinMinimalDenom: "ujuno",
+      coinDecimals: 6,
+    },
+  ],
+  feeCurrencies: [
+    {
+      coinDenom: "JUNO",
+      coinMinimalDenom: "ujuno",
+      coinDecimals: 6,
+      gasPriceStep: {
+        "low": 0.075,
+        "average": 0.075,
+        "high": 0.075
+      }
+    },
+  ],
+  stakeCurrency: {
+    coinDenom: "JUNO",
+    coinMinimalDenom: "ujuno",
+    coinDecimals: 6,
+  },
+  features: []
+};
+
+// Injective Mainnet
 export const injectiveChainConfig: ChainInfo = {
   chainId: "injective-1",
   chainName: "injective",
@@ -230,6 +314,51 @@ export const injectiveChainConfig: ChainInfo = {
   features: ["eth-address-gen", "eth-key-sign"],
 };
 
+// Stargaze Mainnet
+export const stargazeChainConfig: ChainInfo = {
+  chainId: "stargaze-1",
+  chainName: "stargaze",
+  rpc: "https://stargaze-rpc.polkachu.com",
+  rest: "https://stargaze-api.polkachu.com",
+  bip44: {
+    coinType: 118,
+  },
+  bech32Config: {
+    bech32PrefixAccAddr: "stars",
+    bech32PrefixAccPub: "starspub",
+    bech32PrefixValAddr: "starsvaloper",
+    bech32PrefixValPub: "starsvaloperpub",
+    bech32PrefixConsAddr: "starsvalcons",
+    bech32PrefixConsPub: "starsvalconspub",
+  },
+  currencies: [
+    {
+      coinDenom: "STARS",
+      coinMinimalDenom: "ustars",
+      coinDecimals: 6,
+    },
+  ],
+  feeCurrencies: [
+    {
+      coinDenom: "STARS",
+      coinMinimalDenom: "ustars",
+      coinDecimals: 6,
+      gasPriceStep: {
+        low: 0.05,
+        average: 0.05,
+        high: 0.1,
+      },
+    },
+  ],
+  stakeCurrency: {
+    coinDenom: "STARS",
+    coinMinimalDenom: "ustars",
+    coinDecimals: 6,
+  },
+  features: [],
+};
+
+// Aura Mainnet
 export const auraChainConfig: ChainInfo = {
   chainId: "xstaxy-1",
   chainName: "aura",
@@ -274,23 +403,46 @@ export const auraChainConfig: ChainInfo = {
   features: [],
 };
 
-/** Returns chainConfig for `chain` */
-export const getChainConfig = (chain: ChainType) => {
-  switch (chain) {
-    case "uni": {
-      return uniChainConfig;
-    }
-    case "juno": {
-      return junoChainConfig;
-    }
-    case "stargaze": {
-      return stargazeChainConfig;
-    }
-    case "injective": {
-      return injectiveChainConfig;
-    }
-    case "aura": {
-      return auraChainConfig;
-    }
-  }
+// Nois Mainnet
+export const noisChainConfig: ChainInfo = {
+  chainId: "nois-1",
+  chainName: "Nois",
+  rpc: "https://nois-mainnet-rpc.bccnodes.com/",
+  rest: "https://nois-mainnet-api.bccnodes.com/",
+  bip44: {
+    coinType: 118,
+  },
+  bech32Config: {
+    bech32PrefixAccAddr: "nois",
+    bech32PrefixAccPub: "noispub",
+    bech32PrefixValAddr: "noisvaloper",
+    bech32PrefixValPub: "noisvaloperpub",
+    bech32PrefixConsAddr: "noisvalcons",
+    bech32PrefixConsPub: "noisvalconspub",
+  },
+  currencies: [
+    {
+      coinDenom: "NOIS",
+      coinMinimalDenom: "unois",
+      coinDecimals: 6,
+    },
+  ],
+  feeCurrencies: [
+    {
+      coinDenom: "NOIS",
+      coinMinimalDenom: "unois",
+      coinDecimals: 6,
+      gasPriceStep: {
+        low: 0.05,
+        average: 0.05,
+        high: 0.1,
+      },
+    },
+  ],
+  stakeCurrency: {
+    coinDenom: "NOIS",
+    coinMinimalDenom: "unois",
+    coinDecimals: 6,
+  },
+  features: [],
 };
