@@ -3,6 +3,7 @@
   "scripts": {
     "dev": "rm -r dist || true && next dev",
     "build": "next build",
+    "buildsize": "ANALYZE=true next build",
     "start": "next start"
   },
   "dependencies": {
@@ -14,8 +15,9 @@
     "@cosmjs/utils": "^0.31.0",
     "@injectivelabs/sdk-ts": "^1.11.0",
     "@injectivelabs/ts-types": "^1.11.0",
-    "@ledgerhq/hw-app-eth": "^6.34.0",
+    "@ledgerhq/hw-app-eth": "6.33.6",
     "@ledgerhq/hw-transport-webusb": "^6.27.17",
+    "@next/bundle-analyzer": "^13.4.12",
     "@tanstack/react-query": "^4.29.12",
     "crypto-js": "^4.1.1",
     "ethereumjs-util": "^7.1.5",

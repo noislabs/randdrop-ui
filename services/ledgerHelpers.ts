@@ -16,8 +16,8 @@ import {
   getEip712TypedData,
   Eip712ConvertTxArgs,
   Eip712ConvertFeeArgs,
-} from '@injectivelabs/sdk-ts'
-import { EthereumChainId } from '@injectivelabs/ts-types'
+} from "@injectivelabs/sdk-ts";
+import { EthereumChainId } from "@injectivelabs/ts-types";
 import { ChainSigningClient } from "../contexts/userClients";
 import { bufferToHex } from 'ethereumjs-util';
 
