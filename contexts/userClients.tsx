@@ -1,10 +1,8 @@
 import { createContext, useContext, ReactNode, useState, useMemo, useCallback, useEffect } from "react";
 import { ChainType } from "../pages/api/check";
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
-import { toBase64 } from "@cosmjs/encoding";
 import { LedgerSigner } from "@cosmjs/ledger-amino";
 import { GasPrice } from "@cosmjs/stargate";
-import { assert } from "@cosmjs/utils";
 import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { getChainConfig } from "../services/chainConfig";
 import { 
@@ -12,10 +10,8 @@ import {
   getLeap,
 } from "../services/keplr";
 import { toast } from "react-hot-toast";
-import { makeCosmosPath, makeEthereumPath } from "../services/ledgerHelpers";
-import EthereumApp from "@ledgerhq/hw-app-eth"; //3.8M (gzipped: 2.1M)!!!
-
-
+import { makeCosmosPath } from "../services/ledgerHelpers";
+import EthereumApp from "@ledgerhq/hw-app-eth";
 
 const chains: ChainType[] = ["uni", "juno", "injective", "stargaze", "aura"];
 export type WalletType = "keplr" | "leap" | "ledger";
