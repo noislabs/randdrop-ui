@@ -12,10 +12,7 @@ import { NoisFooter } from '../components/footer'
 import { ChainCard } from '../components/chainCards'
 import { WalletConnectModal } from '../components/connectWalletModal'
 import { useAllMultiClients } from '../contexts/userClients'
-
-const routeNewTab = () => {
-  window.open(`https://twitter.com/NoisRNG`, "_blank", "noopener noreferrer");
-}
+import { routeNewTab } from '../services/misc';
 
 const Home: NextPage = () => {
 
@@ -149,7 +146,7 @@ const Home: NextPage = () => {
         {/* Connect wallet header */}
         <div className="flex justify-between h-[15vh] px-12 w-full border-b border-nois-white/10 ">
           <div
-            onClick={() => routeNewTab()}
+            onClick={() => routeNewTab("https://twitter.com/NoisRNG")}
             className="hidden md:flex md:relative overflow-hidden hover:cursor-pointer ">
             <Image
               src={noisLogo}

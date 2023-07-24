@@ -12,6 +12,16 @@ import { ChainType, CheckResponse } from '../pages/api/check';
 import { parseTimestamp } from '../services/parsing'
 import { randdropClaimMsg } from '../services/contractTx'
 import { ethLedgerTxHelper } from '../services/ledgerHelpers';
+import { routeNewTab } from '../services/misc';
+
+const BridgeLinks = {
+  "injective": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=injective-1&token0=ibc%2FDD9182E8E2B13C89D6B4707C7B43E8DB6193F9FF486AFA0E6CF86B427B0D231A&token1=unois",
+  "juno": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=juno-1&token0=ibc%2F1D9E14A1F00613ED39E4B8A8763A20C9BE5B5EA0198F2FE47EAE43CD91A0137B&token1=unois",
+  "uni": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=juno-1&token0=ibc%2F1D9E14A1F00613ED39E4B8A8763A20C9BE5B5EA0198F2FE47EAE43CD91A0137B&token1=unois",
+  "stargaze": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=stargaze-1&token0=ibc%2F0F181D9F5BB18A8496153C1666E934169515592C135E8E9FCCC355889858EAF9&token1=unois",
+  "aura": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=xstaxy-1&token0=ibc%2F1FD48481DAA1B05575FE6D3E35929264437B8424A73243B207BCB67401C7F1FD&token1=unois"
+}
+
 
 export const ChainCard = ({
   chain,
@@ -249,15 +259,33 @@ export const ClaimInfo = ({
       }
       case "already_won": {
         return (
-          <div className={`w-full h-full p-4 flex flex-col justify-start gap-y-2 items-center`}>
-            <div className="text-nois-white/80 text-sm">
+          <div className={`w-full h-full p-2 flex flex-col justify-start gap-y-2 items-center`}>
+            <div className="text-nois-white/80 text-xs">
               {`Submitted at: ${submitted}`}
             </div>
-            <div className="text-nois-white/80 text-sm">
+            <div className="text-nois-white/80 text-xs">
               {`Finalized at: ${claimed}`}
             </div>
-            <div className="text-nois-white text-lg">
+            <div className="text-nois-light-green text-base">
               {`Amount: ${winning_amount}`}
+            </div>
+            <div className=" flex flex-col gap-y-1">
+              <button
+                onClick={() => {
+                  let link = BridgeLinks[checkResponse.chain];
+                  routeNewTab(link);
+                }} 
+                className="flex justify-center text-sm items-center rounded-lg px-4 py-1.5 border border-nois-light-green/30 text-nois-light-green/80 hover:text-nois-light-green hover:border-nois-light-green hover:bg-black"
+              >
+                {"Bridge to Nois Chain"}
+              </button>
+              <button
+                onClick={() => routeNewTab("https://restake.app/nois")}
+                className="flex justify-center text-sm items-center rounded-lg px-4 py-1.5 border border-nois-light-green/30 text-nois-light-green/80 hover:text-nois-light-green hover:border-nois-light-green hover:bg-black"
+              >
+                {"Stake on Nois Chain"}
+              </button>
+
             </div>
           </div>
         )
@@ -295,13 +323,25 @@ export const ClaimInfo = ({
 
 const mockChainRes = {
   address: "slfjslafjaslkdfjs",
-  chain: "stargaze",
-  //userStatus: "already_won",
+  chain: "injective",
+  userStatus: "already_won",
   //userStatus: "already_lost",
-  userStatus: "waiting_randomness",
+  //userStatus: "waiting_randomness",
   amount: "235322352",
   proof: ["fj", "slfj"],
   submitted_at: parseTimestamp("1689561497121000000"),
   claimed_at: parseTimestamp("1689561503121000000"),
   winning_amount: `${"234323523523523".slice(0, -6) + '.' + "234323523523523".slice(-6)}`
 } as CheckResponse;
+
+// export const CheckResponse = z.object({
+//   address: z.string(),
+//   chain: ChainType,
+//   userStatus: ParticipationStatus,
+//   amount: z.string(),
+//   proof: z.string().array(),
+//   submitted_at: z.string().optional(),
+//   claimed_at: z.string().optional(),
+//   winning_amount: z.string().optional(),
+//   claim_contract: z.string().optional()
+// }).strict()
