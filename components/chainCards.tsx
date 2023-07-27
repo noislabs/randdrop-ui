@@ -277,7 +277,7 @@ export const ClaimInfo = ({
                 }} 
                 className="flex justify-center text-sm items-center rounded-lg px-4 py-1.5 border border-nois-light-green/30 text-nois-light-green/80 hover:text-nois-light-green hover:border-nois-light-green hover:bg-black"
               >
-                {"Bridge to Nois Chain"}
+                {"Transfer to Nois Chain"}
               </button>
               <button
                 onClick={() => routeNewTab("https://restake.app/nois")}
