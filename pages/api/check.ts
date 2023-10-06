@@ -117,11 +117,11 @@ const validAddr = (addr: string): boolean => {
 const AirdropRegistry = {
   "uni": {
     "url": 'https://gist.githubusercontent.com/kaisbaccour/5a2f102ef476d533a3112b016aa45db4/raw/aa94b4d6682536ac518d1e98367b6bbc0eac5740/juno-randdrop.json',
-    "contract": 'juno17uw8j7ff20k9gfqckqntg5zd3zujurl8wk5d4nj0x3rew0mc737s3z6af4',
+    "contract": 'juno14v4rkefdr6zv2yvtgrscpjpe73lqz4qy809v6h4lwkdhl090frzq2ew57x',
   },
   "juno": {
     "url": 'https://gist.githubusercontent.com/kaisbaccour/5a2f102ef476d533a3112b016aa45db4/raw/aa94b4d6682536ac518d1e98367b6bbc0eac5740/juno-randdrop.json',
-    "contract": 'juno17uw8j7ff20k9gfqckqntg5zd3zujurl8wk5d4nj0x3rew0mc737s3z6af4'
+    "contract": 'juno14v4rkefdr6zv2yvtgrscpjpe73lqz4qy809v6h4lwkdhl090frzq2ew57x'
   },
   "injective": {
     "url": 'https://gist.githubusercontent.com/LeTurt333/8e4693159e770820c2cf60b15f7c830f/raw/971ffb4b33cdf5a2632ee1da858d64bf1a50d459/mock_inj_randdrop.json',
