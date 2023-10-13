@@ -1,6 +1,5 @@
 import { useMemo, useCallback } from 'react'
 import { toast } from 'react-hot-toast';
-//import { ChainSigningClient } from '../hooks/cosmwasm';
 import { ChainSigningClient } from '../contexts/userClients';
 import NextImage from "next/image";
 import StargazeLogo from "../public/BIGstars.png";
@@ -21,7 +20,6 @@ const BridgeLinks = {
   "stargaze": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=stargaze-1&token0=ibc%2F0F181D9F5BB18A8496153C1666E934169515592C135E8E9FCCC355889858EAF9&token1=unois",
   "aura": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=xstaxy-1&token0=ibc%2F1FD48481DAA1B05575FE6D3E35929264437B8424A73243B207BCB67401C7F1FD&token1=unois"
 }
-
 
 export const ChainCard = ({
   chain,
@@ -144,11 +142,14 @@ export const ChainCard = ({
           <span>{title}</span>
         )}
       </div>
-      {/* Dice Loader */}
+      {/* Claim Info*/}
       <div className="h-[44%] flex justify-center items-center ">
         {!checkResponse || !client ? (
-          <div className="w-full h-full flex justify-center items-center pb-10">
-            <DiceLoader chain={chain} />
+          <div className="w-full h-full flex flex-col justify-center items-center gap-y-4 pb-10">
+            <div className="circle-spinner" />
+            <span className="text-sm text-nois-light-green/50">
+              {"Checking eligibility..."}
+            </span>
           </div>
         ):(
           <ClaimInfo client={client} checkResponse={checkResponse} refetch={refetch}/>
@@ -333,15 +334,3 @@ const mockChainRes = {
   claimed_at: parseTimestamp("1689561503121000000"),
   winning_amount: `${"234323523523523".slice(0, -6) + '.' + "234323523523523".slice(-6)}`
 } as CheckResponse;
-
-// export const CheckResponse = z.object({
-//   address: z.string(),
-//   chain: ChainType,
-//   userStatus: ParticipationStatus,
-//   amount: z.string(),
-//   proof: z.string().array(),
-//   submitted_at: z.string().optional(),
-//   claimed_at: z.string().optional(),
-//   winning_amount: z.string().optional(),
-//   claim_contract: z.string().optional()
-// }).strict()

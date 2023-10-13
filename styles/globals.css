@@ -5,7 +5,40 @@
 /* SVG icon hover */
 .hover-icon:hover svg path {
     fill: #d4fff6;
-  }
+}
+
+
+/* Basic spinner */
+.circle-spinner {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 6px solid #2b2b2ba4;
+    position: relative;
+}
+
+.circle-spinner::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
+    border-radius: 50%;
+    border: 6px solid;
+    border-color: #d4fff69e transparent transparent transparent;
+    animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 
 /* Dice animation */
  .add-keyframe {

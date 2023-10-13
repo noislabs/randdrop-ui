@@ -16,17 +16,17 @@ import { routeNewTab } from '../services/misc';
 
 const Home: NextPage = () => {
 
-    const {
-      uniClient,
-      junoClient,
-      injectiveClient,
-      stargazeClient,
-      auraClient,
-      loading: walletLoading,
-      nickname,
-      handleConnectAll,
-      disconnectAll
-    } = useAllMultiClients();
+  const {
+    uniClient,
+    junoClient,
+    injectiveClient,
+    stargazeClient,
+    auraClient,
+    loading: walletLoading,
+    nickname,
+    handleConnectAll,
+    disconnectAll
+  } = useAllMultiClients();
   
   // True if any client is connected
   const walletIsConnected = useMemo(() => {
@@ -46,7 +46,7 @@ const Home: NextPage = () => {
       enabled: !!uniClient,
       refetchInterval: (data) => {
         if (data && data.userStatus === "waiting_randomness") {
-          return 10_000;
+          return 1_000;
         } else {
           return false;
         }
@@ -66,7 +66,7 @@ const Home: NextPage = () => {
       enabled: !!junoClient,
       refetchInterval: (data) => {
         if (data && data.userStatus === "waiting_randomness") {
-          return 10_000;
+          return 1_000;
         } else {
           return false;
         }
@@ -86,7 +86,7 @@ const Home: NextPage = () => {
       enabled: !!injectiveClient,
       refetchInterval: (data) => {
         if (data && data.userStatus === "waiting_randomness") {
-          return 10_000;
+          return 1_000;
         } else {
           return false;
         }
@@ -106,7 +106,7 @@ const Home: NextPage = () => {
       enabled: !!auraClient,
       refetchInterval: (data) => {
         if (data && data.userStatus === "waiting_randomness") {
-          return 10_000;
+          return 1_000;
         } else {
           return false;
         }
@@ -126,7 +126,7 @@ const Home: NextPage = () => {
       enabled: !!stargazeClient,
       refetchInterval: (data) => {
         if (data && data.userStatus === "waiting_randomness") {
-          return 10_000;
+          return 1_000;
         } else {
           return false;
         }

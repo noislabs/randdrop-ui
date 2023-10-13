@@ -14,15 +14,22 @@ export const getChainConfig = (chain: ChainType) => {
       return junoChainConfig;
     }
     case "stargaze": {
+      //testnet
       return elgafarChainConfig;
+      //mainnet
       //return stargazeChainConfig;
     }
     case "injective": {
+      //testnet
       return injective888ChainConfig;
+      //mainnet
       //return injectiveChainConfig;
     }
     case "aura": {
-      return auraChainConfig;
+      //testnet
+      return auraTestnetChainConfig;
+      //mainnet
+      //return auraChainConfig;
     }
   }
 };
@@ -174,6 +181,50 @@ export const elgafarChainConfig: ChainInfo = {
 };
 
 // Aura Testnet
+export const auraTestnetChainConfig: ChainInfo = {
+  chainId: "euphoria-2",
+  chainName: "auratestnet",
+  //chainName: "Aura Xstaxy Mainnet",
+  rpc: "https://rpc.euphoria.aura.network",
+  rest: "https://lcd.euphoria.aura.network",
+  bip44: {
+    coinType: 118,
+  },
+  bech32Config: {
+    bech32PrefixAccAddr: "aura",
+    bech32PrefixAccPub: "aurapub",
+    bech32PrefixValAddr: "auravaloper",
+    bech32PrefixValPub: "auravaloperpub",
+    bech32PrefixConsAddr: "auravalcons",
+    bech32PrefixConsPub: "auravalconspub",
+  },
+  currencies: [
+    {
+      coinDenom: "eaura",
+      coinMinimalDenom: "uearua",
+      coinDecimals: 6,
+    },
+  ],
+  feeCurrencies: [
+    {
+      coinDenom: "eaura",
+      coinMinimalDenom: "uearua",
+      coinDecimals: 6,
+      gasPriceStep: {
+        low: 0.001,
+        average: 0.0025,
+        high: 0.004
+      },
+    },
+  ],
+  stakeCurrency: {
+    coinDenom: "eaura",
+    coinMinimalDenom: "ueaura",
+    coinDecimals: 6,
+  },
+  features: [],
+};
+
 
 
 // Nois Testnet
