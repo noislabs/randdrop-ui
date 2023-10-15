@@ -12,6 +12,7 @@ import { parseTimestamp } from '../services/parsing'
 import { randdropClaimMsg } from '../services/contractTx'
 import { ethLedgerTxHelper } from '../services/ledgerHelpers';
 import { routeNewTab } from '../services/misc';
+import { AirdropLiveStatus } from '../pages';
 
 const BridgeLinks = {
   "injective": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=injective-1&token0=ibc%2FDD9182E8E2B13C89D6B4707C7B43E8DB6193F9FF486AFA0E6CF86B427B0D231A&token1=unois",
@@ -21,7 +22,92 @@ const BridgeLinks = {
   "aura": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=xstaxy-1&token0=ibc%2F1FD48481DAA1B05575FE6D3E35929264437B8424A73243B207BCB67401C7F1FD&token1=unois"
 }
 
-export const ChainCard = ({
+
+export const ChainCard = (props:{
+  chain: ChainType;
+  chainStatus: string;
+  refetch: () => {};
+  client: ChainSigningClient | undefined;
+  checkResponse: CheckResponse | undefined;
+  walletLoading: boolean;
+}) => {
+  if (AirdropLiveStatus[props.chain] === true) {
+    return <LiveChainCard {...props} />
+  } else {
+    return <PausedChainCard {...props}/>
+  }
+}
+
+export const PausedChainCard = ({
+  chain,
+  chainStatus,
+  refetch,
+  client,
+  checkResponse,
+  walletLoading
+}:{
+  chain: ChainType;
+  chainStatus: string;
+  refetch: () => {};
+  client: ChainSigningClient | undefined;
+  checkResponse: CheckResponse | undefined;
+  walletLoading: boolean;
+}) => {
+
+  const logo = useMemo(() => {
+    switch (chain) {
+      case "injective":
+        return InjectiveLogo;
+      case "aura":
+        return AuraLogo;
+      case "stargaze":
+        return StargazeLogo;
+      default:
+        return JunoLogo;
+    }
+  }, [chain]);
+
+  return (
+    <div className="row-span-1 lg:col-span-1 lg:row-span-4 flex flex-col text-gray-500">
+      {/* Image */}
+      <div className="h-[40%] flex justify-center p-1">
+        <div className="relative aspect-square ">
+          <NextImage
+            src={logo}
+            alt={`${chain}_logo`}
+            unoptimized
+            object-fit="cover"
+            fill={true}
+            className={`rounded-full grayscale-50 brightness-[.25]`}
+          />
+        </div>
+      </div>
+      {/* Wallet Address */}
+      <div className="h-[8%] w-full block text-center items-center text-sm font-mono overflow-hidden text-ellipsis py-2 px-8">
+        {!client && walletLoading ? (
+          <span className="animate-pulse text-base">{"Connecting..."}</span>
+        ):(
+          <>
+            {client?.walletAddress ?? "Not connected"}
+          </>
+        )}
+      </div>
+      {/* User Status bar */}
+      <div className={`h-[8%] text-sm w-full block text-center items-center overflow-hidden text-ellipsis px-8`}>
+          <span>Randdrop not yet live</span>
+      </div>
+      {/* Claim Info*/}
+      <div className="h-[44%] flex justify-center items-center ">
+        <div className="w-full h-full flex flex-col justify-start items-center gap-y-4 pb-10 text-sm">
+          Coming soon...
+        </div>
+      </div>
+    </div>
+  )
+}
+
+
+export const LiveChainCard = ({
   chain,
   chainStatus,
   refetch,
@@ -232,7 +318,7 @@ export const ClaimInfo = ({
         toast.dismiss();
         refetch();
         toast.success(`Dice are rolling!`);
-        toast.success(`Check back in a few minutes to view your result`);
+        toast.success(`Check back in a few seconds to view your result`);
       }).catch((e) => {
         toast.dismiss();
         console.log(e);
@@ -321,6 +407,7 @@ export const ClaimInfo = ({
     }
   }
 }
+
 
 const mockChainRes = {
   address: "slfjslafjaslkdfjs",

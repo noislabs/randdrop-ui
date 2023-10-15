@@ -13,6 +13,16 @@ import { ChainCard } from '../components/chainCards'
 import { WalletConnectModal } from '../components/connectWalletModal'
 import { useAllMultiClients } from '../contexts/userClients'
 import { routeNewTab } from '../services/misc';
+import { ChainType } from './api/check';
+
+// Config for live / not live randdrop chains
+export const AirdropLiveStatus: { [K in ChainType]: boolean } = {
+  "injective": false,
+  "juno": false,
+  "uni": false,
+  "stargaze": false,
+  "aura": true
+};
 
 const Home: NextPage = () => {
 
@@ -43,7 +53,7 @@ const Home: NextPage = () => {
     ["uni", uniClient?.walletAddress],
     () => fetchUserStatus({walletAddr: uniClient!.walletAddress, chain: "uni"}),
     {
-      enabled: !!uniClient,
+      enabled: !!(uniClient && AirdropLiveStatus["uni"]),
       refetchInterval: (data) => {
         if (data && data.userStatus === "waiting_randomness") {
           return 1_000;
@@ -63,7 +73,7 @@ const Home: NextPage = () => {
     ["juno", junoClient?.walletAddress],
     () => fetchUserStatus({walletAddr: junoClient!.walletAddress, chain: "juno"}),
     {
-      enabled: !!junoClient,
+      enabled: !!(junoClient && AirdropLiveStatus["juno"]),
       refetchInterval: (data) => {
         if (data && data.userStatus === "waiting_randomness") {
           return 1_000;
@@ -83,7 +93,7 @@ const Home: NextPage = () => {
     ["injective", injectiveClient?.walletAddress],
     () => fetchUserStatus({walletAddr: injectiveClient!.walletAddress, chain: "injective"}),
     {
-      enabled: !!injectiveClient,
+      enabled: !!(injectiveClient && AirdropLiveStatus["injective"]),
       refetchInterval: (data) => {
         if (data && data.userStatus === "waiting_randomness") {
           return 1_000;
@@ -103,7 +113,7 @@ const Home: NextPage = () => {
     ["aura", auraClient?.walletAddress],
     () => fetchUserStatus({walletAddr: auraClient!.walletAddress, chain: "aura"}),
     {
-      enabled: !!auraClient,
+      enabled: !!(auraClient && AirdropLiveStatus["aura"]),
       refetchInterval: (data) => {
         if (data && data.userStatus === "waiting_randomness") {
           return 1_000;
@@ -123,7 +133,7 @@ const Home: NextPage = () => {
     ["stargaze", stargazeClient?.walletAddress],
     () => fetchUserStatus({walletAddr: stargazeClient!.walletAddress, chain: "stargaze"}),
     {
-      enabled: !!stargazeClient,
+      enabled: !!(stargazeClient && AirdropLiveStatus["stargaze"]),
       refetchInterval: (data) => {
         if (data && data.userStatus === "waiting_randomness") {
           return 1_000;
