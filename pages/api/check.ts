@@ -133,11 +133,11 @@ const AirdropRegistry = {
     "contract": 'stars1yz42c7muydtk30zwkp83psfl5svcvj0gact380c7e9gdhxp36cws9mep38'
   },
   "aura": {
-    // mainnet URL
-    //"url": 'https://gist.githubusercontent.com/kaisbaccour/edf03e2486d1f6a609e2d8918cfcb4a9/raw/99ce180cc8e082615d0c010e0192d3d829693c48/aura-randdrop.json',
     // Testnet added oct 12th ish
-    "url": 'https://gist.githubusercontent.com/kaisbaccour/05b6dda6672a6b9c7beaf6198006a4c2/raw/11cbf1f49dba15bfd07f61ea4430392f556441d0/gistfile1.json',
-    "contract": 'aura1qg8s33v8qm5xjwg4p9hnt4hjhz5tjse8vpjgdaurmefmm5hyfrqsgvpj0y'
+    //"url": 'https://gist.githubusercontent.com/kaisbaccour/05b6dda6672a6b9c7beaf6198006a4c2/raw/11cbf1f49dba15bfd07f61ea4430392f556441d0/gistfile1.json',
+    // Updated mainnet addresss Oct 24th
+    "url": 'https://gist.githubusercontent.com/kaisbaccour/edf03e2486d1f6a609e2d8918cfcb4a9/raw/99ce180cc8e082615d0c010e0192d3d829693c48/aura-randdrop.json',
+    "contract": 'aura10j89kvjt6p33q3q2pyrvmp0q50chlm5jtvsum3cvsfv0jg8u7p2s62a35w'
   }
 }
 
@@ -165,7 +165,7 @@ const ifEligibleGetProof = async (addr: string, chain: ChainType) => {
   const userDrop = chainData.find((obj) => obj.address === addr);
 
   if (!userDrop) {
-    console.log(`${addr} not eligible for ${chain} | Gist lookup not found`)
+    console.log(`${addr} not eligible for ${chain} | Address not found in Gist lookup`)
     return undefined;
   } else {
     // Address found, generate proof & return it
