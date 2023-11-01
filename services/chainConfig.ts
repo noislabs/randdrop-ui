@@ -27,9 +27,9 @@ export const getChainConfig = (chain: ChainType) => {
     }
     case "aura": {
       //testnet
-      return auraTestnetChainConfig;
+      //return auraTestnetChainConfig;
       //mainnet
-      //return auraChainConfig;
+      return auraChainConfig;
     }
   }
 };
