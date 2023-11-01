@@ -100,12 +100,12 @@ export const WalletConnectModal = () => {
       </button>
       {isOpen && (
         <div className="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+          <div className="flex items-center md:items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             {/* Backdrop */}
             <div onClick={handleCloseModal} className="fixed inset-0 bg-black/50 transition-opacity" aria-hidden="true"/>
             {/* 0 widdthspace to keep modal centered */}
             <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div ref={modalRef} className="inline-block h-[60vh] alin-bottom rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div ref={modalRef} className="inline-block h-[60vh] w-[90vw] rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
               <div className="bxg-gray-950 bg-neutral-900 brightness-110 pt-2 pb-2 h-full flex flex-col px-4 pt-5pb-4sm:p-6sm:pb-4">
                 <div className="w-full flex justify-between items-center">
                   <div className="text-lg px-1 font-thin text-nois-white/40" id="modal-title">
@@ -118,12 +118,12 @@ export const WalletConnectModal = () => {
                 <div className="grid grid-rows-3 h-full py-2 gap-y-2">
                   <div
                     onClick={() => handleCheck("keplr")}
-                    className={`row-span-1 h-full py-1 flex justify-start rounded-lg hover:cursor-pointer ${checked === "keplr" ? 
+                    className={`row-span-1 h-full py-1 flex justify-center md:justify-start rounded-lg hover:cursor-pointer ${checked === "keplr" ? 
                       "bg-black/80 text-nois-light-green" : 
                       "bg-black/20 hover:bg-black/50 text-nois-white/30 hover:text-nois-white/60"}`}
                   >
-                    <div className="basis-1/3 h-full flex justify-center p-2">
-                      <div className="relative aspect-square ">
+                    <div className="basis-0 md:basis-1/3 h-full hidden md:flex justify-center p-2">
+                      <div className="relative aspect-square">
                         <NextImage
                           src={KEPLR_LOGO}
                           alt={`keplr_logo`}
@@ -134,7 +134,7 @@ export const WalletConnectModal = () => {
                         />
                       </div>
                     </div>
-                    <div className="basis-2/3 flex justify-between pr-8 items-center gap-x-2 text-2xl font-semibold">
+                    <div className="basis-3/3 md:basis-2/3 flex justify-evenly w-full md:justify-between pr-0 md:pr-8 items-center gap-x-2 text-2xl font-semibold">
                       <span>
                         Keplr Wallet
                       </span>
@@ -143,11 +143,11 @@ export const WalletConnectModal = () => {
                   </div>
                   <div
                     onClick={() => handleCheck("leap")}
-                    className={`row-span-1 h-full py-1 flex justify-start rounded-lg hover:cursor-pointer ${checked === "leap" ? 
+                    className={`row-span-1 h-full py-1 flex justify-center md:justify-start rounded-lg hover:cursor-pointer ${checked === "leap" ? 
                       "bg-black/80 text-nois-light-green" : 
                       "bg-black/20 hover:bg-black/50 text-nois-white/30 hover:text-nois-white/60"}`}
                   >
-                    <div className="basis-1/3 h-full flex justify-center p-2">
+                    <div className="basis-0 md:basis-1/3 h-full hidden md:flex justify-center p-2">
                       <div className="relative aspect-square">
                         <NextImage
                           src={LEAP_LOGO}
@@ -159,7 +159,7 @@ export const WalletConnectModal = () => {
                         />
                       </div>
                     </div>
-                    <div className="basis-2/3 flex justify-between pr-8 items-center gap-x-2 text-2xl font-semibold">
+                    <div className="basis-3/3 md:basis-2/3 flex justify-evenly w-full md:justify-between pr-0 md:pr-8 items-center gap-x-2 text-2xl font-semibold">
                       <span>
                         Leap Wallet
                       </span>
@@ -168,12 +168,12 @@ export const WalletConnectModal = () => {
                   </div>
                   <div
                     onClick={() => handleCheck("ledger")}
-                    className={`row-span-1 h-full py-1 flex justify-start rounded-lg hover:cursor-pointer ${checked === "ledger" ? 
+                    className={`row-span-1 h-full py-1 flex justify-center md:justify-start rounded-lg hover:cursor-pointer ${checked === "ledger" ? 
                       "bg-black/80 text-nois-light-green" : 
                       "bg-black/20 hover:bg-black/50 text-nois-white/30 hover:text-nois-white/60"}`}
                   >
-                    <div className="basis-1/3 h-full flex justify-center p-2">
-                      <div className="relative aspect-square ">
+                    <div className="basis-0 md:basis-1/3 h-full hidden md:flex justify-center p-2">
+                      <div className="relative aspect-square">
                         <NextImage
                           src={LEDGER_LOGO}
                           alt={`ledger_logo`}
@@ -184,7 +184,7 @@ export const WalletConnectModal = () => {
                         />
                       </div>
                     </div>
-                    <div className="basis-2/3 flex justify-between pr-8 items-center gap-x-2 text-2xl font-semibold">
+                    <div className="basis-3/3 md:basis-2/3 flex justify-evenly w-full md:justify-between pr-0 md:pr-8 items-center gap-x-2 text-2xl font-semibold">
                       <span>
                         Ledger USB
                       </span>

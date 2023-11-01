@@ -157,7 +157,7 @@ const Home: NextPage = () => {
         <div className="flex justify-between h-[15vh] px-12 w-full border-b border-nois-white/10 ">
           <div
             onClick={() => routeNewTab("https://twitter.com/NoisRNG")}
-            className="hidden md:flex md:relative overflow-hidden hover:cursor-pointer ">
+            className="flex md:relative overflow-hidden hover:cursor-pointer ">
             <Image
               src={noisLogo}
               alt="Nois"
@@ -166,7 +166,7 @@ const Home: NextPage = () => {
               style={{ objectFit: 'contain' }}
             />
           </div>
-          <div className="h-full w-full md:w-auto flex justify-center items-center gap-x-4 md:pr-8">
+          <div className="h-full w-full md:w-auto hidden md:flex justify-center items-center gap-x-4 md:pr-8">
             <div className={`${nickname == "" ? "hidden" : "text-nois-light-green/60 text-sm"}`}>
               {`${nickname}`}
             </div>
@@ -183,8 +183,10 @@ const Home: NextPage = () => {
                 {'Welcome to the Nois Randdrop!'}
               </span>
               <div className="flex justify-center items-start w-full h-4/5 py-14">
-                <div className="flex justify-center items-center gap-x-2">
-                  <WalletConnectModal />
+                <div className="flex-col md:flex justify-center items-center gap-x-2 gap-y-2">
+                  <div className="w-full flex justify-center">
+                    <WalletConnectModal />
+                  </div>
                   <div className="">
                     {`to see if you're eligible for some $NOIS tokens!`}
                   </div>
