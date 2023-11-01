@@ -22,7 +22,6 @@ const BridgeLinks = {
   "aura": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=xstaxy-1&token0=ibc%2F1FD48481DAA1B05575FE6D3E35929264437B8424A73243B207BCB67401C7F1FD&token1=unois"
 }
 
-
 export const ChainCard = (props:{
   chain: ChainType;
   chainStatus: string;
@@ -31,6 +30,7 @@ export const ChainCard = (props:{
   checkResponse: CheckResponse | undefined;
   walletLoading: boolean;
 }) => {
+
   if (AirdropLiveStatus[props.chain] === true) {
     return <LiveChainCard {...props} />
   } else {
@@ -68,9 +68,9 @@ export const PausedChainCard = ({
   }, [chain]);
 
   return (
-    <div className="row-span-1 lg:col-span-1 lg:row-span-4 flex flex-col text-gray-500">
+    <div className="row-span-1 lg:col-span-1 lg:row-span-4 flex flex-col gap-y-4 md:gap-y-0 text-gray-500">
       {/* Image */}
-      <div className="h-[40%] flex justify-center p-1">
+      <div className="h-[40%] flex justify-center p-0 md:p-1">
         <div className="relative aspect-square ">
           <NextImage
             src={logo}
@@ -83,7 +83,7 @@ export const PausedChainCard = ({
         </div>
       </div>
       {/* Wallet Address */}
-      <div className="h-[8%] w-full block text-center items-center text-sm font-mono overflow-hidden text-ellipsis py-2 px-8">
+      <div className="hidden h-[8%] w-full md:block text-center items-center text-sm font-mono md:overflow-hidden text-ellipsis py-2 md:px-8">
         {!client && walletLoading ? (
           <span className="animate-pulse text-base">{"Connecting..."}</span>
         ):(
@@ -93,11 +93,11 @@ export const PausedChainCard = ({
         )}
       </div>
       {/* User Status bar */}
-      <div className={`h-[8%] text-sm w-full block text-center items-center overflow-hidden text-ellipsis px-8`}>
+      <div className={`h-[8%] text-sm w-full block text-center items-center md:overflow-hidden text-ellipsis md:px-8`}>
           <span>Randdrop not yet live</span>
       </div>
       {/* Claim Info*/}
-      <div className="h-[44%] flex justify-center items-center ">
+      <div className="hidden h-[44%] md:flex justify-center items-center ">
         <div className="w-full h-full flex flex-col justify-start items-center gap-y-4 pb-10 text-sm">
           Coming soon...
         </div>
@@ -196,9 +196,9 @@ export const LiveChainCard = ({
 
 
   return (
-    <div className="row-span-1 lg:col-span-1 lg:row-span-4 flex flex-col">
+    <div className="row-span-1 lg:col-span-1 lg:row-span-4 flex flex-col gap-y-4 md:gap-y-0">
       {/* Image */}
-      <div className="h-[40%] flex justify-center p-1">
+      <div className="h-[40%] flex justify-center p-0 md:p-1">
         <div className="relative aspect-square ">
           <NextImage
             src={logo}
@@ -211,7 +211,7 @@ export const LiveChainCard = ({
         </div>
       </div>
       {/* Wallet Address */}
-      <div className="h-[8%] w-full block text-center items-center text-nois-white/50 text-sm font-mono overflow-hidden text-ellipsis py-2 px-8">
+      <div className="h-[8%] w-full block text-center items-center text-nois-white/50 text-sm font-mono md:overflow-hidden text-ellipsis py-2 md:px-8">
         {!client && walletLoading ? (
           <span className="animate-pulse text-nois-white/40 text-base">{"Connecting..."}</span>
         ):(
@@ -221,7 +221,7 @@ export const LiveChainCard = ({
         )}
       </div>
       {/* User Status bar */}
-      <div className={`h-[8%] ${titleClassName} w-full block text-center items-center overflow-hidden text-ellipsis px-8`}>
+      <div className={`h-[8%] ${titleClassName} w-full block text-center items-center md:overflow-hidden text-ellipsis md:px-8`}>
         {!client ? (
           <span className="animate-pulse text-nois-white/40 text-lg tracking-widest">{"..."}</span>
         ):(
