@@ -54,7 +54,7 @@ export async function getKeplr(): Promise<Keplr> {
   }
 
   if (!gotKeplr) throw new Error("Keplr not found");
-  if (!gotKeplr) keplr = gotKeplr;
+  keplr = gotKeplr;
 
   return gotKeplr;
 }
@@ -85,7 +85,7 @@ export async function getLeap(): Promise<Keplr> {
   }
 
   if (!gotLeap) throw new Error("Leap not found");
-  if (!gotLeap) leap = gotLeap;
+  leap = gotLeap;
 
   return gotLeap;
 }
