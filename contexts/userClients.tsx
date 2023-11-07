@@ -207,7 +207,7 @@ const getKeplrClient = async (chain: ChainType) => {
   let chainInfo = getChainConfig(chain);
   await keplr.experimentalSuggestChain(chainInfo);
   await keplr.enable(chainInfo.chainId);
-  const offlineSigner = keplr.getOfflineSigner(chainInfo.chainId);
+  const offlineSigner = keplr.getOfflineSignerOnlyAmino(chainInfo.chainId);
   const client = await SigningCosmWasmClient.connectWithSigner(
     chainInfo.rpc,
     offlineSigner,
@@ -237,7 +237,7 @@ const getLeapClient = async (chain: ChainType) => {
   let chainInfo = getChainConfig(chain);
   await leap.experimentalSuggestChain(chainInfo);
   await leap.enable(chainInfo.chainId);
-  const offlineSigner = leap.getOfflineSigner(chainInfo.chainId);
+  const offlineSigner = leap.getOfflineSignerOnlyAmino(chainInfo.chainId);
   const client = await SigningCosmWasmClient.connectWithSigner(
     chainInfo.rpc,
     offlineSigner,
