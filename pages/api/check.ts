@@ -121,7 +121,7 @@ const AirdropRegistry = {
   },
   "juno": {
     "url": 'https://gist.githubusercontent.com/kaisbaccour/5a2f102ef476d533a3112b016aa45db4/raw/aa94b4d6682536ac518d1e98367b6bbc0eac5740/juno-randdrop.json',
-    "contract": 'juno14v4rkefdr6zv2yvtgrscpjpe73lqz4qy809v6h4lwkdhl090frzq2ew57x'
+    "contract": 'juno1tqv6032656485dtvs3p65t4ze6yf4f6rmej8yc3mj7xqem60elesh3en96'
   },
   "injective": {
     "url": 'https://gist.githubusercontent.com/LeTurt333/8e4693159e770820c2cf60b15f7c830f/raw/971ffb4b33cdf5a2632ee1da858d64bf1a50d459/mock_inj_randdrop.json',

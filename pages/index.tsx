@@ -18,7 +18,7 @@ import { ChainType, CheckResponse } from './api/check';
 // Config for live / not live randdrop chains
 export const AirdropLiveStatus: { [K in ChainType]: boolean } = {
   "injective": false,
-  "juno": false,
+  "juno": true,
   "uni": false,
   "stargaze": false,
   "aura": true
@@ -147,7 +147,7 @@ const Home: NextPage = () => {
   return (
     <div className="flex flex-col min-h-screen md:h-screen p-2 bg-nois-blue text-nois-white/90">
       <Head>
-        <title>Nois Rand-drop Checker</title>
+        <title>Nois Randdrop Checker</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -194,8 +194,8 @@ const Home: NextPage = () => {
             </div>
           ):(
             <div className="bg-red-800/0 w-full overflow-y-auto md:h-full grid grid-rows-4 lg:grid-cols-4 lg:px-8 lg:py-4">
-              <ChainCard chain='uni' chainStatus={`${uniStatus}_${uniFetchStatus}`} refetch={uniRefetch} client={uniClient} checkResponse={uniData} walletLoading={walletLoading}/>
-              {/* <ChainCard chain='juno' chainStatus={`${junoStatus}_${junoFetchStatus}`} refetch={junoRefetch} client={junoClient} checkResponse={junoData} walletLoading={walletLoading}/> */}
+              {/* <ChainCard chain='uni' chainStatus={`${uniStatus}_${uniFetchStatus}`} refetch={uniRefetch} client={uniClient} checkResponse={uniData} walletLoading={walletLoading}/> */}
+              <ChainCard chain='juno' chainStatus={`${junoStatus}_${junoFetchStatus}`} refetch={junoRefetch} client={junoClient} checkResponse={junoData} walletLoading={walletLoading}/>
               <ChainCard chain='injective' chainStatus={`${injectiveStatus}_${injectiveFetchStatus}`} refetch={injectiveRefetch} client={injectiveClient} checkResponse={injectiveData} walletLoading={walletLoading}/>
               <ChainCard chain='aura' chainStatus={`${auraStatus}_${auraFetchStatus}`} refetch={auraRefetch} client={auraClient} checkResponse={auraData} walletLoading={walletLoading}/>
               <ChainCard chain='stargaze' chainStatus={`${stargazeStatus}_${stargazeFetchStatus}`} refetch={stargazeRefetch} client={stargazeClient} checkResponse={stargazeData} walletLoading={walletLoading}/>
