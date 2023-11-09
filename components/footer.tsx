@@ -2,7 +2,9 @@ export const NoisFooter = () => {
   return (
     <footer className="relative flex h-[15vh] w-full items-center justify-between px-2 md:px-6 lg:px-24">
       <div className="text-sm px-4 md:px-0 text-left text-nois-white/80">
-        {`*Eligible users have a 1/3 chance of winning`}
+        {`*Eligible users have a 1/3 chance of winning.`}
+        <br></br>
+        {`Nois is a blockchain that provides reliable randomness to the rest of the blockchains via IBC`}
       </div>
       <div className="flex gap-x-6 px-4 md:px-0">
       <a
