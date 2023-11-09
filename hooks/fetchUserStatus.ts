@@ -9,6 +9,8 @@ export const fetchUserStatus = async ({
   chain: string;
 }) => {
 
+  console.log(`Fetching for ${chain}`);
+
   try {
     const validateChain = ChainType.safeParse(chain);
     if (!validateChain.success) {
