@@ -158,7 +158,11 @@ const ifEligibleGetProof = async (addr: string, chain: ChainType) => {
   }
 
   // Fetch list
-  const randDropData = await fetch(entry.url);
+  const randDropData = await fetch(entry.url, {
+    headers: {
+      'Accept-Encoding': 'gzip, deflate'
+    }
+  });
   const chainData = await randDropData.json();
 
   // Find address
