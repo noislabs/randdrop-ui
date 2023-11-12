@@ -130,7 +130,7 @@ const AirdropRegistry = {
   },
   "stargaze": {
     "url": 'https://gist.githubusercontent.com/kaisbaccour/ac8002e0329b4f54407e702c5dc4aa47/raw/1c8a75bdabf3dc04f77ed0d2c1cefedbba4fa060/stargaze-randdrop.json',
-    "contract": 'stars1yz42c7muydtk30zwkp83psfl5svcvj0gact380c7e9gdhxp36cws9mep38'
+    "contract": 'stars1e4df5ydrwv7cyeg8se9ujmsmmkhgeq5ynq4ukvt8pt0glptpd27sq3d20e'
   },
   "aura": {
     // Testnet added oct 12th ish
