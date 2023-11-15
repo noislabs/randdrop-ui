@@ -15,7 +15,7 @@ export const getChainConfig = (chain: ChainType) => {
     }
     case "stargaze": {
       //testnet
-      return elgafarChainConfig;
+      return stargazeChainConfig;
       //mainnet
       //return stargazeChainConfig;
     }
@@ -132,53 +132,6 @@ export const injective888ChainConfig: ChainInfo = {
   features: ["eth-address-gen", "eth-key-sign"],
 };
 
-// Stargaze Testnet (elgafar-1)
-export const elgafarChainConfig: ChainInfo = {
-  chainId: "elgafar-1",
-  chainName: "stargazetestnet",
-  rpc: "https://rpc.elgafar-1.stargaze-apis.com",
-  rest: "https://rest.elgafar-1.stargaze-apis.com",
-  // chainId: "stargaze-1",
-  // chainName: "stargaze",
-  // rpc: "https://stargaze-rpc.polkachu.com",
-  // rest: "https://stargaze-api.polkachu.com",
-  bip44: {
-    coinType: 118,
-  },
-  bech32Config: {
-    bech32PrefixAccAddr: "stars",
-    bech32PrefixAccPub: "starspub",
-    bech32PrefixValAddr: "starsvaloper",
-    bech32PrefixValPub: "starsvaloperpub",
-    bech32PrefixConsAddr: "starsvalcons",
-    bech32PrefixConsPub: "starsvalconspub",
-  },
-  currencies: [
-    {
-      coinDenom: "STARS",
-      coinMinimalDenom: "ustars",
-      coinDecimals: 6,
-    },
-  ],
-  feeCurrencies: [
-    {
-      coinDenom: "STARS",
-      coinMinimalDenom: "ustars",
-      coinDecimals: 6,
-      gasPriceStep: {
-        low: 0.05,
-        average: 0.05,
-        high: 0.1,
-      },
-    },
-  ],
-  stakeCurrency: {
-    coinDenom: "STARS",
-    coinMinimalDenom: "ustars",
-    coinDecimals: 6,
-  },
-  features: [],
-};
 
 // Aura Testnet
 export const auraTestnetChainConfig: ChainInfo = {
@@ -369,8 +322,8 @@ export const injectiveChainConfig: ChainInfo = {
 export const stargazeChainConfig: ChainInfo = {
   chainId: "stargaze-1",
   chainName: "stargaze",
-  rpc: "https://stargaze-rpc.polkachu.com",
-  rest: "https://stargaze-api.polkachu.com",
+  rpc: "https://rpc.stargaze-apis.com:443",
+  rest: "https://rest.stargaze-apis.com:443",
   bip44: {
     coinType: 118,
   },

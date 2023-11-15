@@ -20,7 +20,7 @@ export const AirdropLiveStatus: { [K in ChainType]: boolean } = {
   "injective": false,
   "juno": true,
   "uni": false,
-  "stargaze": false,
+  "stargaze": true,
   "aura": true
 };
 
