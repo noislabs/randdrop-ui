@@ -21,7 +21,7 @@ export const getChainConfig = (chain: ChainType) => {
     }
     case "injective": {
       //testnet
-      return injective888ChainConfig;
+      return injectiveChainConfig;
       //mainnet
       //return injectiveChainConfig;
     }
