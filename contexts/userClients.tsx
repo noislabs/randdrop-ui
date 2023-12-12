@@ -375,6 +375,7 @@ const getMetamaskClient = async (chain: ChainType) => {
       throw new Error("Now accounts found")
     }
     
+    // Assumes account & address_index of 0
     const chainClient = {
       chain: chain,
       walletAddress: walletAddress[0],
