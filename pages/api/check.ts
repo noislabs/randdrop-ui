@@ -124,9 +124,9 @@ const AirdropRegistry = {
     "contract": 'juno1tqv6032656485dtvs3p65t4ze6yf4f6rmej8yc3mj7xqem60elesh3en96'
   },
   "injective": {
-    "url": 'https://gist.githubusercontent.com/LeTurt333/8e4693159e770820c2cf60b15f7c830f/raw/971ffb4b33cdf5a2632ee1da858d64bf1a50d459/mock_inj_randdrop.json',
+    "url": 'https://gist.githubusercontent.com/kaisbaccour/c26ede9d4219896bc03fb0fdfce310a3/raw/52320781cd31cb832b79883195ad0535af95b273/injective-randdrop.json',
     //"url": 'https://gist.githubusercontent.com/kaisbaccour/c26ede9d4219896bc03fb0fdfce310a3/raw/fa0825eb75607afad08ffb0fdead8567795150ad/injective-randdrop.json',
-    "contract": 'inj1076whk0ngxg64c950wwcvj0xpjg0mhw6xellz7'
+    "contract": 'inj17ryua25yypx7q58g3wxjwquvaz2vs8wmula59u'
   },
   "stargaze": {
     "url": 'https://gist.githubusercontent.com/kaisbaccour/ac8002e0329b4f54407e702c5dc4aa47/raw/1c8a75bdabf3dc04f77ed0d2c1cefedbba4fa060/stargaze-randdrop.json',

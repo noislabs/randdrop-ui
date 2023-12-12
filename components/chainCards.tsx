@@ -13,6 +13,7 @@ import { randdropClaimMsg } from '../services/contractTx'
 import { ethLedgerTxHelper } from '../services/ledgerHelpers';
 import { routeNewTab } from '../services/misc';
 import { AirdropLiveStatus } from '../pages';
+import { signSendAndBroadcastOnInjective } from '../services/injective';
 
 const BridgeLinks = {
   "injective": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=injective-1&token0=ibc%2FDD9182E8E2B13C89D6B4707C7B43E8DB6193F9FF486AFA0E6CF86B427B0D231A&token1=unois",
@@ -302,6 +303,28 @@ export const ClaimInfo = ({
         toast.error("Failure broadcasting transaction");
         toast.error(`Error: ${e}`);
       });
+    } else if (client.chain === "injective") {
+        toast.loading("Processing your request...");
+        signSendAndBroadcastOnInjective({
+          client,
+          wallet: client.walletType,
+          message: {
+            wallet: client.walletAddress,
+            contract: checkResponse.claim_contract ?? "x",
+            amount: checkResponse.amount,
+            proof: checkResponse.proof
+          },
+        }).then((r) => {
+          toast.dismiss();
+          refetch();
+          toast.success(`Dice are rolling!`);
+          toast.success(`Check back in a few seconds to view your result`);
+        }).catch((e) => {
+          toast.dismiss();
+          console.log(e);
+          toast.error(`Problem submitting transaction`)
+          toast.error(`Visit our Discord for assistance`);
+        });
     } else if (client.signingClient !== undefined) {
       toast.loading("Processing your request...");
       let msg = randdropClaimMsg({
@@ -407,17 +430,3 @@ export const ClaimInfo = ({
     }
   }
 }
-
-
-const mockChainRes = {
-  address: "slfjslafjaslkdfjs",
-  chain: "injective",
-  userStatus: "already_won",
-  //userStatus: "already_lost",
-  //userStatus: "waiting_randomness",
-  amount: "235322352",
-  proof: ["fj", "slfj"],
-  submitted_at: parseTimestamp("1689561497121000000"),
-  claimed_at: parseTimestamp("1689561503121000000"),
-  winning_amount: `${"234323523523523".slice(0, -6) + '.' + "234323523523523".slice(-6)}`
-} as CheckResponse;

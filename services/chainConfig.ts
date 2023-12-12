@@ -1,8 +1,8 @@
 import { Keplr, ChainInfo } from "@keplr-wallet/types";
 import { ChainType } from "../pages/api/check";
 
-/** 
- * - Returns chainConfig for `chain` 
+/**
+ * - Returns chainConfig for `chain`
  * - To change Testnet/Mainnet, swap out commented lines
  * */
 export const getChainConfig = (chain: ChainType) => {
@@ -21,9 +21,9 @@ export const getChainConfig = (chain: ChainType) => {
     }
     case "injective": {
       //testnet
-      return injective888ChainConfig;
+      // return injective888ChainConfig;
       //mainnet
-      //return injectiveChainConfig;
+      return injectiveChainConfig;
     }
     case "aura": {
       //testnet
@@ -36,7 +36,7 @@ export const getChainConfig = (chain: ChainType) => {
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Chain Infos 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Chain Infos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -60,7 +60,7 @@ export const uniChainConfig: ChainInfo = {
     bech32PrefixValAddr: "junovaloper",
     bech32PrefixValPub: "junovaloperpub",
     bech32PrefixConsAddr: "junovalcons",
-    bech32PrefixConsPub: "junovalconspub"
+    bech32PrefixConsPub: "junovalconspub",
   },
   currencies: [
     {
@@ -86,7 +86,7 @@ export const uniChainConfig: ChainInfo = {
     coinMinimalDenom: "ujunox",
     coinDecimals: 6,
   },
-  features: []
+  features: [],
 };
 // Injective Testnet (injective-888)
 export const injective888ChainConfig: ChainInfo = {
@@ -132,7 +132,6 @@ export const injective888ChainConfig: ChainInfo = {
   features: ["eth-address-gen", "eth-key-sign"],
 };
 
-
 // Aura Testnet
 export const auraTestnetChainConfig: ChainInfo = {
   chainId: "euphoria-2",
@@ -166,7 +165,7 @@ export const auraTestnetChainConfig: ChainInfo = {
       gasPriceStep: {
         low: 0.001,
         average: 0.0025,
-        high: 0.004
+        high: 0.004,
       },
     },
   ],
@@ -177,8 +176,6 @@ export const auraTestnetChainConfig: ChainInfo = {
   },
   features: [],
 };
-
-
 
 // Nois Testnet
 export const noistestnetChainConfig: ChainInfo = {
@@ -245,7 +242,7 @@ export const junoChainConfig: ChainInfo = {
     bech32PrefixValAddr: "junovaloper",
     bech32PrefixValPub: "junovaloperpub",
     bech32PrefixConsAddr: "junovalcons",
-    bech32PrefixConsPub: "junovalconspub"
+    bech32PrefixConsPub: "junovalconspub",
   },
   currencies: [
     {
@@ -260,10 +257,10 @@ export const junoChainConfig: ChainInfo = {
       coinMinimalDenom: "ujuno",
       coinDecimals: 6,
       gasPriceStep: {
-        "low": 0.075,
-        "average": 0.075,
-        "high": 0.075
-      }
+        low: 0.075,
+        average: 0.075,
+        high: 0.075,
+      },
     },
   ],
   stakeCurrency: {
@@ -271,7 +268,7 @@ export const junoChainConfig: ChainInfo = {
     coinMinimalDenom: "ujuno",
     coinDecimals: 6,
   },
-  features: []
+  features: [],
 };
 
 // Injective Mainnet
@@ -395,7 +392,7 @@ export const auraChainConfig: ChainInfo = {
       gasPriceStep: {
         low: 0.001,
         average: 0.0025,
-        high: 0.004
+        high: 0.004,
       },
     },
   ],

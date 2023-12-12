@@ -3,12 +3,11 @@ import { ChainType, CheckResponse } from "../pages/api/check";
 // Not a hook but seems like a good place to put this
 export const fetchUserStatus = async ({
   walletAddr,
-  chain
-}:{
+  chain,
+}: {
   walletAddr: string;
   chain: string;
 }) => {
-
   console.log(`Fetching for ${chain}`);
 
   try {
@@ -16,17 +15,18 @@ export const fetchUserStatus = async ({
     if (!validateChain.success) {
       throw new Error("Invalid chain");
     }
+
     const queryParams = new URLSearchParams({
       address: walletAddr,
-      chain: validateChain.data
+      chain: validateChain.data,
     }).toString();
 
     const res = await fetch(`/api/check?${queryParams}`, {
       method: "GET",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      cache: 'no-store'
+      cache: "no-store",
     });
     const resData = await res.json();
 
@@ -38,8 +38,8 @@ export const fetchUserStatus = async ({
       throw new Error("Invalid response from server");
     }
     return vres.data;
-  } catch(e) {
+  } catch (e) {
     console.log(e);
     throw new Error(`${e}`);
   }
-}
+};
