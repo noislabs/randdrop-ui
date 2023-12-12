@@ -27,6 +27,7 @@ export const AirdropLiveStatus: { [K in ChainType]: boolean } = {
 const Home: NextPage = () => {
 
   const {
+    walletType,
     uniClient,
     junoClient,
     injectiveClient,
@@ -37,7 +38,7 @@ const Home: NextPage = () => {
     handleConnectAll,
     disconnectAll
   } = useAllMultiClients();
-  
+
   // True if any client is connected
   const walletIsConnected = useMemo(() => {
     return !(!uniClient && !junoClient && !injectiveClient && !auraClient && !stargazeClient)
@@ -51,7 +52,7 @@ const Home: NextPage = () => {
     refetch: uniRefetch
   } = useQuery(
     ["uni", uniClient?.walletAddress],
-    () => fetchUserStatus({walletAddr: uniClient!.walletAddress, chain: "uni"}),
+    () => fetchUserStatus({ walletAddr: uniClient!.walletAddress, chain: "uni" }),
     {
       enabled: !!(uniClient && AirdropLiveStatus["uni"]),
       refetchInterval: (data) => {
@@ -71,7 +72,7 @@ const Home: NextPage = () => {
     refetch: junoRefetch
   } = useQuery(
     ["juno", junoClient?.walletAddress],
-    () => fetchUserStatus({walletAddr: junoClient!.walletAddress, chain: "juno"}),
+    () => fetchUserStatus({ walletAddr: junoClient!.walletAddress, chain: "juno" }),
     {
       enabled: !!(junoClient && AirdropLiveStatus["juno"]),
       refetchInterval: (data) => {
@@ -91,7 +92,7 @@ const Home: NextPage = () => {
     refetch: injectiveRefetch
   } = useQuery(
     ["injective", injectiveClient?.walletAddress],
-    () => fetchUserStatus({walletAddr: injectiveClient!.walletAddress, chain: "injective"}),
+    () => fetchUserStatus({ walletAddr: injectiveClient!.walletAddress, chain: "injective" }),
     {
       enabled: !!(injectiveClient && AirdropLiveStatus["injective"]),
       refetchInterval: (data) => {
@@ -111,7 +112,7 @@ const Home: NextPage = () => {
     refetch: auraRefetch
   } = useQuery(
     ["aura", auraClient?.walletAddress],
-    () => fetchUserStatus({walletAddr: auraClient!.walletAddress, chain: "aura"}),
+    () => fetchUserStatus({ walletAddr: auraClient!.walletAddress, chain: "aura" }),
     {
       enabled: !!(auraClient && AirdropLiveStatus["aura"]),
       refetchInterval: (data) => {
@@ -131,7 +132,7 @@ const Home: NextPage = () => {
     refetch: stargazeRefetch
   } = useQuery(
     ["stargaze", stargazeClient?.walletAddress],
-    () => fetchUserStatus({walletAddr: stargazeClient!.walletAddress, chain: "stargaze"}),
+    () => fetchUserStatus({ walletAddr: stargazeClient!.walletAddress, chain: "stargaze" }),
     {
       enabled: !!(stargazeClient && AirdropLiveStatus["stargaze"]),
       refetchInterval: (data) => {
@@ -192,19 +193,29 @@ const Home: NextPage = () => {
                 </div>
               </div>
             </div>
-          ):(
+          ) : (
             <div className="bg-red-800/0 w-full overflow-y-auto md:h-full grid grid-rows-4 lg:grid-cols-4 lg:px-8 lg:py-4">
               {/* <ChainCard chain='uni' chainStatus={`${uniStatus}_${uniFetchStatus}`} refetch={uniRefetch} client={uniClient} checkResponse={uniData} walletLoading={walletLoading}/> */}
-              <ChainCard chain='juno' chainStatus={`${junoStatus}_${junoFetchStatus}`} refetch={junoRefetch} client={junoClient} checkResponse={junoData} walletLoading={walletLoading}/>
-              <ChainCard chain='injective' chainStatus={`${injectiveStatus}_${injectiveFetchStatus}`} refetch={injectiveRefetch} client={injectiveClient} checkResponse={injectiveData} walletLoading={walletLoading}/>
-              <ChainCard chain='aura' chainStatus={`${auraStatus}_${auraFetchStatus}`} refetch={auraRefetch} client={auraClient} checkResponse={auraData} walletLoading={walletLoading}/>
-              <ChainCard chain='stargaze' chainStatus={`${stargazeStatus}_${stargazeFetchStatus}`} refetch={stargazeRefetch} client={stargazeClient} checkResponse={stargazeData} walletLoading={walletLoading}/>
+              {
+                (
+                  walletType === 'metamask' ? (
+                    <ChainCard chain='injective' chainStatus={`${injectiveStatus}_${injectiveFetchStatus}`} refetch={injectiveRefetch} client={injectiveClient} checkResponse={injectiveData} walletLoading={walletLoading} />
+                  ) : (
+                    <>
+                      <ChainCard chain='juno' chainStatus={`${junoStatus}_${junoFetchStatus}`} refetch={junoRefetch} client={junoClient} checkResponse={junoData} walletLoading={walletLoading} />
+                      <ChainCard chain='injective' chainStatus={`${injectiveStatus}_${injectiveFetchStatus}`} refetch={injectiveRefetch} client={injectiveClient} checkResponse={injectiveData} walletLoading={walletLoading} />
+                      <ChainCard chain='aura' chainStatus={`${auraStatus}_${auraFetchStatus}`} refetch={auraRefetch} client={auraClient} checkResponse={auraData} walletLoading={walletLoading} />
+                      <ChainCard chain='stargaze' chainStatus={`${stargazeStatus}_${stargazeFetchStatus}`} refetch={stargazeRefetch} client={stargazeClient} checkResponse={stargazeData} walletLoading={walletLoading} />
+                    </>
+                  )
+                )
+              }
             </div>
           )}
         </div>
 
       </main>
-      <NoisFooter/>
+      <NoisFooter />
     </div>
   )
 }
@@ -223,7 +234,7 @@ const Home: NextPage = () => {
 //     handleConnectAll,
 //     disconnectAll
 //   } = useAllMultiClients();
-  
+
 //   // True if any client is connected
 //   const walletIsConnected = useMemo(() => {
 //     return !(!uniClient && !junoClient && !injectiveClient && !auraClient && !stargazeClient)

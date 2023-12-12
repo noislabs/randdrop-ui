@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect, useContext, useMemo, useCallback } 
 import LEDGER_LOGO from "../public/LEDGER_LOGO.jpg";
 import KEPLR_LOGO from "../public/KEPLR_LOGO.png";
 import LEAP_LOGO from "../public/LEAP_LOGO.png";
+import METAMASK_LOGO from "../public/METAMASK_LOGO.png";
 import NextImage from "next/image";
 import { 
   useAllMultiClients 
@@ -189,6 +190,31 @@ export const WalletConnectModal = () => {
                         Ledger USB
                       </span>
                       {checked === "ledger" ? <CheckedBox/> : <UncheckedBox/>}
+                    </div>
+                  </div>
+                  <div
+                    onClick={() => handleCheck("metamask")}
+                    className={`row-span-1 h-full py-1 flex justify-center md:justify-start rounded-lg hover:cursor-pointer ${checked === "ledger" ? 
+                      "bg-black/80 text-nois-light-green" : 
+                      "bg-black/20 hover:bg-black/50 text-nois-white/30 hover:text-nois-white/60"}`}
+                  >
+                    <div className="basis-0 md:basis-1/3 h-full hidden md:flex justify-center p-2">
+                      <div className="relative aspect-square">
+                        <NextImage
+                          src={METAMASK_LOGO}
+                          alt={`metamask_logo`}
+                          unoptimized
+                          object-fit="cover"
+                          width={150}
+                          className={`border border-nois-white/50 ${checked !== "metamask" && "saturdate-50 grayscale brightness-[0.3]"}`}
+                        />
+                      </div>
+                    </div>
+                    <div className="basis-3/3 md:basis-2/3 flex justify-evenly w-full md:justify-between pr-0 md:pr-8 items-center gap-x-2 text-2xl font-semibold">
+                      <span>
+                        Metamask
+                      </span>
+                      {checked === "metamask" ? <CheckedBox/> : <UncheckedBox/>}
                     </div>
                   </div>
                 </div>
