@@ -124,7 +124,7 @@ const AirdropRegistry = {
     "contract": 'juno1tqv6032656485dtvs3p65t4ze6yf4f6rmej8yc3mj7xqem60elesh3en96'
   },
   "injective": {
-    "url": 'https://gist.githubusercontent.com/kaisbaccour/c26ede9d4219896bc03fb0fdfce310a3/raw/52320781cd31cb832b79883195ad0535af95b273/injective-randdrop.json',
+    "url": 'https://raw.githubusercontent.com/noislabs/randdrop-snapshots/v0.2.1/injective-randdrop-1.json',
     //"url": 'https://gist.githubusercontent.com/kaisbaccour/c26ede9d4219896bc03fb0fdfce310a3/raw/fa0825eb75607afad08ffb0fdead8567795150ad/injective-randdrop.json',
     "contract": 'inj17ryua25yypx7q58g3wxjwquvaz2vs8wmula59u'
   },
