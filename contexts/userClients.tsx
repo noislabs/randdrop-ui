@@ -14,7 +14,7 @@ import { makeCosmosPath } from "../services/ledgerHelpers";
 import EthereumApp from "@ledgerhq/hw-app-eth";
 import Web3 from 'web3';
 
-const chains: ChainType[] = ["uni", "juno", "injective", "stargaze", "aura",  "osmosis"];
+const chains: ChainType[] = ["uni", "juno", "injective", "stargaze", "aura", "osmosis"];
 export type WalletType = "keplr" | "leap" | "ledger" | "metamask";
 export interface ChainSigningClient {
   walletType: WalletType;
