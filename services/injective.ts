@@ -5,7 +5,7 @@ import {
 } from "@injectivelabs/wallet-ts";
 import { ChainSigningClient, WalletType } from "../contexts/userClients";
 import { getChainConfig } from "./chainConfig";
-import { ChainId } from "@injectivelabs/ts-types";
+import { ChainId, EthereumChainId } from "@injectivelabs/ts-types";
 import { Network } from "@injectivelabs/networks";
 import { randdropInjectiveClaimMsg } from "./contractTx";
 
@@ -19,6 +19,38 @@ export const getInjectiveClients = (client: ChainSigningClient) => {
     return { walletStrategy, msgBroadcaster };
   }
 
+  if ( client.walletType === "metamask") {
+    walletStrategy = new WalletStrategy({
+      chainId:
+        chainConfig.chainId === "injective-888"
+          ? ChainId.Testnet
+          : ChainId.Mainnet,
+      wallet: Wallet.Metamask,
+      disabledWallets: [
+        Wallet.Keplr,
+        Wallet.Leap,
+        Wallet.Cosmostation,
+        Wallet.Ledger,
+        Wallet.LedgerCosmos,
+        Wallet.LedgerLegacy,
+        Wallet.WalletConnect,
+        Wallet.Ninji,
+        Wallet.Phantom,
+        Wallet.Torus,
+        Wallet.TrustWallet,
+        Wallet.Trezor,
+      ],
+    });
+  
+    msgBroadcaster = new MsgBroadcaster({
+      walletStrategy,
+      network:
+        chainConfig.chainId === "injective-888"
+          ? Network.TestnetSentry
+          : Network.MainnetSentry,
+      simulateTx: true,
+    });
+  } else {
   walletStrategy = new WalletStrategy({
     chainId:
       chainConfig.chainId === "injective-888"
@@ -31,7 +63,6 @@ export const getInjectiveClients = (client: ChainSigningClient) => {
       Wallet.LedgerCosmos,
       Wallet.LedgerLegacy,
       Wallet.WalletConnect,
-      Wallet.Metamask,
       Wallet.Ninji,
       Wallet.Phantom,
       Wallet.Torus,
@@ -48,6 +79,7 @@ export const getInjectiveClients = (client: ChainSigningClient) => {
         : Network.MainnetSentry,
     simulateTx: true,
   });
+  } 
 
   return { walletStrategy, msgBroadcaster };
 };
@@ -69,6 +101,30 @@ export const signSendAndBroadcastOnInjective = async ({
   const { msgBroadcaster, walletStrategy } = getInjectiveClients(client);
 
   walletStrategy.setWallet(wallet === "keplr" ? Wallet.Keplr : Wallet.Leap);
+
+  return msgBroadcaster.broadcast({
+    injectiveAddress: message.wallet,
+    msgs: [randdropInjectiveClaimMsg(message)],
+  });
+};
+
+export const signSendAndBroadcastOnInjectiveEthereum = async ({
+  client,
+  wallet,
+  message,
+}: {
+  client: ChainSigningClient;
+  wallet: WalletType;
+  message: {
+    wallet: string;
+    contract: string;
+    amount: string;
+    proof: string[];
+  };
+}) => {
+  const { msgBroadcaster, walletStrategy } = getInjectiveClients(client);
+
+  walletStrategy.setWallet(Wallet.Metamask);
 
   return msgBroadcaster.broadcast({
     injectiveAddress: message.wallet,

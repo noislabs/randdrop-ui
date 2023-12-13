@@ -13,7 +13,7 @@ import { randdropClaimMsg } from '../services/contractTx'
 import { ethLedgerTxHelper } from '../services/ledgerHelpers';
 import { routeNewTab } from '../services/misc';
 import { AirdropLiveStatus } from '../pages';
-import { signSendAndBroadcastOnInjective } from '../services/injective';
+import { signSendAndBroadcastOnInjective, signSendAndBroadcastOnInjectiveEthereum } from '../services/injective';
 import { metamaskTxHelper } from '../services/metamask';
 
 const BridgeLinks = {
@@ -290,19 +290,25 @@ export const ClaimInfo = ({
     // If walletType is ledger && chain is injective, use helper
     if (client.walletType === "metamask" && client.chain === "injective") {
       toast.loading("Processing your request...");
-      metamaskTxHelper({
+      signSendAndBroadcastOnInjectiveEthereum({
         client,
-        checkResponse
-      }).then((txhash) => {
+        wallet: client.walletType,
+        message: {
+          wallet: client.walletAddress,
+          contract: checkResponse.claim_contract ?? "x",
+          amount: checkResponse.amount,
+          proof: checkResponse.proof
+        },
+      }).then((r) => {
         toast.dismiss();
         refetch();
-        console.log(`Transaction broadcasted | TxHash: ${txhash}`);
-        toast.success(`Transaction broadcasted | TxHash: ${txhash}`);
+        toast.success(`Dice are rolling!`);
+        toast.success(`Check back in a few seconds to view your result`);
       }).catch((e) => {
         toast.dismiss();
-        console.log(`Error: ${e}`);
-        toast.error("Failure broadcasting transaction");
-        toast.error(`Error: ${e}`);
+        console.log(e);
+        toast.error(`Problem submitting transaction`)
+        toast.error(`Visit our Discord for assistance`);
       });
     } else if (client.walletType === "ledger" && client.chain === "injective") {
       toast.loading("Processing your request...");
@@ -320,7 +326,7 @@ export const ClaimInfo = ({
         toast.error("Failure broadcasting transaction");
         toast.error(`Error: ${e}`);
       });
-    } else if (client.chain === "injective") {
+    } else if (client.chain === "injective") { // walletType === "keplr" || walletType === "leap"
       toast.loading("Processing your request...");
       signSendAndBroadcastOnInjective({
         client,
