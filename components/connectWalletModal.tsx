@@ -22,6 +22,7 @@ export const WalletConnectModal = () => {
     injectiveClient,
     stargazeClient,
     auraClient,
+    osmosisClient,
     loading: walletLoading,
     nickname,
     handleConnectAll,
@@ -30,8 +31,8 @@ export const WalletConnectModal = () => {
 
   // True if any client is connected
   const walletIsConnected = useMemo(() => {
-    return !(!uniClient && !junoClient && !injectiveClient && !auraClient && !stargazeClient)
-  }, [uniClient, junoClient, injectiveClient, auraClient, stargazeClient])
+    return !(!uniClient && !junoClient && !injectiveClient && !auraClient && !osmosisClient && !stargazeClient)
+  }, [uniClient, junoClient, injectiveClient, auraClient, osmosisClient, stargazeClient])
 
   const [checked, setChecked] = useState<WalletType | undefined>();
 

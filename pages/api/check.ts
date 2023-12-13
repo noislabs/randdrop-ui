@@ -7,7 +7,7 @@ import { getBatchClient } from '../../hooks/cosmwasm';
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Type validations
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-export const ChainType = z.enum(["uni", "juno", "stargaze", "injective", "aura"]);
+export const ChainType = z.enum(["uni", "juno", "stargaze", "injective", "aura", "osmosis"]);
 export type ChainType = z.infer<typeof ChainType>;
 
 const CheckParams = z.object({
@@ -136,6 +136,10 @@ const AirdropRegistry = {
     //"url": 'https://gist.githubusercontent.com/kaisbaccour/05b6dda6672a6b9c7beaf6198006a4c2/raw/11cbf1f49dba15bfd07f61ea4430392f556441d0/gistfile1.json',
     "url": 'https://raw.githubusercontent.com/noislabs/randdrop-snapshots/v0.2.1/aura-randdrop-1.json',
     "contract": 'aura10j89kvjt6p33q3q2pyrvmp0q50chlm5jtvsum3cvsfv0jg8u7p2s62a35w'
+  },
+  "osmosis": {
+    "url": 'https://raw.githubusercontent.com/noislabs/randdrop-snapshots/v0.2.1/osmosis-randdrop-1.json',
+    "contract": 'osmo1873ls0d60tg7hk00976teq9ywhzv45u3hk2urw8t3eau9eusa4eqtun9xn'
   }
 }
 
