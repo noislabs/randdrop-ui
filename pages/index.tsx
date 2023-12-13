@@ -17,12 +17,12 @@ import { ChainType, CheckResponse } from './api/check';
 
 // Config for live / not live randdrop chains
 export const AirdropLiveStatus: { [K in ChainType]: boolean } = {
-  "injective": false,
+  "injective": true,
   "juno": true,
   "uni": false,
   "stargaze": true,
   "aura": true,
-  "osmosis": false,
+  "osmosis": true,
 };
 
 const Home: NextPage = () => {
