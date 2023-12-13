@@ -26,10 +26,10 @@ export const getChainConfig = (chain: ChainType) => {
       return injectiveChainConfig;
     }
     case "aura": {
-      //testnet
-      //return auraTestnetChainConfig;
-      //mainnet
       return auraChainConfig;
+    }
+    case "osmosis": {
+      return osmosisChainConfig;
     }
   }
 };
@@ -399,6 +399,51 @@ export const auraChainConfig: ChainInfo = {
   stakeCurrency: {
     coinDenom: "AURA",
     coinMinimalDenom: "uaura",
+    coinDecimals: 6,
+  },
+  features: [],
+};
+
+// osmosis Mainnet
+export const osmosisChainConfig: ChainInfo = {
+  chainId: "osmosis-1",
+  chainName: "osmosis",
+  //chainName: "osmosis-1 Mainnet",
+  rpc: "https://rpc.osmosis.zone",
+  rest: "https://lcd.osmosis.zone",
+  bip44: {
+    coinType: 118,
+  },
+  bech32Config: {
+    bech32PrefixAccAddr: "osmo",
+    bech32PrefixAccPub: "osmopub",
+    bech32PrefixValAddr: "osmovaloper",
+    bech32PrefixValPub: "osmovaloperpub",
+    bech32PrefixConsAddr: "osmovalcons",
+    bech32PrefixConsPub: "osmovalconspub",
+  },
+  currencies: [
+    {
+      coinDenom: "OSMO",
+      coinMinimalDenom: "uosmo",
+      coinDecimals: 6,
+    },
+  ],
+  feeCurrencies: [
+    {
+      coinDenom: "OSMO",
+      coinMinimalDenom: "uosmo",
+      coinDecimals: 6,
+      gasPriceStep: {
+        low: 0.0025,
+        average: 0.025,
+        high: 0.04,
+      },
+    },
+  ],
+  stakeCurrency: {
+    coinDenom: "OSMO",
+    coinMinimalDenom: "uosmo",
     coinDecimals: 6,
   },
   features: [],

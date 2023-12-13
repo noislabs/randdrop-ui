@@ -5,6 +5,7 @@ import {
   stargazeChainConfig,
   injectiveChainConfig,
   auraChainConfig,
+  osmosisChainConfig,
   uniChainConfig
 } from "./chainConfig";
 import { Keplr } from "@keplr-wallet/types";
@@ -133,6 +134,14 @@ export async function suggestChainKeplr(chain: ChainType): Promise<void> {
       };
       break;
     }
+    case "osmosis": {
+      try {
+        await keplr.experimentalSuggestChain(osmosisChainConfig);
+      } catch {
+        toast.error("Failed to add Osmosis to Keplr");
+      };
+      break;
+    }
   }
 }
 
@@ -176,6 +185,14 @@ export async function suggestChainLeap(chain: ChainType): Promise<void> {
         await leap.experimentalSuggestChain(auraChainConfig);
       } catch {
         toast.error("Failed to add Aura to leap");
+      };
+      break;
+    }
+    case "osmosis": {
+      try {
+        await leap.experimentalSuggestChain(osmosisChainConfig);
+      } catch {
+        toast.error("Failed to add Osmosis to leap");
       };
       break;
     }
