@@ -296,7 +296,7 @@ export const ClaimInfo = ({
     // If walletType is ledger && chain is injective, use helper
     if (client.walletType === "metamask" && client.chain === "injective") {
       toast.loading("Processing your request...");
-      signSendAndBroadcastOnInjectiveEthereum({
+      signSendAndBroadcastOnInjective({
         client,
         wallet: client.walletType,
         message: {

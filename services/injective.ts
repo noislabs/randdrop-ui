@@ -100,32 +100,19 @@ export const signSendAndBroadcastOnInjective = async ({
 }) => {
   const { msgBroadcaster, walletStrategy } = getInjectiveClients(client);
 
-  walletStrategy.setWallet(wallet === "keplr" ? Wallet.Keplr : Wallet.Leap);
+  switch (wallet) {
+    case "keplr":
+      walletStrategy.setWallet(Wallet.Keplr)
+      break;
+    case "leap":
+      walletStrategy.setWallet(Wallet.Leap)
+    case "metamask":
+      walletStrategy.setWallet(Wallet.Metamask)
+    default:
+      break;
+  }
 
-  return msgBroadcaster.broadcast({
-    injectiveAddress: message.wallet,
-    msgs: [randdropInjectiveClaimMsg(message)],
-  });
-};
-
-export const signSendAndBroadcastOnInjectiveEthereum = async ({
-  client,
-  wallet,
-  message,
-}: {
-  client: ChainSigningClient;
-  wallet: WalletType;
-  message: {
-    wallet: string;
-    contract: string;
-    amount: string;
-    proof: string[];
-  };
-}) => {
-  const { msgBroadcaster, walletStrategy } = getInjectiveClients(client);
-
-  walletStrategy.setWallet(Wallet.Metamask);
-
+    // broadcast but actually signandbroadcast
   return msgBroadcaster.broadcast({
     injectiveAddress: message.wallet,
     msgs: [randdropInjectiveClaimMsg(message)],
