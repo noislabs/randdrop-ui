@@ -6,6 +6,7 @@ import StargazeLogo from "../public/BIGstars.png";
 import InjectiveLogo from "../public/INJECTIVE400x400.jpg";
 import JunoLogo from "../public/JUNO400x400.png";
 import AuraLogo from "../public/AURA400x400.jpg";
+import OsmosisLogo from "../public/OSMOSIS400x400.png";
 import DiceLoader from '../components/diceLoader';
 import { ChainType, CheckResponse } from '../pages/api/check';
 import { parseTimestamp } from '../services/parsing'
@@ -20,7 +21,8 @@ const BridgeLinks = {
   "juno": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=juno-1&token0=ibc%2F1D9E14A1F00613ED39E4B8A8763A20C9BE5B5EA0198F2FE47EAE43CD91A0137B&token1=unois",
   "uni": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=juno-1&token0=ibc%2F1D9E14A1F00613ED39E4B8A8763A20C9BE5B5EA0198F2FE47EAE43CD91A0137B&token1=unois",
   "stargaze": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=stargaze-1&token0=ibc%2F0F181D9F5BB18A8496153C1666E934169515592C135E8E9FCCC355889858EAF9&token1=unois",
-  "aura": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=xstaxy-1&token0=ibc%2F1FD48481DAA1B05575FE6D3E35929264437B8424A73243B207BCB67401C7F1FD&token1=unois"
+  "aura": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=xstaxy-1&token0=ibc%2F1FD48481DAA1B05575FE6D3E35929264437B8424A73243B207BCB67401C7F1FD&token1=unois",
+  "osmosis": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=osmosis-1&token0=ibc%2F6928AFA9EA721938FED13B051F9DBF1272B16393D20C49EA5E4901BB76D94A90&token1=unois"
 }
 
 export const ChainCard = (props:{
@@ -61,6 +63,8 @@ export const PausedChainCard = ({
         return InjectiveLogo;
       case "aura":
         return AuraLogo;
+        case "osmosis":
+          return OsmosisLogo;
       case "stargaze":
         return StargazeLogo;
       default:
@@ -130,6 +134,8 @@ export const LiveChainCard = ({
         return InjectiveLogo;
       case "aura":
         return AuraLogo;
+        case "osmosis":
+          return OsmosisLogo;
       case "stargaze":
         return StargazeLogo;
       default:

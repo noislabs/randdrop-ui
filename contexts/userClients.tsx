@@ -14,7 +14,7 @@ import { makeCosmosPath } from "../services/ledgerHelpers";
 import EthereumApp from "@ledgerhq/hw-app-eth";
 import Web3 from 'web3';
 
-const chains: ChainType[] = ["uni", "juno", "injective", "stargaze", "aura"];
+const chains: ChainType[] = ["uni", "juno", "injective", "stargaze", "aura",  "osmosis"];
 export type WalletType = "keplr" | "leap" | "ledger" | "metamask";
 export interface ChainSigningClient {
   walletType: WalletType;
@@ -41,6 +41,7 @@ export interface UserSigningClientsContext {
   injectiveClient?: ChainSigningClient;
   stargazeClient?: ChainSigningClient;
   auraClient?: ChainSigningClient;
+  osmosisClient?: ChainSigningClient;
   loading: boolean;
   nickname: string;
   connectAll: any;
@@ -60,6 +61,7 @@ let { Provider: ClientsProvider } = (MultiClientsContext =
     injectiveClient: undefined,
     stargazeClient: undefined,
     auraClient: undefined,
+    osmosisClient: undefined,
     loading: false,
     nickname: "",
     connectAll: () => { },
@@ -177,6 +179,7 @@ export const MultiClientProvider = ({
     injectiveClient: userSigningClients?.find((c) => c.chain === "injective"),
     stargazeClient: userSigningClients?.find((c) => c.chain === "stargaze"),
     auraClient: userSigningClients?.find((c) => c.chain === "aura"),
+    osmosisClient: userSigningClients?.find((c) => c.chain === "osmosis"),
     loading,
     nickname,
     connectAll,
@@ -195,6 +198,7 @@ export const useAllMultiClients = () => {
     injectiveClient,
     stargazeClient,
     auraClient,
+    osmosisClient,
     loading,
     nickname,
     connectAll,
@@ -202,7 +206,7 @@ export const useAllMultiClients = () => {
   } = useMultiClientsContext();
 
   const handleConnectAll = () => {
-    if ([uniClient, junoClient, injectiveClient, stargazeClient, auraClient].some((v) => v != undefined)) {
+    if ([uniClient, junoClient, injectiveClient, stargazeClient, auraClient, osmosisClient].some((v) => v != undefined)) {
       disconnectAll();
     } else {
       connectAll();
@@ -217,6 +221,7 @@ export const useAllMultiClients = () => {
     injectiveClient,
     stargazeClient,
     auraClient,
+    osmosisClient,
     loading,
     nickname,
     handleConnectAll,

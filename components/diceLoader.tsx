@@ -7,6 +7,8 @@ function getDiceColor(chain: ChainType) {
       return "dice-injective";
     case "aura":
       return "dice-aura";
+      case "osmosis":
+        return "dice-osmosis";
     case "stargaze":
       return "dice-stargaze";
     default:
