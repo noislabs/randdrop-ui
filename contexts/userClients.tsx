@@ -132,10 +132,11 @@ export const MultiClientProvider = ({
         }
         break;
       }
+      // only with Injective
       case "metamask": {
           try {
-            // Suggest/connect/return client& nickname
-            let client = await getMetamaskClient("injective");
+            // Suggest/connect/return client & nickname
+            let client = await getMetamaskClient();
             // update clients & nickname
             if (client === undefined) {
               throw new Error("Cannot get client from metamask")
@@ -371,7 +372,7 @@ const getWeb3 = async () => {
   }
 }
 
-const getMetamaskClient = async (chain: ChainType) => {
+const getMetamaskClient = async () => {
   try {
     const web3 = await getWeb3()
     const walletAddress = await web3.eth.requestAccounts()
@@ -381,8 +382,9 @@ const getMetamaskClient = async (chain: ChainType) => {
     }
     
     // Assumes account & address_index of 0
+    // connecting to Ethereum, signingClient won't be used because we are using Metamask
     const chainClient = {
-      chain: chain,
+      chain: "injective",
       walletAddress: walletAddress[0],
       signingClient: undefined,
       walletType: "metamask",

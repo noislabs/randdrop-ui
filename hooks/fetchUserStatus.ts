@@ -28,11 +28,13 @@ export const fetchUserStatus = async ({
       },
       cache: "no-store",
     });
+    console.log(res);
     const resData = await res.json();
 
     if (res.status !== 200) {
       throw new Error(JSON.stringify(resData));
     }
+
     const vres = CheckResponse.safeParse(resData);
     if (!vres.success) {
       throw new Error("Invalid response from server");
