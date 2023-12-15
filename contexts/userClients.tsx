@@ -31,7 +31,7 @@ export interface EthLedgerAccount {
   pubKey: string
 }
 
-declare let window: any;
+export declare let window: any;
 
 export interface UserSigningClientsContext {
   walletType: string;
