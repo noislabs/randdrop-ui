@@ -280,8 +280,8 @@ export const ClaimInfo = ({
 
   const handleClaimRanddrop = useCallback(() => {
 
-    // If no client
-    if (!client || (!client.ethLedgerClient && !client.signingClient)) {
+    // If no client, or client is not metamask or ledger, return
+    if (!client || (client.walletType !== "metamask" && !client.ethLedgerClient && !client.signingClient)) {
       toast.error(`Wallet or Ledger not connected for ${checkResponse.chain}`);
       return;
     }
