@@ -117,7 +117,7 @@ export const WalletConnectModal = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </div>
-                <div className="grid grid-rows-3 h-full py-2 gap-y-2">
+                <div className="grid grid-rows-4 h-full py-2 gap-y-2">
                   <div
                     onClick={() => handleCheck("keplr")}
                     className={`row-span-1 h-full py-1 flex justify-center md:justify-start rounded-lg hover:cursor-pointer ${checked === "keplr" ? 
@@ -195,7 +195,7 @@ export const WalletConnectModal = () => {
                   </div>
                   <div
                     onClick={() => handleCheck("metamask")}
-                    className={`row-span-1 h-full py-1 flex justify-center md:justify-start rounded-lg hover:cursor-pointer ${checked === "ledger" ? 
+                    className={`row-span-1 h-full py-1 flex justify-center md:justify-start rounded-lg hover:cursor-pointer ${checked === "metamask" ? 
                       "bg-black/80 text-nois-light-green" : 
                       "bg-black/20 hover:bg-black/50 text-nois-white/30 hover:text-nois-white/60"}`}
                   >
@@ -206,6 +206,7 @@ export const WalletConnectModal = () => {
                           alt={`metamask_logo`}
                           unoptimized
                           object-fit="cover"
+                          fill={true}
                           className={`border border-nois-white/50 ${checked !== "metamask" && "saturdate-50 grayscale brightness-[0.3]"}`}
                         />
                       </div>
