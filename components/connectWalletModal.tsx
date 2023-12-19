@@ -206,7 +206,6 @@ export const WalletConnectModal = () => {
                           alt={`metamask_logo`}
                           unoptimized
                           object-fit="cover"
-                          fill={true}
                           className={`border border-nois-white/50 ${checked !== "metamask" && "saturdate-50 grayscale brightness-[0.3]"}`}
                         />
                       </div>
