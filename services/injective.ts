@@ -19,7 +19,7 @@ export const getInjectiveClients = (client: ChainSigningClient) => {
     return { walletStrategy, msgBroadcaster };
   }
 
-  if ( client.walletType === "metamask") {
+  if (client.walletType === "metamask") {
     walletStrategy = new WalletStrategy({
       chainId:
         chainConfig.chainId === "injective-888"
@@ -40,8 +40,13 @@ export const getInjectiveClients = (client: ChainSigningClient) => {
         Wallet.TrustWallet,
         Wallet.Trezor,
       ],
+      ethereumOptions: {
+        // add that endpoint here
+        ethereumChainId: 888,
+        rpcUrl: "alchemyRpcEndpoint",
+      },
     });
-  
+
     msgBroadcaster = new MsgBroadcaster({
       walletStrategy,
       network:
@@ -51,35 +56,35 @@ export const getInjectiveClients = (client: ChainSigningClient) => {
       simulateTx: true,
     });
   } else {
-  walletStrategy = new WalletStrategy({
-    chainId:
-      chainConfig.chainId === "injective-888"
-        ? ChainId.Testnet
-        : ChainId.Mainnet,
-    wallet: Wallet.Keplr,
-    disabledWallets: [
-      Wallet.Cosmostation,
-      Wallet.Ledger,
-      Wallet.LedgerCosmos,
-      Wallet.LedgerLegacy,
-      Wallet.WalletConnect,
-      Wallet.Ninji,
-      Wallet.Phantom,
-      Wallet.Torus,
-      Wallet.TrustWallet,
-      Wallet.Trezor,
-    ],
-  });
+    walletStrategy = new WalletStrategy({
+      chainId:
+        chainConfig.chainId === "injective-888"
+          ? ChainId.Testnet
+          : ChainId.Mainnet,
+      wallet: Wallet.Keplr,
+      disabledWallets: [
+        Wallet.Cosmostation,
+        Wallet.Ledger,
+        Wallet.LedgerCosmos,
+        Wallet.LedgerLegacy,
+        Wallet.WalletConnect,
+        Wallet.Ninji,
+        Wallet.Phantom,
+        Wallet.Torus,
+        Wallet.TrustWallet,
+        Wallet.Trezor,
+      ],
+    });
 
-  msgBroadcaster = new MsgBroadcaster({
-    walletStrategy,
-    network:
-      chainConfig.chainId === "injective-888"
-        ? Network.TestnetSentry
-        : Network.MainnetSentry,
-    simulateTx: true,
-  });
-  } 
+    msgBroadcaster = new MsgBroadcaster({
+      walletStrategy,
+      network:
+        chainConfig.chainId === "injective-888"
+          ? Network.TestnetSentry
+          : Network.MainnetSentry,
+      simulateTx: true,
+    });
+  }
 
   return { walletStrategy, msgBroadcaster };
 };
@@ -102,17 +107,17 @@ export const signSendAndBroadcastOnInjective = async ({
 
   switch (wallet) {
     case "keplr":
-      walletStrategy.setWallet(Wallet.Keplr)
+      walletStrategy.setWallet(Wallet.Keplr);
       break;
     case "leap":
-      walletStrategy.setWallet(Wallet.Leap)
+      walletStrategy.setWallet(Wallet.Leap);
     case "metamask":
-      walletStrategy.setWallet(Wallet.Metamask)
+      walletStrategy.setWallet(Wallet.Metamask);
     default:
       break;
   }
 
-    // broadcast but actually signandbroadcast
+  // broadcast but actually signandbroadcast
   return msgBroadcaster.broadcast({
     injectiveAddress: message.wallet,
     msgs: [randdropInjectiveClaimMsg(message)],
