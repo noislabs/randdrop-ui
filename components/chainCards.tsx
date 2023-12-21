@@ -15,7 +15,6 @@ import { ethLedgerTxHelper } from '../services/ledgerHelpers';
 import { routeNewTab } from '../services/misc';
 import { AirdropLiveStatus } from '../pages';
 import { signSendAndBroadcastOnInjective } from '../services/injective';
-import { metamaskTxHelper } from '../services/metamask';
 
 const BridgeLinks = {
   "injective": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=injective-1&token0=ibc%2FDD9182E8E2B13C89D6B4707C7B43E8DB6193F9FF486AFA0E6CF86B427B0D231A&token1=unois",
