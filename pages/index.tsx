@@ -216,7 +216,7 @@ const Home: NextPage = () => {
               </div>
             </div>
           ) : (
-            <div className="bg-red-800/0 w-full overflow-y-auto md:h-full grid grid-rows-4 lg:grid-cols-4 lg:px-8 lg:py-4">
+            <div className="bg-red-800/0 w-full overflow-y-auto md:h-full grid grid-rows-5 lg:grid-cols-5 lg:px-8 lg:py-4">
               {/* <ChainCard chain='uni' chainStatus={`${uniStatus}_${uniFetchStatus}`} refetch={uniRefetch} client={uniClient} checkResponse={uniData} walletLoading={walletLoading}/> */}
               {
                 (
