@@ -5,8 +5,8 @@ import {
 } from "@injectivelabs/wallet-ts";
 import { ChainSigningClient, WalletType } from "../contexts/userClients";
 import { getChainConfig } from "./chainConfig";
-import { ChainId, EthereumChainId } from "@injectivelabs/ts-types";
-import { Network } from "@injectivelabs/networks";
+import { ChainId } from "@injectivelabs/ts-types";
+import { Network, getNetworkEndpoints  } from "@injectivelabs/networks";
 import { randdropInjectiveClaimMsg } from "./contractTx";
 
 let walletStrategy: WalletStrategy;
@@ -20,6 +20,9 @@ export const getInjectiveClients = (client: ChainSigningClient) => {
   }
 
   if (client.walletType === "metamask") {
+    // TODO: need to choose the right endpoint for metamask
+    const endpoint = getNetworkEndpoints(Network.MainnetSentry);
+
     walletStrategy = new WalletStrategy({
       chainId:
         chainConfig.chainId === "injective-888"
@@ -43,7 +46,7 @@ export const getInjectiveClients = (client: ChainSigningClient) => {
       ethereumOptions: {
         // add that endpoint here
         ethereumChainId: 888,
-        rpcUrl: "alchemyRpcEndpoint",
+        rpcUrl: endpoint.rpc,
       },
     });
 
