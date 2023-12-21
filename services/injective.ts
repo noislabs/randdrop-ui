@@ -6,7 +6,7 @@ import {
 import { ChainSigningClient, WalletType } from "../contexts/userClients";
 import { getChainConfig } from "./chainConfig";
 import { ChainId } from "@injectivelabs/ts-types";
-import { Network, getNetworkEndpoints  } from "@injectivelabs/networks";
+import { Network, getNetworkEndpoints } from "@injectivelabs/networks";
 import { randdropInjectiveClaimMsg } from "./contractTx";
 
 let walletStrategy: WalletStrategy;
@@ -113,6 +113,7 @@ export const signSendAndBroadcastOnInjective = async ({
       break;
     case "leap":
       walletStrategy.setWallet(Wallet.Leap);
+      break;
     case "metamask":
       walletStrategy.setWallet(Wallet.Metamask);
     default:
