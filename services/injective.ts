@@ -44,7 +44,6 @@ export const getInjectiveClients = (client: ChainSigningClient) => {
         Wallet.Trezor,
       ],
       ethereumOptions: {
-        // add that endpoint here
         ethereumChainId: 888,
         rpcUrl: endpoint.rpc,
       },
