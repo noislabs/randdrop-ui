@@ -14,10 +14,11 @@
     "@cosmjs/tendermint-rpc": "^0.31.0",
     "@cosmjs/utils": "^0.31.0",
     "@injectivelabs/sdk-ts": "next",
-    "@injectivelabs/wallet-ts": "next",
     "@injectivelabs/ts-types": "next",
+    "@injectivelabs/wallet-ts": "next",
     "@ledgerhq/hw-app-eth": "6.33.6",
     "@ledgerhq/hw-transport-webusb": "^6.27.17",
+    "@metamask/sdk": "^0.14.1",
     "@next/bundle-analyzer": "^13.4.12",
     "@tanstack/react-query": "^4.29.12",
     "crypto-js": "^4.1.1",
@@ -28,6 +29,7 @@
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.0",
     "tsparticles-confetti": "^2.9.3",
+    "web3": "^4.3.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {
