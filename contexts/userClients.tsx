@@ -14,7 +14,7 @@ import { makeCosmosPath } from "../services/ledgerHelpers";
 import EthereumApp from "@ledgerhq/hw-app-eth";
 import Web3 from 'web3';
 
-const chains: ChainType[] = ["uni", "juno", "injective", "stargaze", "aura", "osmosis"];
+const chains: ChainType[] = [ "juno", "injective", "stargaze", "aura", "osmosis"];
 export type WalletType = "keplr" | "leap" | "ledger" | "metamask";
 export interface ChainSigningClient {
   walletType: WalletType;
@@ -36,7 +36,6 @@ export declare let window: any;
 export interface UserSigningClientsContext {
   walletType: string;
   changeWalletType: (newWallet: string) => void;
-  uniClient?: ChainSigningClient;
   junoClient?: ChainSigningClient;
   injectiveClient?: ChainSigningClient;
   stargazeClient?: ChainSigningClient;
@@ -56,7 +55,6 @@ let { Provider: ClientsProvider } = (MultiClientsContext =
   createContext<UserSigningClientsContext>({
     walletType: "",
     changeWalletType: (newWallet: string) => { },
-    uniClient: undefined,
     junoClient: undefined,
     injectiveClient: undefined,
     stargazeClient: undefined,
@@ -175,7 +173,6 @@ export const MultiClientProvider = ({
   const userClients: UserSigningClientsContext = {
     walletType: currentWalletType,
     changeWalletType: setWalletType,
-    uniClient: userSigningClients?.find((c) => c.chain === "uni"),
     junoClient: userSigningClients?.find((c) => c.chain === "juno"),
     injectiveClient: userSigningClients?.find((c) => c.chain === "injective"),
     stargazeClient: userSigningClients?.find((c) => c.chain === "stargaze"),
@@ -194,7 +191,6 @@ export const useAllMultiClients = () => {
   const {
     walletType,
     changeWalletType,
-    uniClient,
     junoClient,
     injectiveClient,
     stargazeClient,
@@ -207,7 +203,7 @@ export const useAllMultiClients = () => {
   } = useMultiClientsContext();
 
   const handleConnectAll = () => {
-    if ([uniClient, junoClient, injectiveClient, stargazeClient, auraClient, osmosisClient].some((v) => v != undefined)) {
+    if ([ junoClient, injectiveClient, stargazeClient, auraClient, osmosisClient].some((v) => v != undefined)) {
       disconnectAll();
     } else {
       connectAll();
@@ -217,7 +213,6 @@ export const useAllMultiClients = () => {
   return {
     walletType,
     changeWalletType,
-    uniClient,
     junoClient,
     injectiveClient,
     stargazeClient,

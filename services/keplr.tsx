@@ -6,7 +6,6 @@ import {
   injectiveChainConfig,
   auraChainConfig,
   osmosisChainConfig,
-  uniChainConfig
 } from "./chainConfig";
 import { Keplr } from "@keplr-wallet/types";
 import { ChainType } from "../pages/api/check";
@@ -94,14 +93,6 @@ export async function getLeap(): Promise<Keplr> {
 export async function suggestChainKeplr(chain: ChainType): Promise<void> {
   const keplr = await getKeplr();
   switch (chain) {
-    case "uni": {
-      try {
-        await keplr.experimentalSuggestChain(uniChainConfig);
-      } catch {
-        toast.error("Failed to add Juno Testnet to Keplr");
-      };
-      break;
-    }
     case "juno": {
       try {
         await keplr.experimentalSuggestChain(junoChainConfig);
@@ -148,14 +139,6 @@ export async function suggestChainKeplr(chain: ChainType): Promise<void> {
 export async function suggestChainLeap(chain: ChainType): Promise<void> {
   const leap = await getLeap();
   switch (chain) {
-    case "uni": {
-      try {
-        await leap.experimentalSuggestChain(uniChainConfig);
-      } catch {
-        toast.error("Failed to add Juno Testnet to leap");
-      };
-      break;
-    }
     case "juno": {
       try {
         await leap.experimentalSuggestChain(junoChainConfig);
