@@ -7,9 +7,6 @@ import { ChainType } from "../pages/api/check";
  * */
 export const getChainConfig = (chain: ChainType) => {
   switch (chain) {
-    case "uni": {
-      return uniChainConfig;
-    }
     case "juno": {
       return junoChainConfig;
     }
@@ -43,51 +40,6 @@ export const getChainConfig = (chain: ChainType) => {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Testnets
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// Juno Testnet (uni-6)
-export const uniChainConfig: ChainInfo = {
-  chainId: "uni-6",
-  chainName: "Juno Testnet",
-  rpc: "https://uni-rpc.reece.sh",
-  rest: "https://uni-rpc.reece.sh:443",
-  // rpc: "https://juno-testnet-rpc.polkachu.com/",
-  // rest: "https://juno-testnet-rpc.polkachu.com:443",
-  bip44: {
-    coinType: 118,
-  },
-  bech32Config: {
-    bech32PrefixAccAddr: "juno",
-    bech32PrefixAccPub: "junopub",
-    bech32PrefixValAddr: "junovaloper",
-    bech32PrefixValPub: "junovaloperpub",
-    bech32PrefixConsAddr: "junovalcons",
-    bech32PrefixConsPub: "junovalconspub",
-  },
-  currencies: [
-    {
-      coinDenom: "JUNOX",
-      coinMinimalDenom: "ujunox",
-      coinDecimals: 6,
-    },
-  ],
-  feeCurrencies: [
-    {
-      coinDenom: "JUNOX",
-      coinMinimalDenom: "ujunox",
-      coinDecimals: 6,
-      gasPriceStep: {
-        low: 0.05,
-        average: 0.05,
-        high: 0.1,
-      },
-    },
-  ],
-  stakeCurrency: {
-    coinDenom: "JUNOX",
-    coinMinimalDenom: "ujunox",
-    coinDecimals: 6,
-  },
-  features: [],
-};
 // Injective Testnet (injective-888)
 export const injective888ChainConfig: ChainInfo = {
   chainId: "injective-888",
