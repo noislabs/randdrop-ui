@@ -7,7 +7,7 @@ import { getBatchClient } from '../../hooks/cosmwasm';
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Type validations
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-export const ChainType = z.enum(["uni", "juno", "stargaze", "injective", "aura", "osmosis"]);
+export const ChainType = z.enum([ "juno", "stargaze", "injective", "aura", "osmosis"]);
 export type ChainType = z.infer<typeof ChainType>;
 
 const CheckParams = z.object({
@@ -113,12 +113,7 @@ const validAddr = (addr: string): boolean => {
   }
 }
 
-// Currently all set to uni testing contract
 const AirdropRegistry = {
-  "uni": {
-    "url": 'https://raw.githubusercontent.com/noislabs/randdrop-snapshots/v0.2.1/juno-randdrop-1.json',
-    "contract": 'juno14v4rkefdr6zv2yvtgrscpjpe73lqz4qy809v6h4lwkdhl090frzq2ew57x',
-  },
   "juno": {
     "url": 'https://raw.githubusercontent.com/noislabs/randdrop-snapshots/v0.2.1/juno-randdrop-1.json',
     "contract": 'juno1tqv6032656485dtvs3p65t4ze6yf4f6rmej8yc3mj7xqem60elesh3en96'
