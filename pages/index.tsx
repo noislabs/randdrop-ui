@@ -19,7 +19,6 @@ import { ChainType, CheckResponse } from './api/check';
 export const AirdropLiveStatus: { [K in ChainType]: boolean } = {
   "injective": false,
   "juno": true,
-  "uni": false,
   "stargaze": true,
   "aura": true,
   "osmosis": false,
@@ -29,7 +28,6 @@ const Home: NextPage = () => {
 
   const {
     walletType,
-    uniClient,
     junoClient,
     injectiveClient,
     stargazeClient,
@@ -43,29 +41,10 @@ const Home: NextPage = () => {
 
   // True if any client is connected
   const walletIsConnected = useMemo(() => {
-    return !(!uniClient && !junoClient && !injectiveClient && !auraClient && !osmosisClient && !stargazeClient)
-  }, [uniClient, junoClient, injectiveClient, auraClient, osmosisClient, stargazeClient])
+    return !( !junoClient && !injectiveClient && !auraClient && !osmosisClient && !stargazeClient)
+  }, [ junoClient, injectiveClient, auraClient, osmosisClient, stargazeClient])
 
-  // Hitting /api/check for user's status
-  const {
-    data: uniData,
-    status: uniStatus,
-    fetchStatus: uniFetchStatus,
-    refetch: uniRefetch
-  } = useQuery(
-    ["uni", uniClient?.walletAddress],
-    () => fetchUserStatus({ walletAddr: uniClient!.walletAddress, chain: "uni" }),
-    {
-      enabled: !!(uniClient && AirdropLiveStatus["uni"]),
-      refetchInterval: (data) => {
-        if (data && data.userStatus === "waiting_randomness") {
-          return 1_000;
-        } else {
-          return false;
-        }
-      }
-    }
-  );
+  
 
   const {
     data: junoData,
@@ -217,7 +196,6 @@ const Home: NextPage = () => {
             </div>
           ) : (
             <div className="bg-red-800/0 w-full overflow-y-auto md:h-full grid grid-rows-5 lg:grid-cols-5 lg:px-8 lg:py-4">
-              {/* <ChainCard chain='uni' chainStatus={`${uniStatus}_${uniFetchStatus}`} refetch={uniRefetch} client={uniClient} checkResponse={uniData} walletLoading={walletLoading}/> */}
               {
                 (
                   walletType === 'metamask' ? (
