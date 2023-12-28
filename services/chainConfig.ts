@@ -47,8 +47,8 @@ export const getChainConfig = (chain: ChainType) => {
 export const uniChainConfig: ChainInfo = {
   chainId: "uni-6",
   chainName: "Juno Testnet",
-  rpc: "https://uni-rpc.reece.sh",
-  rest: "https://uni-rpc.reece.sh:443",
+  rpc: "https://rpc.uni.junonetwork.io",
+  rest: "https://api.uni.junonetwork.io:443",
   // rpc: "https://juno-testnet-rpc.polkachu.com/",
   // rest: "https://juno-testnet-rpc.polkachu.com:443",
   bip44: {
