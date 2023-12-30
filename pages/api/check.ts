@@ -7,7 +7,7 @@ import { getBatchClient } from '../../hooks/cosmwasm';
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Type validations
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-export const ChainType = z.enum(["uni", "juno", "stargaze", "injective", "aura"]);
+export const ChainType = z.enum([ "juno", "stargaze", "injective", "aura", "osmosis"]);
 export type ChainType = z.infer<typeof ChainType>;
 
 const CheckParams = z.object({
@@ -113,31 +113,31 @@ const validAddr = (addr: string): boolean => {
   }
 }
 
-// Currently all set to uni testing contract
 const AirdropRegistry = {
-  "uni": {
-    "url": 'https://gist.githubusercontent.com/kaisbaccour/5a2f102ef476d533a3112b016aa45db4/raw/aa94b4d6682536ac518d1e98367b6bbc0eac5740/juno-randdrop.json',
-    "contract": 'juno14v4rkefdr6zv2yvtgrscpjpe73lqz4qy809v6h4lwkdhl090frzq2ew57x',
-  },
   "juno": {
-    "url": 'https://gist.githubusercontent.com/kaisbaccour/5a2f102ef476d533a3112b016aa45db4/raw/aa94b4d6682536ac518d1e98367b6bbc0eac5740/juno-randdrop.json',
+    "url": 'https://raw.githubusercontent.com/noislabs/randdrop-snapshots/v0.2.1/juno-randdrop-1.json',
     "contract": 'juno1tqv6032656485dtvs3p65t4ze6yf4f6rmej8yc3mj7xqem60elesh3en96'
   },
   "injective": {
     "url": 'https://raw.githubusercontent.com/noislabs/randdrop-snapshots/v0.2.1/injective-randdrop-1.json',
     //"url": 'https://gist.githubusercontent.com/kaisbaccour/c26ede9d4219896bc03fb0fdfce310a3/raw/fa0825eb75607afad08ffb0fdead8567795150ad/injective-randdrop.json',
-    "contract": 'inj17ryua25yypx7q58g3wxjwquvaz2vs8wmula59u'
+     "contract": 'inj17ryua25yypx7q58g3wxjwquvaz2vs8wmula59u'
+    // for testing
+    //"url": 'https://gist.githubusercontent.com/hoangdv2429/f4569307b2191e5a40d468019297a35f/raw/bb5560436bb2f747393503fdc9a25c8327166d4e/injective-randdrop.json',
+    //"contract": 'inj1hjl70antdrqlhunaesp8d6lv4nuy9rknfpn48w'
   },
   "stargaze": {
-    "url": 'https://gist.githubusercontent.com/kaisbaccour/ac8002e0329b4f54407e702c5dc4aa47/raw/1c8a75bdabf3dc04f77ed0d2c1cefedbba4fa060/stargaze-randdrop.json',
+    "url": 'https://raw.githubusercontent.com/noislabs/randdrop-snapshots/v0.2.1/stargaze-randdrop-1.json',
     "contract": 'stars1e4df5ydrwv7cyeg8se9ujmsmmkhgeq5ynq4ukvt8pt0glptpd27sq3d20e'
   },
   "aura": {
-    // Testnet added oct 12th ish
     //"url": 'https://gist.githubusercontent.com/kaisbaccour/05b6dda6672a6b9c7beaf6198006a4c2/raw/11cbf1f49dba15bfd07f61ea4430392f556441d0/gistfile1.json',
-    // Updated mainnet addresss Oct 24th
-    "url": 'https://gist.githubusercontent.com/kaisbaccour/edf03e2486d1f6a609e2d8918cfcb4a9/raw/99ce180cc8e082615d0c010e0192d3d829693c48/aura-randdrop.json',
-    "contract": 'aura10j89kvjt6p33q3q2pyrvmp0q50chlm5jtvsum3cvsfv0jg8u7p2s62a35w'
+    "url": 'https://raw.githubusercontent.com/noislabs/randdrop-snapshots/v0.2.1/aura-randdrop-2.json',
+    "contract": 'aura1femc3zxv4c43rwpy43na9gul4ssr8dkxe3m9v8afzlmhgj69sw6ql28x39'
+  },
+  "osmosis": {
+    "url": 'https://raw.githubusercontent.com/noislabs/randdrop-snapshots/v0.2.1/osmosis-randdrop-1.json',
+    "contract": 'osmo1873ls0d60tg7hk00976teq9ywhzv45u3hk2urw8t3eau9eusa4eqtun9xn'
   }
 }
 

@@ -1,7 +1,10 @@
 import { MsgExecuteContractEncodeObject } from "@cosmjs/cosmwasm-stargate";
 import { Coin } from "@keplr-wallet/types";
 import { MsgExecuteContract } from "cosmjs-types/cosmwasm/wasm/v1/tx";
-import { MsgExecuteContractCompat } from "@injectivelabs/sdk-ts";
+import {
+  MsgExecuteContractCompat,
+  getInjectiveAddress,
+} from "@injectivelabs/sdk-ts";
 import { toUtf8 } from "@cosmjs/encoding";
 
 export const randdropClaimMsg = (
@@ -50,6 +53,12 @@ export const randdropInjectiveClaimMsg = (
   },
   funds?: Coin[]
 ): MsgExecuteContractCompat => {
+
+  // check if address need conversion
+  if (wallet.startsWith("0x")) {
+    wallet = getInjectiveAddress(wallet);
+  }
+
   return MsgExecuteContractCompat.fromJSON({
     sender: wallet,
     contractAddress: contract,

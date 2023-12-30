@@ -6,6 +6,7 @@ import StargazeLogo from "../public/BIGstars.png";
 import InjectiveLogo from "../public/INJECTIVE400x400.jpg";
 import JunoLogo from "../public/JUNO400x400.png";
 import AuraLogo from "../public/AURA400x400.jpg";
+import OsmosisLogo from "../public/OSMOSIS400x400.png";
 import DiceLoader from '../components/diceLoader';
 import { ChainType, CheckResponse } from '../pages/api/check';
 import { parseTimestamp } from '../services/parsing'
@@ -18,12 +19,12 @@ import { signSendAndBroadcastOnInjective } from '../services/injective';
 const BridgeLinks = {
   "injective": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=injective-1&token0=ibc%2FDD9182E8E2B13C89D6B4707C7B43E8DB6193F9FF486AFA0E6CF86B427B0D231A&token1=unois",
   "juno": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=juno-1&token0=ibc%2F1D9E14A1F00613ED39E4B8A8763A20C9BE5B5EA0198F2FE47EAE43CD91A0137B&token1=unois",
-  "uni": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=juno-1&token0=ibc%2F1D9E14A1F00613ED39E4B8A8763A20C9BE5B5EA0198F2FE47EAE43CD91A0137B&token1=unois",
   "stargaze": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=stargaze-1&token0=ibc%2F0F181D9F5BB18A8496153C1666E934169515592C135E8E9FCCC355889858EAF9&token1=unois",
-  "aura": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=xstaxy-1&token0=ibc%2F1FD48481DAA1B05575FE6D3E35929264437B8424A73243B207BCB67401C7F1FD&token1=unois"
+  "aura": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=xstaxy-1&token0=ibc%2F1FD48481DAA1B05575FE6D3E35929264437B8424A73243B207BCB67401C7F1FD&token1=unois",
+  "osmosis": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=osmosis-1&token0=ibc%2F6928AFA9EA721938FED13B051F9DBF1272B16393D20C49EA5E4901BB76D94A90&token1=unois"
 }
 
-export const ChainCard = (props:{
+export const ChainCard = (props: {
   chain: ChainType;
   chainStatus: string;
   refetch: () => {};
@@ -35,7 +36,7 @@ export const ChainCard = (props:{
   if (AirdropLiveStatus[props.chain] === true) {
     return <LiveChainCard {...props} />
   } else {
-    return <PausedChainCard {...props}/>
+    return <PausedChainCard {...props} />
   }
 }
 
@@ -46,7 +47,7 @@ export const PausedChainCard = ({
   client,
   checkResponse,
   walletLoading
-}:{
+}: {
   chain: ChainType;
   chainStatus: string;
   refetch: () => {};
@@ -61,6 +62,8 @@ export const PausedChainCard = ({
         return InjectiveLogo;
       case "aura":
         return AuraLogo;
+        case "osmosis":
+          return OsmosisLogo;
       case "stargaze":
         return StargazeLogo;
       default:
@@ -87,7 +90,7 @@ export const PausedChainCard = ({
       <div className="hidden h-[8%] w-full md:block text-center items-center text-sm font-mono md:overflow-hidden text-ellipsis py-2 md:px-8">
         {!client && walletLoading ? (
           <span className="animate-pulse text-base">{"Connecting..."}</span>
-        ):(
+        ) : (
           <>
             {client?.walletAddress ?? "Not connected"}
           </>
@@ -95,7 +98,7 @@ export const PausedChainCard = ({
       </div>
       {/* User Status bar */}
       <div className={`h-[8%] text-sm w-full block text-center items-center md:overflow-hidden text-ellipsis md:px-8`}>
-          <span>Randdrop not yet live</span>
+        <span>Randdrop not yet live</span>
       </div>
       {/* Claim Info*/}
       <div className="hidden h-[44%] md:flex justify-center items-center ">
@@ -115,7 +118,7 @@ export const LiveChainCard = ({
   client,
   checkResponse,
   walletLoading
-}:{
+}: {
   chain: ChainType;
   chainStatus: string;
   refetch: () => {};
@@ -130,6 +133,8 @@ export const LiveChainCard = ({
         return InjectiveLogo;
       case "aura":
         return AuraLogo;
+        case "osmosis":
+          return OsmosisLogo;
       case "stargaze":
         return StargazeLogo;
       default:
@@ -139,7 +144,7 @@ export const LiveChainCard = ({
 
   // Ring color | Status text
   const {
-    logoClassName, 
+    logoClassName,
     titleClassName,
     title
   } = useMemo(() => {
@@ -215,7 +220,7 @@ export const LiveChainCard = ({
       <div className="h-[8%] w-full block text-center items-center text-nois-white/50 text-sm font-mono md:overflow-hidden text-ellipsis py-2 md:px-8">
         {!client && walletLoading ? (
           <span className="animate-pulse text-nois-white/40 text-base">{"Connecting..."}</span>
-        ):(
+        ) : (
           <>
             {client?.walletAddress ?? "Not connected"}
           </>
@@ -225,7 +230,7 @@ export const LiveChainCard = ({
       <div className={`h-[8%] ${titleClassName} w-full block text-center items-center md:overflow-hidden text-ellipsis md:px-8`}>
         {!client ? (
           <span className="animate-pulse text-nois-white/40 text-lg tracking-widest">{"..."}</span>
-        ):(
+        ) : (
           <span>{title}</span>
         )}
       </div>
@@ -238,8 +243,8 @@ export const LiveChainCard = ({
               {"Checking eligibility..."}
             </span>
           </div>
-        ):(
-          <ClaimInfo client={client} checkResponse={checkResponse} refetch={refetch}/>
+        ) : (
+          <ClaimInfo client={client} checkResponse={checkResponse} refetch={refetch} />
         )}
       </div>
     </div>
@@ -250,7 +255,7 @@ export const ClaimInfo = ({
   client,
   checkResponse,
   refetch
-}:{
+}: {
   client: ChainSigningClient | undefined;
   checkResponse: CheckResponse;
   refetch: () => {}
@@ -263,7 +268,7 @@ export const ClaimInfo = ({
   } = useMemo(() => {
     const submitted = checkResponse.submitted_at ? parseTimestamp(checkResponse.submitted_at) : "";
     const claimed = checkResponse.claimed_at ? parseTimestamp(checkResponse.claimed_at) : "";
-    const winning_amount = checkResponse.winning_amount ? 
+    const winning_amount = checkResponse.winning_amount ?
       `${checkResponse.winning_amount.slice(0, -6) + '.' + checkResponse.winning_amount.slice(-6, -3)}` : "";
     return {
       submitted,
@@ -274,8 +279,8 @@ export const ClaimInfo = ({
 
   const handleClaimRanddrop = useCallback(() => {
 
-    // If no client
-    if (!client || (!client.ethLedgerClient && !client.signingClient)) {
+    // If no client, or client is not metamask or ledger, return
+    if (!client || (client.walletType !== "metamask" && !client.ethLedgerClient && !client.signingClient)) {
       toast.error(`Wallet or Ledger not connected for ${checkResponse.chain}`);
       return;
     }
@@ -287,7 +292,29 @@ export const ClaimInfo = ({
     }
 
     // If walletType is ledger && chain is injective, use helper
-    if (client.walletType === "ledger" && client.chain === "injective") {
+    if (client.walletType === "metamask" && client.chain === "injective") {
+      toast.loading("Processing your request...");
+      signSendAndBroadcastOnInjective({
+        client,
+        wallet: client.walletType,
+        message: {
+          wallet: client.walletAddress,
+          contract: checkResponse.claim_contract ?? "x",
+          amount: checkResponse.amount,
+          proof: checkResponse.proof
+        },
+      }).then((r) => {
+        toast.dismiss();
+        refetch();
+        toast.success(`Dice are rolling!`);
+        toast.success(`Check back in a few seconds to view your result`);
+      }).catch((e) => {
+        toast.dismiss();
+        console.log(e);
+        toast.error(`Problem submitting transaction`)
+        toast.error(`Visit our Discord for assistance`);
+      });
+    } else if (client.walletType === "ledger" && client.chain === "injective") {
       toast.loading("Processing your request...");
       ethLedgerTxHelper({
         client,
@@ -303,28 +330,28 @@ export const ClaimInfo = ({
         toast.error("Failure broadcasting transaction");
         toast.error(`Error: ${e}`);
       });
-    } else if (client.chain === "injective") {
-        toast.loading("Processing your request...");
-        signSendAndBroadcastOnInjective({
-          client,
-          wallet: client.walletType,
-          message: {
-            wallet: client.walletAddress,
-            contract: checkResponse.claim_contract ?? "x",
-            amount: checkResponse.amount,
-            proof: checkResponse.proof
-          },
-        }).then((r) => {
-          toast.dismiss();
-          refetch();
-          toast.success(`Dice are rolling!`);
-          toast.success(`Check back in a few seconds to view your result`);
-        }).catch((e) => {
-          toast.dismiss();
-          console.log(e);
-          toast.error(`Problem submitting transaction`)
-          toast.error(`Visit our Discord for assistance`);
-        });
+    } else if (client.chain === "injective") { // walletType === "keplr" || walletType === "leap"
+      toast.loading("Processing your request...");
+      signSendAndBroadcastOnInjective({
+        client,
+        wallet: client.walletType,
+        message: {
+          wallet: client.walletAddress,
+          contract: checkResponse.claim_contract ?? "x",
+          amount: checkResponse.amount,
+          proof: checkResponse.proof
+        },
+      }).then((r) => {
+        toast.dismiss();
+        refetch();
+        toast.success(`Dice are rolling!`);
+        toast.success(`Check back in a few seconds to view your result`);
+      }).catch((e) => {
+        toast.dismiss();
+        console.log(e);
+        toast.error(`Problem submitting transaction`)
+        toast.error(`Visit our Discord for assistance`);
+      });
     } else if (client.signingClient !== undefined) {
       toast.loading("Processing your request...");
       let msg = randdropClaimMsg({
@@ -334,8 +361,8 @@ export const ClaimInfo = ({
         proof: checkResponse.proof
       });
       client.signingClient.signAndBroadcast(
-        client.walletAddress, 
-        [msg], 
+        client.walletAddress,
+        [msg],
         "auto"
       ).then((r) => {
         toast.dismiss();
@@ -359,7 +386,7 @@ export const ClaimInfo = ({
         return (
           <div className={`w-full h-full p-6 flex justify-center items-start`}>
             <button
-              onClick={() => handleClaimRanddrop()} 
+              onClick={() => handleClaimRanddrop()}
               className={`py-2 px-6 animate-pulse hover:animate-none hover:shaxdow-neon-md hover:bg-green-500/10 text-green-500 border border-green-500 rounded-xl bg-gradient-to-b from-green-500/10`}
             >
               {"Roll the dice!"}
@@ -384,7 +411,7 @@ export const ClaimInfo = ({
                 onClick={() => {
                   let link = BridgeLinks[checkResponse.chain];
                   routeNewTab(link);
-                }} 
+                }}
                 className="flex justify-center text-sm items-center rounded-lg px-4 py-1.5 border border-nois-light-green/30 text-nois-light-green/80 hover:text-nois-light-green hover:border-nois-light-green hover:bg-black"
               >
                 {"Transfer to Nois Chain"}
