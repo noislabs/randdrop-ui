@@ -277,8 +277,13 @@ export const ClaimInfo = ({
         toast.error(`No randdrop contract available for ${checkResponse.chain}`);
         return;
       }
-      const percentage = await calculatePercentage(client?.chain, checkResponse?.address)
-      setClaimPercentageLeft(100 - percentage)
+      let percentage;
+      if (!checkResponse.claim_contract) {
+        console.error(`No claim contract available for ${checkResponse.chain}`);
+      } else {
+        percentage = await calculatePercentage(client?.chain,  checkResponse?.claim_contract)
+      }
+      setClaimPercentageLeft(parseFloat((100 - percentage).toFixed(2)))
     })()
   }, [])
 
