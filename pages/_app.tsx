@@ -8,6 +8,7 @@ import {
 import { Toaster } from 'react-hot-toast';
 import { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(

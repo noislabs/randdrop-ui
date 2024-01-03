@@ -1,10 +1,11 @@
-// TODO: style
-const progressBar = ({ percentageLeft }) => {
-    return (
-      <div className="progress-bar-background" style={{ width: '100%', backgroundColor: '#ddd' }}>
-        <div style={{ width: `${percentageLeft}%`, backgroundColor: 'green', height: '20px' }} />
-      </div>
-    );
+import ProgressBar from 'react-bootstrap/ProgressBar';
+
+const Progress = ({ percentageLeft }) => {
+  return (
+    <div style={{marginBottom: '20px'}}>
+      <ProgressBar striped animated now={percentageLeft} label={`${percentageLeft}%`} style={{color: 'black'}}/>
+    </div>
+  );
 };
 
-export default progressBar;
+export default Progress;

@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from 'react'
+import { useMemo, useCallback, useState, useEffect } from 'react'
 import { toast } from 'react-hot-toast';
 import { ChainSigningClient } from '../contexts/userClients';
 import NextImage from "next/image";
@@ -8,7 +8,7 @@ import JunoLogo from "../public/JUNO400x400.png";
 import AuraLogo from "../public/AURA400x400.jpg";
 import OsmosisLogo from "../public/OSMOSIS400x400.png";
 import DiceLoader from '../components/diceLoader';
-import progressBar from '../components/progressBar';
+import Progress from './progressBar';
 import { ChainType, CheckResponse } from '../pages/api/check';
 import { parseTimestamp } from '../services/parsing'
 import { randdropClaimMsg } from '../services/contractTx'
@@ -16,6 +16,7 @@ import { ethLedgerTxHelper } from '../services/ledgerHelpers';
 import { routeNewTab } from '../services/misc';
 import { AirdropLiveStatus } from '../pages';
 import { signSendAndBroadcastOnInjective } from '../services/injective';
+import { calculatePercentage } from '../hooks/cosmwasm';
 
 const BridgeLinks = {
   "injective": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=injective-1&token0=ibc%2FDD9182E8E2B13C89D6B4707C7B43E8DB6193F9FF486AFA0E6CF86B427B0D231A&token1=unois",
@@ -63,8 +64,8 @@ export const PausedChainCard = ({
         return InjectiveLogo;
       case "aura":
         return AuraLogo;
-        case "osmosis":
-          return OsmosisLogo;
+      case "osmosis":
+        return OsmosisLogo;
       case "stargaze":
         return StargazeLogo;
       default:
@@ -134,8 +135,8 @@ export const LiveChainCard = ({
         return InjectiveLogo;
       case "aura":
         return AuraLogo;
-        case "osmosis":
-          return OsmosisLogo;
+      case "osmosis":
+        return OsmosisLogo;
       case "stargaze":
         return StargazeLogo;
       default:
@@ -261,6 +262,25 @@ export const ClaimInfo = ({
   checkResponse: CheckResponse;
   refetch: () => {}
 }) => {
+  const [claimPercentageLeft, setClaimPercentageLeft] = useState(0)
+
+  useEffect(() => {
+    (async () => {
+      // If no client, or client is not metamask or ledger, return
+      if (!client || !client.chain) {
+        toast.error(`Wallet or Ledger not connected for ${checkResponse.chain}`);
+        return;
+      }
+
+      // Assert claim_contract exists
+      if (!checkResponse.address) {
+        toast.error(`No randdrop contract available for ${checkResponse.chain}`);
+        return;
+      }
+      const percentage = await calculatePercentage(client?.chain, checkResponse?.address)
+      setClaimPercentageLeft(100 - percentage)
+    })()
+  }, [])
 
   const {
     submitted,
@@ -385,18 +405,19 @@ export const ClaimInfo = ({
     switch (checkResponse.userStatus) {
       case "ready": {
         return (
-          <div className={`w-full h-full p-6 flex justify-center items-start`}>
+          <div>
             {/* Progress Bar */}
-            // TODO
-            <progressBar percentageLeft={percentageLeft} />
-  
-            {/* Your existing button */}
-            <button
-              onClick={() => handleClaimRanddrop()}
-              className={`py-2 px-6 animate-pulse hover:animate-none hover:shaxdow-neon-md hover:bg-green-500/10 text-green-500 border border-green-500 rounded-xl bg-gradient-to-b from-green-500/10`}
-            >
-              {"Roll the dice!"}
-            </button>
+            <Progress percentageLeft={claimPercentageLeft} />
+            <div className={`w-full h-full p-6 flex justify-center items-start`}>
+
+              {/* Your existing button */}
+              <button
+                onClick={() => handleClaimRanddrop()}
+                className={`py-2 px-6 animate-pulse hover:animate-none hover:shaxdow-neon-md hover:bg-green-500/10 text-green-500 border border-green-500 rounded-xl bg-gradient-to-b from-green-500/10`}
+              >
+                {"Roll the dice!"}
+              </button>
+            </div>
           </div>
         )
       }
