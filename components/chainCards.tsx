@@ -400,7 +400,9 @@ export const ClaimInfo = ({
   }, [client?.walletAddress])
 
   if (!client || checkResponse.userStatus === "not_eligible") {
-    return <></>
+    return <div style={{width: '100%'}}>
+      <Progress percentageLeft={claimPercentageLeft} />
+    </div>
   } else {
     switch (checkResponse.userStatus) {
       case "ready": {
@@ -478,7 +480,9 @@ export const ClaimInfo = ({
       }
       default: {
         return (
-          <></>
+          <div style={{width: '100%'}}>
+            <Progress percentageLeft={claimPercentageLeft} />
+          </div>
         )
       }
     }
