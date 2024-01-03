@@ -141,6 +141,15 @@ const AirdropRegistry = {
   }
 }
 
+export const getContractAddress = (chainType: string) => {
+  const chain = AirdropRegistry[chainType]
+  if (!chain) {
+    return ""
+  }
+
+  return chain.contract
+}
+
 interface AmtProof {
   amount: string,
   proof: string[]

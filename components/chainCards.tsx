@@ -17,6 +17,7 @@ import { routeNewTab } from '../services/misc';
 import { AirdropLiveStatus } from '../pages';
 import { signSendAndBroadcastOnInjective } from '../services/injective';
 import { calculatePercentage } from '../hooks/cosmwasm';
+import { getContractAddress } from '../pages/api/check';
 
 const BridgeLinks = {
   "injective": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=injective-1&token0=ibc%2FDD9182E8E2B13C89D6B4707C7B43E8DB6193F9FF486AFA0E6CF86B427B0D231A&token1=unois",
@@ -272,17 +273,15 @@ export const ClaimInfo = ({
         return;
       }
 
-      // Assert claim_contract exists
-      if (!checkResponse.address) {
+      const contractAddress = getContractAddress(client.chain)
+
+      if (contractAddress === "") {
         toast.error(`No randdrop contract available for ${checkResponse.chain}`);
         return;
       }
+
       let percentage;
-      if (!checkResponse.claim_contract) {
-        console.error(`No claim contract available for ${checkResponse.chain}`);
-      } else {
-        percentage = await calculatePercentage(client?.chain,  checkResponse?.claim_contract)
-      }
+      percentage = await calculatePercentage(client?.chain, contractAddress)
       setClaimPercentageLeft(parseFloat((100 - percentage).toFixed(2)))
     })()
   }, [])
@@ -405,7 +404,7 @@ export const ClaimInfo = ({
   }, [client?.walletAddress])
 
   if (!client || checkResponse.userStatus === "not_eligible") {
-    return <div style={{width: '100%'}}>
+    return <div style={{ width: '100%' }}>
       <Progress percentageLeft={claimPercentageLeft} />
     </div>
   } else {
@@ -485,7 +484,7 @@ export const ClaimInfo = ({
       }
       default: {
         return (
-          <div style={{width: '100%'}}>
+          <div style={{ width: '100%' }}>
             <Progress percentageLeft={claimPercentageLeft} />
           </div>
         )
