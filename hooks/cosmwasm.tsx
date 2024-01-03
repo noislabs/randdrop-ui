@@ -47,16 +47,25 @@ async function queryContractBalance(
   const batchClient = await getBankClient(chain);
 
   // Query contract's total NOIS token balances
-
   const balances = await batchClient.bank.allBalances(contractAddress);
 
+  // Mapping of known IBC denoms to their chains
+  const ibcDenoms = {
+    'stargaze-1': 'ibc/0F181D9F5BB18A8496153C1666E934169515592C135E8E9FCCC355889858EAF9',
+    'juno-1': 'ibc/1D9E14A1F00613ED39E4B8A8763A20C9BE5B5EA0198F2FE47EAE43CD91A0137B',
+    'injective-1': 'ibc/DD9182E8E2B13C89D6B4707C7B43E8DB6193F9FF486AFA0E6CF86B427B0D231A',
+    'aura': 'ibc/1FD48481DAA1B05575FE6D3E35929264437B8424A73243B207BCB67401C7F1FD',
+    'osmosis': 'ibc/6928AFA9EA721938FED13B051F9DBF1272B16393D20C49EA5E4901BB76D94A90'
+  };
+
   // Find the NOIS token balance, handling both native and IBC denoms
-  // Assuming the contract has only NOIS tokens (also be in the form of ibc denom)
   const noisTokenIdentifier = "unois";
-  const noisBalance = balances.find(
-    (balance) =>
-      balance.denom === noisTokenIdentifier || balance.denom.includes("ibc")
-  );
+  const noisBalance = balances.find((balance) => {
+    return (
+      balance.denom === noisTokenIdentifier ||
+      Object.values(ibcDenoms).includes(balance.denom)
+    )});
+
   return noisBalance ? parseInt(noisBalance.amount) : 0;
 }
 
