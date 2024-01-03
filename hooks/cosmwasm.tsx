@@ -69,10 +69,15 @@ export async function queryContractBalance(
   return noisBalance ? parseInt(noisBalance.amount) : 0;
 }
 
+export interface ContractQueryResp {
+  percentageLeft: number,
+  amountLeft: number
+}
+
 export async function calculatePercentage(
   chain: ChainType,
   contractAddress: string
-): Promise<number> {
+): Promise<ContractQueryResp> {
   // Total amount to be distributed per chain (in unois)
   const totalDistribution = {
     osmosis: 4_000_000_000_000,
@@ -88,5 +93,8 @@ export async function calculatePercentage(
   const totalForChain = totalDistribution[chain];
   const percentageLeft = (balance / totalForChain) * 100;
 
-  return percentageLeft;
+  return {
+    percentageLeft,
+    amountLeft: balance
+  };
 }

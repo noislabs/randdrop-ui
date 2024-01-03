@@ -18,6 +18,7 @@ import { AirdropLiveStatus } from '../pages';
 import { signSendAndBroadcastOnInjective } from '../services/injective';
 import { calculatePercentage } from '../hooks/cosmwasm';
 import { getContractAddress } from '../pages/api/check';
+import { Popover, Spin } from 'antd';
 
 const BridgeLinks = {
   "injective": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=injective-1&token0=ibc%2FDD9182E8E2B13C89D6B4707C7B43E8DB6193F9FF486AFA0E6CF86B427B0D231A&token1=unois",
@@ -264,6 +265,7 @@ export const ClaimInfo = ({
   refetch: () => {}
 }) => {
   const [claimPercentageLeft, setClaimPercentageLeft] = useState(0)
+  const [tokenLeft, setTokenLeft] = useState(0)
 
   useEffect(() => {
     (async () => {
@@ -280,9 +282,14 @@ export const ClaimInfo = ({
         return;
       }
 
-      let percentage;
-      percentage = await calculatePercentage(client?.chain, contractAddress)
-      setClaimPercentageLeft(parseFloat((100 - percentage).toFixed(2)))
+      const resp = await calculatePercentage(client?.chain, contractAddress)
+      if (!resp) {
+        toast.error(`Unable to fetch contract balance for ${checkResponse.chain}`);
+        return;
+      }
+      console.log(resp)
+      setClaimPercentageLeft(parseFloat(resp.percentageLeft.toFixed(2)))
+      setTokenLeft(resp.amountLeft)
     })()
   }, [])
 
@@ -405,7 +412,18 @@ export const ClaimInfo = ({
 
   if (!client || checkResponse.userStatus === "not_eligible") {
     return <div style={{ width: '100%' }}>
-      <Progress percentageLeft={claimPercentageLeft} />
+      <Popover placement="top" content={`${(tokenLeft / Math.pow(10, 6)).toFixed(2)} Nois left`}>
+        <div>
+          <Progress percentageLeft={claimPercentageLeft} />
+        </div>
+      </Popover>
+      {
+        (tokenLeft < 20_000_000 || claimPercentageLeft === 0) && (
+          <div style={{ color: 'white', display: 'flex', justifyContent: 'center' }}>
+            All tokens claimed
+          </div>
+        )
+      }
     </div>
   } else {
     switch (checkResponse.userStatus) {
@@ -413,16 +431,29 @@ export const ClaimInfo = ({
         return (
           <div>
             {/* Progress Bar */}
-            <Progress percentageLeft={claimPercentageLeft} />
+            <Popover placement="top" content={`${(tokenLeft / Math.pow(10, 6)).toFixed(2)} Nois left`}>
+              <div>
+                <Progress percentageLeft={claimPercentageLeft} />
+              </div>
+            </Popover>
             <div className={`w-full h-full p-6 flex justify-center items-start`}>
 
               {/* Your existing button */}
-              <button
-                onClick={() => handleClaimRanddrop()}
-                className={`py-2 px-6 animate-pulse hover:animate-none hover:shaxdow-neon-md hover:bg-green-500/10 text-green-500 border border-green-500 rounded-xl bg-gradient-to-b from-green-500/10`}
-              >
-                {"Roll the dice!"}
-              </button>
+              {
+                (tokenLeft < 20_000_000 || claimPercentageLeft === 0) ? (
+                  <div>
+                    All tokens claimed
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => handleClaimRanddrop()}
+                    className={`py-2 px-6 animate-pulse hover:animate-none hover:shaxdow-neon-md hover:bg-green-500/10 text-green-500 border border-green-500 rounded-xl bg-gradient-to-b from-green-500/10`}
+                  >
+                    {"Roll the dice!"}
+                  </button>
+                )
+              }
+
             </div>
           </div>
         )
@@ -485,7 +516,11 @@ export const ClaimInfo = ({
       default: {
         return (
           <div style={{ width: '100%' }}>
-            <Progress percentageLeft={claimPercentageLeft} />
+            <Popover placement="top" content={`${(tokenLeft / Math.pow(10, 6)).toFixed(2)} Nois left`}>
+              <div>
+                <Progress percentageLeft={claimPercentageLeft} />
+              </div>
+            </Popover>
           </div>
         )
       }
