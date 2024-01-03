@@ -39,7 +39,7 @@ export function fromBinary(base64: string): any {
   return JSON.parse(fromUtf8(fromBase64(base64)));
 }
 
-async function queryContractBalance(
+export async function queryContractBalance(
   chain: ChainType,
   contractAddress: string
 ): Promise<number> {

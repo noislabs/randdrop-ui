@@ -8,6 +8,7 @@ import JunoLogo from "../public/JUNO400x400.png";
 import AuraLogo from "../public/AURA400x400.jpg";
 import OsmosisLogo from "../public/OSMOSIS400x400.png";
 import DiceLoader from '../components/diceLoader';
+import progressBar from '../components/progressBar';
 import { ChainType, CheckResponse } from '../pages/api/check';
 import { parseTimestamp } from '../services/parsing'
 import { randdropClaimMsg } from '../services/contractTx'
@@ -385,6 +386,11 @@ export const ClaimInfo = ({
       case "ready": {
         return (
           <div className={`w-full h-full p-6 flex justify-center items-start`}>
+            {/* Progress Bar */}
+            // TODO
+            <progressBar percentageLeft={percentageLeft} />
+  
+            {/* Your existing button */}
             <button
               onClick={() => handleClaimRanddrop()}
               className={`py-2 px-6 animate-pulse hover:animate-none hover:shaxdow-neon-md hover:bg-green-500/10 text-green-500 border border-green-500 rounded-xl bg-gradient-to-b from-green-500/10`}
