@@ -7,6 +7,10 @@
     fill: #d4fff6;
 }
 
+.custom-progress-bar .progress-bar {
+   background-color: rgba(10, 3, 75, 0.765) !important; 
+   color: rgb(21, 3, 42) !important; 
+ }
 
 /* Basic spinner */
 .circle-spinner {

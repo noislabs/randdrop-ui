@@ -1,4 +1,3 @@
-import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 //import { MultiClientProvider, WalletSelectProvider } from "../contexts/cosmwasm";
 import { 
@@ -10,6 +9,7 @@ import { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "antd/dist/reset.css"
+import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(
