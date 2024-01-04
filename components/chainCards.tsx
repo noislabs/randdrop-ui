@@ -255,6 +255,23 @@ export const LiveChainCard = ({
   )
 }
 
+const ProgressBar = ({ tokenLeft, claimPercentageLeft }) => (
+  <div style={{ width: '75%' }}>
+    <Popover placement="top" content={`${(tokenLeft / Math.pow(10, 6)).toFixed(2)} Nois left`}>
+      <div>
+        <Progress percentageLeft={claimPercentageLeft} />
+      </div>
+    </Popover>
+    {
+      (tokenLeft < 20_000_000 || claimPercentageLeft === 0) && (
+        <div style={{ color: 'white', display: 'flex', justifyContent: 'center' }}>
+          All tokens claimed
+        </div>
+      )
+    }
+  </div>
+);
+
 export const ClaimInfo = ({
   client,
   checkResponse,
@@ -411,40 +428,19 @@ export const ClaimInfo = ({
   }, [client?.walletAddress])
 
   if (!client || checkResponse.userStatus === "not_eligible") {
-    return <div style={{ width: '100%' }}>
-      <Popover placement="top" content={`${(tokenLeft / Math.pow(10, 6)).toFixed(2)} Nois left`}>
-        <div>
-          <Progress percentageLeft={claimPercentageLeft} />
-        </div>
-      </Popover>
-      {
-        (tokenLeft < 20_000_000 || claimPercentageLeft === 0) && (
-          <div style={{ color: 'white', display: 'flex', justifyContent: 'center' }}>
-            All tokens claimed
-          </div>
-        )
-      }
-    </div>
+    return <ProgressBar tokenLeft={tokenLeft} claimPercentageLeft={claimPercentageLeft} />;
   } else {
     switch (checkResponse.userStatus) {
       case "ready": {
         return (
-          <div>
-            {/* Progress Bar */}
-            <Popover placement="top" content={`${(tokenLeft / Math.pow(10, 6)).toFixed(2)} Nois left`}>
-              <div>
-                <Progress percentageLeft={claimPercentageLeft} />
-              </div>
-            </Popover>
+          <div className={`w-full h-full p-2 flex flex-col justify-start gap-y-2 items-center`}>
+            {/* Progress bar */}
+            <ProgressBar tokenLeft={tokenLeft} claimPercentageLeft={claimPercentageLeft} />
+      
             <div className={`w-full h-full p-6 flex justify-center items-start`}>
-
-              {/* Your existing button */}
+              {/* Claim button */}
               {
-                (tokenLeft < 20_000_000 || claimPercentageLeft === 0) ? (
-                  <div>
-                    All tokens claimed
-                  </div>
-                ) : (
+                (tokenLeft > 20_000_000 || claimPercentageLeft !== 0) && (
                   <button
                     onClick={() => handleClaimRanddrop()}
                     className={`py-2 px-6 animate-pulse hover:animate-none hover:shaxdow-neon-md hover:bg-green-500/10 text-green-500 border border-green-500 rounded-xl bg-gradient-to-b from-green-500/10`}
@@ -453,14 +449,14 @@ export const ClaimInfo = ({
                   </button>
                 )
               }
-
             </div>
           </div>
-        )
+        );
       }
       case "already_won": {
         return (
           <div className={`w-full h-full p-2 flex flex-col justify-start gap-y-2 items-center`}>
+            <ProgressBar tokenLeft={tokenLeft} claimPercentageLeft={claimPercentageLeft} />
             <div className="text-nois-white/80 text-xs">
               {`Submitted at: ${submitted}`}
             </div>
@@ -494,6 +490,7 @@ export const ClaimInfo = ({
       case "already_lost": {
         return (
           <div className={`w-full h-full p-4 flex flex-col justify-start gap-y-2 items-center`}>
+            <ProgressBar tokenLeft={tokenLeft} claimPercentageLeft={claimPercentageLeft} />
             <div className="text-nois-white/80 text-sm">
               {`Submitted at: ${submitted}`}
             </div>
@@ -514,15 +511,8 @@ export const ClaimInfo = ({
         )
       }
       default: {
-        return (
-          <div style={{ width: '100%' }}>
-            <Popover placement="top" content={`${(tokenLeft / Math.pow(10, 6)).toFixed(2)} Nois left`}>
-              <div>
-                <Progress percentageLeft={claimPercentageLeft} />
-              </div>
-            </Popover>
-          </div>
-        )
+        return <ProgressBar tokenLeft={tokenLeft} claimPercentageLeft={claimPercentageLeft} />
+
       }
     }
   }
