@@ -239,7 +239,7 @@ export const LiveChainCard = ({
         )}
       </div>
       {/* Claim Info*/}
-      <div className="h-[44%] flex justify-center items-center ">
+      <div className="flex justify-center items-center ">
         {!checkResponse || !client ? (
           <div className="w-full h-full flex flex-col justify-center items-center gap-y-4 pb-10">
             <div className="circle-spinner" />
@@ -433,14 +433,16 @@ export const ClaimInfo = ({
     switch (checkResponse.userStatus) {
       case "ready": {
         return (
-          <div className={`w-full h-full p-2 flex flex-col justify-start gap-y-2 items-center`}>
-            {/* Progress bar */}
-            <ProgressBar tokenLeft={tokenLeft} claimPercentageLeft={claimPercentageLeft} />
-      
-            <div className={`w-full h-full p-6 flex justify-center items-start`}>
+          <div style={{ width: '100%'}}>
+            <div style={{display: 'flex', justifyContent: 'center' }}>
+              {/* Progress bar */}
+              <ProgressBar tokenLeft={tokenLeft} claimPercentageLeft={claimPercentageLeft} />
+            </div>
+
+            <div style={{display: 'flex', justifyContent: 'center' }}>
               {/* Claim button */}
               {
-                (tokenLeft > 20_000_000 || claimPercentageLeft !== 0) && (
+                 (
                   <button
                     onClick={() => handleClaimRanddrop()}
                     className={`py-2 px-6 animate-pulse hover:animate-none hover:shaxdow-neon-md hover:bg-green-500/10 text-green-500 border border-green-500 rounded-xl bg-gradient-to-b from-green-500/10`}
