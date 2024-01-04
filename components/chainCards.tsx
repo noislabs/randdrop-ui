@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from 'react'
+import { useMemo, useCallback, useState, useEffect } from 'react'
 import { toast } from 'react-hot-toast';
 import { ChainSigningClient } from '../contexts/userClients';
 import NextImage from "next/image";
@@ -8,6 +8,7 @@ import JunoLogo from "../public/JUNO400x400.png";
 import AuraLogo from "../public/AURA400x400.jpg";
 import OsmosisLogo from "../public/OSMOSIS400x400.png";
 import DiceLoader from '../components/diceLoader';
+import Progress from './progressBar';
 import { ChainType, CheckResponse } from '../pages/api/check';
 import { parseTimestamp } from '../services/parsing'
 import { randdropClaimMsg } from '../services/contractTx'
@@ -15,6 +16,9 @@ import { ethLedgerTxHelper } from '../services/ledgerHelpers';
 import { routeNewTab } from '../services/misc';
 import { AirdropLiveStatus } from '../pages';
 import { signSendAndBroadcastOnInjective } from '../services/injective';
+import { calculatePercentage } from '../hooks/cosmwasm';
+import { getContractAddress } from '../pages/api/check';
+import { Popover, Spin } from 'antd';
 
 const BridgeLinks = {
   "injective": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=injective-1&token0=ibc%2FDD9182E8E2B13C89D6B4707C7B43E8DB6193F9FF486AFA0E6CF86B427B0D231A&token1=unois",
@@ -62,8 +66,8 @@ export const PausedChainCard = ({
         return InjectiveLogo;
       case "aura":
         return AuraLogo;
-        case "osmosis":
-          return OsmosisLogo;
+      case "osmosis":
+        return OsmosisLogo;
       case "stargaze":
         return StargazeLogo;
       default:
@@ -133,8 +137,8 @@ export const LiveChainCard = ({
         return InjectiveLogo;
       case "aura":
         return AuraLogo;
-        case "osmosis":
-          return OsmosisLogo;
+      case "osmosis":
+        return OsmosisLogo;
       case "stargaze":
         return StargazeLogo;
       default:
@@ -235,7 +239,7 @@ export const LiveChainCard = ({
         )}
       </div>
       {/* Claim Info*/}
-      <div className="h-[44%] flex justify-center items-center ">
+      <div className="flex justify-center items-center ">
         {!checkResponse || !client ? (
           <div className="w-full h-full flex flex-col justify-center items-center gap-y-4 pb-10">
             <div className="circle-spinner" />
@@ -251,6 +255,42 @@ export const LiveChainCard = ({
   )
 }
 
+function formatLargeNumber(number) {
+  const abbreviations = {
+    K: 1000,
+    M: 1000000,
+    B: 1000000000,
+  };
+
+  for (const key of Object.keys(abbreviations).reverse()) {
+    if (number >= abbreviations[key]) {
+      return `${(number / abbreviations[key]).toFixed(2)}${key}`;
+    }
+  }
+
+  return number.toString();
+}
+
+const ProgressBar = ({ tokenLeft, claimPercentageLeft }) => {
+  if (tokenLeft < 20_000_000 || claimPercentageLeft === 0) {
+    return (
+      <div style={{ color: 'white', display: 'flex', justifyContent: 'center' }}>
+        All tokens claimed
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ width: '75%' }}>
+      <Popover placement="top" content={`Remaining unclaimed NOIS tokens: ${formatLargeNumber(tokenLeft / Math.pow(10, 6))}`}>
+        <div>
+          <Progress percentageLeft={claimPercentageLeft} />
+        </div>
+      </Popover>
+    </div>
+  );
+};
+
 export const ClaimInfo = ({
   client,
   checkResponse,
@@ -260,6 +300,34 @@ export const ClaimInfo = ({
   checkResponse: CheckResponse;
   refetch: () => {}
 }) => {
+  const [claimPercentageLeft, setClaimPercentageLeft] = useState(0)
+  const [tokenLeft, setTokenLeft] = useState(0)
+
+  useEffect(() => {
+    (async () => {
+      // If no client, or client is not metamask or ledger, return
+      if (!client || !client.chain) {
+        toast.error(`Wallet or Ledger not connected for ${checkResponse.chain}`);
+        return;
+      }
+
+      const contractAddress = getContractAddress(client.chain)
+
+      if (contractAddress === "") {
+        toast.error(`No randdrop contract available for ${checkResponse.chain}`);
+        return;
+      }
+
+      const resp = await calculatePercentage(client?.chain, contractAddress)
+      if (!resp) {
+        toast.error(`Unable to fetch contract balance for ${checkResponse.chain}`);
+        return;
+      }
+      console.log(resp)
+      setClaimPercentageLeft(parseFloat(resp.percentageLeft.toFixed(2)))
+      setTokenLeft(resp.amountLeft)
+    })()
+  }, [])
 
   const {
     submitted,
@@ -379,24 +447,37 @@ export const ClaimInfo = ({
   }, [client?.walletAddress])
 
   if (!client || checkResponse.userStatus === "not_eligible") {
-    return <></>
+    return <ProgressBar tokenLeft={tokenLeft} claimPercentageLeft={claimPercentageLeft} />;
   } else {
     switch (checkResponse.userStatus) {
       case "ready": {
         return (
-          <div className={`w-full h-full p-6 flex justify-center items-start`}>
-            <button
-              onClick={() => handleClaimRanddrop()}
-              className={`py-2 px-6 animate-pulse hover:animate-none hover:shaxdow-neon-md hover:bg-green-500/10 text-green-500 border border-green-500 rounded-xl bg-gradient-to-b from-green-500/10`}
-            >
-              {"Roll the dice!"}
-            </button>
+          <div style={{ width: '100%'}}>
+            <div style={{display: 'flex', justifyContent: 'center' }}>
+              {/* Progress bar */}
+              <ProgressBar tokenLeft={tokenLeft} claimPercentageLeft={claimPercentageLeft} />
+            </div>
+
+            <div style={{display: 'flex', justifyContent: 'center' }}>
+              {/* Claim button */}
+              {
+                 (
+                  <button
+                    onClick={() => handleClaimRanddrop()}
+                    className={`py-2 px-6 animate-pulse hover:animate-none hover:shaxdow-neon-md hover:bg-green-500/10 text-green-500 border border-green-500 rounded-xl bg-gradient-to-b from-green-500/10`}
+                  >
+                    {"Roll the dice!"}
+                  </button>
+                )
+              }
+            </div>
           </div>
-        )
+        );
       }
       case "already_won": {
         return (
           <div className={`w-full h-full p-2 flex flex-col justify-start gap-y-2 items-center`}>
+            <ProgressBar tokenLeft={tokenLeft} claimPercentageLeft={claimPercentageLeft} />
             <div className="text-nois-white/80 text-xs">
               {`Submitted at: ${submitted}`}
             </div>
@@ -430,6 +511,7 @@ export const ClaimInfo = ({
       case "already_lost": {
         return (
           <div className={`w-full h-full p-4 flex flex-col justify-start gap-y-2 items-center`}>
+            <ProgressBar tokenLeft={tokenLeft} claimPercentageLeft={claimPercentageLeft} />
             <div className="text-nois-white/80 text-sm">
               {`Submitted at: ${submitted}`}
             </div>
@@ -450,9 +532,8 @@ export const ClaimInfo = ({
         )
       }
       default: {
-        return (
-          <></>
-        )
+        return <ProgressBar tokenLeft={tokenLeft} claimPercentageLeft={claimPercentageLeft} />
+
       }
     }
   }
