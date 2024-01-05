@@ -127,8 +127,8 @@ const AirdropRegistry = {
     //"contract": 'inj1hjl70antdrqlhunaesp8d6lv4nuy9rknfpn48w'
   },
   "stargaze": {
-    "url": 'https://raw.githubusercontent.com/noislabs/randdrop-snapshots/v0.2.1/stargaze-randdrop-1.json',
-    "contract": 'stars1e4df5ydrwv7cyeg8se9ujmsmmkhgeq5ynq4ukvt8pt0glptpd27sq3d20e'
+    "url": 'https://raw.githubusercontent.com/noislabs/randdrop-snapshots/v0.2.1/stargaze-randdrop-2.json',
+    "contract": 'stars1qytke02t6mrj6zvyjymrd4e6h3l78ecx2nwwf9huvcprehy7xmsqpqh7za'
   },
   "aura": {
     //"url": 'https://gist.githubusercontent.com/kaisbaccour/05b6dda6672a6b9c7beaf6198006a4c2/raw/11cbf1f49dba15bfd07f61ea4430392f556441d0/gistfile1.json',
