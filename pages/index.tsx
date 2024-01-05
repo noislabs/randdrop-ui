@@ -17,7 +17,7 @@ import { ChainType, CheckResponse } from './api/check';
 
 // Config for live / not live randdrop chains
 export const AirdropLiveStatus: { [K in ChainType]: boolean } = {
-  "injective": true,
+  "injective": false,
   "juno": true,
   "stargaze": true,
   "aura": true,
