@@ -498,7 +498,7 @@ export const ClaimInfo = ({
                 {"Transfer to Nois Chain"}
               </button>
               <button
-                onClick={() => routeNewTab("https://restake.app/nois")}
+                onClick={() => routeNewTab("https://pod.kujira.network/nois-1")}
                 className="flex justify-center text-sm items-center rounded-lg px-4 py-1.5 border border-nois-light-green/30 text-nois-light-green/80 hover:text-nois-light-green hover:border-nois-light-green hover:bg-black"
               >
                 {"Stake on Nois Chain"}
