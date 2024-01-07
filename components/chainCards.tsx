@@ -433,16 +433,16 @@ export const ClaimInfo = ({
     switch (checkResponse.userStatus) {
       case "ready": {
         return (
-          <div style={{ width: '100%'}}>
-            <div style={{display: 'flex', justifyContent: 'center' }}>
+          <div style={{ width: '100%' }}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
               {/* Progress bar */}
               <ProgressBar tokenLeft={tokenLeft} claimPercentageLeft={claimPercentageLeft} />
             </div>
 
-            <div style={{display: 'flex', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
               {/* Claim button */}
               {
-                 (
+                (tokenLeft > 20_000_000 || claimPercentageLeft !== 0) && (
                   <button
                     onClick={() => handleClaimRanddrop()}
                     className={`py-2 px-6 animate-pulse hover:animate-none hover:shaxdow-neon-md hover:bg-green-500/10 text-green-500 border border-green-500 rounded-xl bg-gradient-to-b from-green-500/10`}
