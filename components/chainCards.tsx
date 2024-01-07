@@ -255,22 +255,41 @@ export const LiveChainCard = ({
   )
 }
 
-const ProgressBar = ({ tokenLeft, claimPercentageLeft }) => (
-  <div style={{ width: '75%' }}>
-    <Popover placement="top" content={`${(tokenLeft / Math.pow(10, 6)).toFixed(2)} Nois left`}>
-      <div>
-        <Progress percentageLeft={claimPercentageLeft} />
-      </div>
-    </Popover>
-    {
-      (tokenLeft < 20_000_000 || claimPercentageLeft === 0) && (
-        <div style={{ color: 'white', display: 'flex', justifyContent: 'center' }}>
-          All tokens claimed
-        </div>
-      )
+function formatLargeNumber(number) {
+  const abbreviations = {
+    K: 1000,
+    M: 1000000,
+    B: 1000000000,
+  };
+
+  for (const key of Object.keys(abbreviations).reverse()) {
+    if (number >= abbreviations[key]) {
+      return `${(number / abbreviations[key]).toFixed(2)}${key}`;
     }
-  </div>
-);
+  }
+
+  return number.toString();
+}
+
+const ProgressBar = ({ tokenLeft, claimPercentageLeft }) => {
+  if (tokenLeft < 20_000_000 || claimPercentageLeft === 0) {
+    return (
+      <div style={{ color: 'white', display: 'flex', justifyContent: 'center' }}>
+        All tokens claimed
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ width: '75%' }}>
+      <Popover placement="top" content={`Remaining unclaimed NOIS tokens: ${formatLargeNumber(tokenLeft / Math.pow(10, 6))}`}>
+        <div>
+          <Progress percentageLeft={claimPercentageLeft} />
+        </div>
+      </Popover>
+    </div>
+  );
+};
 
 export const ClaimInfo = ({
   client,
@@ -479,7 +498,7 @@ export const ClaimInfo = ({
                 {"Transfer to Nois Chain"}
               </button>
               <button
-                onClick={() => routeNewTab("https://restake.app/nois")}
+                onClick={() => routeNewTab("https://pod.kujira.network/nois-1")}
                 className="flex justify-center text-sm items-center rounded-lg px-4 py-1.5 border border-nois-light-green/30 text-nois-light-green/80 hover:text-nois-light-green hover:border-nois-light-green hover:bg-black"
               >
                 {"Stake on Nois Chain"}
