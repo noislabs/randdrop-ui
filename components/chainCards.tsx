@@ -166,7 +166,7 @@ export const LiveChainCard = ({
         return {
           logoClassName: "ring-4 ring-gray-700 ring-offset-4 ring-offset-nois-blue grayscale-50 brightness-50",
           titleClassName: "text-gray-500 text-sm",
-          title: "Not eligible"
+          title: "Not eligible for this round"
         }
       }
       // User has submitted & waiting for randomness callback
@@ -174,7 +174,7 @@ export const LiveChainCard = ({
         return {
           logoClassName: "ring-4 ring-amber-300 ring-offset-4 ring-offset-nois-blue",
           titleClassName: "text-amber-300 text-sm",
-          title: "Dice rolled, waiting for outcome..."
+          title: "Requesting randomness from Nois chain ..."
         }
       }
       // User already won & NOIS tokens were sent by proxy
