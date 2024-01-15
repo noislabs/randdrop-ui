@@ -207,6 +207,7 @@ type ParRes = {
  * - Checks `addr` participation status & if waiting on randomness
  */
 const checkParticipationStatus = async (addr: string, chain: ChainType): Promise<ParRes> => {
+  console.log(`Checking participant status for ${addr} on ${chain}`)
 
   // Chain Registry entry
   const entry = AirdropRegistry[chain];
