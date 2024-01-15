@@ -58,7 +58,7 @@ const Home: NextPage = () => {
       enabled: !!(junoClient && AirdropLiveStatus["juno"]),
       refetchInterval: (data) => {
         if (data && data.userStatus === "waiting_randomness") {
-          return 1_000;
+          return 5_000;
         } else {
           return false;
         }
@@ -78,7 +78,7 @@ const Home: NextPage = () => {
       enabled: !!(osmosisClient && AirdropLiveStatus["osmosis"]),
       refetchInterval: (data) => {
         if (data && data.userStatus === "waiting_randomness") {
-          return 1_000;
+          return 5_000;
         } else {
           return false;
         }
@@ -98,7 +98,7 @@ const Home: NextPage = () => {
       enabled: !!(injectiveClient && AirdropLiveStatus["injective"]),
       refetchInterval: (data) => {
         if (data && data.userStatus === "waiting_randomness") {
-          return 1_000;
+          return 5_000;
         } else {
           return false;
         }
@@ -118,7 +118,7 @@ const Home: NextPage = () => {
       enabled: !!(auraClient && AirdropLiveStatus["aura"]),
       refetchInterval: (data) => {
         if (data && data.userStatus === "waiting_randomness") {
-          return 1_000;
+          return 5_000;
         } else {
           return false;
         }
@@ -138,7 +138,7 @@ const Home: NextPage = () => {
       enabled: !!(stargazeClient && AirdropLiveStatus["stargaze"]),
       refetchInterval: (data) => {
         if (data && data.userStatus === "waiting_randomness") {
-          return 1_000;
+          return 5_000;
         } else {
           return false;
         }
