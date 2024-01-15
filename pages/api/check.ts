@@ -43,6 +43,8 @@ export default async function handler(
     error: `API disabled`
   });
 
+  /*
+
   try {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Validations
@@ -101,6 +103,8 @@ export default async function handler(
       error: `Invalid request: ${e}`
     });
   }
+
+  */
 }
 
 /** 
