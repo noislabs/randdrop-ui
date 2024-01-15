@@ -227,7 +227,7 @@ export const junoChainConfig: ChainInfo = {
 export const injectiveChainConfig: ChainInfo = {
   chainId: "injective-1",
   chainName: "injective",
-  rpc: "https://injective-rpc.lavenderfive.com",
+  rpc: "https://rpc-injective-ia.cosmosia.notional.ventures",
   rest: "https://injective-api.polkachu.com",
   bip44: {
     coinType: 60,
