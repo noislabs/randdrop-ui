@@ -475,13 +475,7 @@ export const ClaimInfo = ({
         );
       }
       case "already_lost": {
-        return (
-          <div
-            className={`w-full h-full p-4 flex flex-col justify-start gap-y-2 items-center`}
-          >
-            Oops, you didn't win this time. Better luck next time!
-          </div>
-        );
+        return null;
       }
       case "waiting_randomness": {
         return (
