@@ -32,7 +32,6 @@ export type CheckResponse = z.infer<typeof CheckResponse>;
 
 export const AirdropRegistry = {
   "juno": {
-    "url": 'https://raw.githubusercontent.com/noislabs/randdrop-snapshots/v0.2.1/juno-randdrop-2.json',
     "contract": 'juno1pqcxmuc4nhkjqgymwraxzqj25yljdlnmu7rd675c6ypg9dakcwlszvk9gk'
   },
   "injective": {
