@@ -22,7 +22,17 @@ const formatWinningAmount = (winningAmount: string) => {
 
 export default function ChainList({ chains }: ChainListProps) {
   const userStatusBasedOnResponse = (checkResponse?: CheckResponse) => {
-    if (!checkResponse) return "Loading...";
+    if (!checkResponse) {
+      return (
+        <UserStaturContainer>
+          <QuestionMarkCircleIcon
+            className="h-5 w-5 text-blue-400"
+            aria-hidden="true"
+          />
+          <div>Checking</div>
+        </UserStaturContainer>
+      );
+    }
 
     switch (checkResponse.userStatus) {
       case "already_lost":
@@ -85,13 +95,13 @@ export default function ChainList({ chains }: ChainListProps) {
   };
 
   return (
-    <div className="divide-y divide-gray-500 px-16">
+    <div className="divide-y divide-gray-500 px-4 sm:px-16">
       {chains.map((chain) => (
         <div
           key={chain.name}
-          className="relative flex justify-between py-5 items-center"
+          className="flex flex-col sm:flex-row justify-between py-5 items-center"
         >
-          <div className="flex gap-x-4 pr-6 sm:w-1/2 sm:flex-none">
+          <div className="flex flex-row sm:flex-col gap-x-4 pr-6 w-full sm:w-auto">
             <img
               className="h-12 w-12 flex-none rounded-full bg-gray-50"
               src={chain.logo}
@@ -111,7 +121,7 @@ export default function ChainList({ chains }: ChainListProps) {
               </div>
             </div>
           </div>
-          <div className="flex items-center justify-between gap-x-4 sm:w-1/2 sm:flex-none">
+          <div className="flex items-center justify-between gap-x-4 sm:w-1/2 sm:flex-none mt-4 sm:mt-0">
             <div className="flex space-x-2">
               {userStatusBasedOnResponse(chain.checkResponse)}
             </div>
