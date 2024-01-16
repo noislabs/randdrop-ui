@@ -42,7 +42,6 @@ export const AirdropRegistry = {
     "contract": 'stars1qytke02t6mrj6zvyjymrd4e6h3l78ecx2nwwf9huvcprehy7xmsqpqh7za'
   },
   "aura": {
-    "url": 'https://raw.githubusercontent.com/noislabs/randdrop-snapshots/v0.2.1/aura-randdrop-2.json',
     "contract": 'aura1femc3zxv4c43rwpy43na9gul4ssr8dkxe3m9v8afzlmhgj69sw6ql28x39'
   },
   "osmosis": {
