@@ -36,8 +36,6 @@ export const fetchUserStatus = async ({
     });
     console.log(res);
     const resData = await res.json();
-    console.log("____")
-    console.log(resData);
 
     if (res.status !== 200) {
       throw new Error(JSON.stringify(resData));
