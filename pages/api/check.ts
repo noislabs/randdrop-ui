@@ -200,9 +200,6 @@ const ifEligibleGetProof = async (addr: string, chain: ChainType) => {
   const userDrop = chainData.find((obj) => obj.address === addr);
 
   if (!userDrop) {
-    console.log(
-      `${addr} not eligible for ${chain} | Address not found in Gist lookup`
-    );
     return undefined;
   } else {
     // Address found, generate proof & return it
@@ -234,8 +231,6 @@ const checkParticipationStatus = async (
   addr: string,
   chain: ChainType
 ): Promise<ParRes> => {
-  console.log(`Checking participant status for ${addr} on ${chain}`);
-
   // Chain Registry entry
   const entry = AirdropRegistry[chain];
   if (!entry) {

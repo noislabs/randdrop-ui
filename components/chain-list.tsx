@@ -85,9 +85,9 @@ export default function ChainList({ chains }: ChainListProps) {
   };
 
   return (
-    <ul role="list" className="divide-y divide-gray-500 px-16">
+    <div className="divide-y divide-gray-500 px-16">
       {chains.map((chain) => (
-        <li
+        <div
           key={chain.name}
           className="relative flex justify-between py-5 items-center"
         >
@@ -98,24 +98,24 @@ export default function ChainList({ chains }: ChainListProps) {
               alt=""
             />
             <div className="min-w-0 flex-auto">
-              <p className="font-semibold leading-6 text-gray-100">
+              <div className="font-semibold leading-6 text-gray-100">
                 <div>
                   <span className="absolute inset-x-0 -top-px bottom-0" />
                   {chain.name}
                 </div>
-              </p>
-              <p className="mt-1 flex text-xs leading-5 text-gray-400">
+              </div>
+              <div className="mt-1 flex text-xs leading-5 text-gray-400">
                 <div className="relative truncate hover:underline font-mono">
                   {chain.client?.walletAddress ?? "Not connected"}
                 </div>
-              </p>
+              </div>
             </div>
           </div>
           <div className="flex items-center justify-between gap-x-4 sm:w-1/2 sm:flex-none">
             <div className="flex space-x-2">
               {userStatusBasedOnResponse(chain.checkResponse)}
             </div>
-            <div className="flex-none text-gray-400" aria-hidden="true">
+            <div>
               {chain.checkResponse ? (
                 <ClaimInfo
                   client={chain.client}
@@ -125,8 +125,8 @@ export default function ChainList({ chains }: ChainListProps) {
               ) : null}
             </div>
           </div>
-        </li>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 }

@@ -34,7 +34,6 @@ export const fetchUserStatus = async ({
       },
       cache: "no-store",
     });
-    console.log(res);
     const resData = await res.json();
 
     if (res.status !== 200) {
@@ -47,7 +46,6 @@ export const fetchUserStatus = async ({
     }
     return vres.data;
   } catch (e) {
-    console.log(e);
     throw new Error(`${e}`);
   }
 };
