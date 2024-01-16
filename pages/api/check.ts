@@ -55,6 +55,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  return res.status(503).json({
+    error: `API disabled`
+  });
+
+  /*
+
   try {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Validations
@@ -118,6 +124,8 @@ export default async function handler(
       error: `Invalid request: ${e}`,
     });
   }
+
+  */
 }
 
 /**
