@@ -5,14 +5,18 @@ import { useMemo } from "react";
 // import { useMultiKeplr, useMultiWallet } from '../hooks/useKeplr'
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import ChainList from "../components/chain-list";
 import { ChainCard } from "../components/chainCards";
 import { WalletConnectModal } from "../components/connectWalletModal";
 import { NoisFooter } from "../components/footer";
-import { useAllMultiClients } from "../contexts/userClients";
+import {
+  ChainSigningClient,
+  useAllMultiClients,
+} from "../contexts/userClients";
 import { fetchUserStatus } from "../hooks/fetchUserStatus";
 import noisLogo from "../public/nois_logo.png";
 import { routeNewTab } from "../services/misc";
-import { ChainType } from "./api/check";
+import { ChainType, CheckResponse } from "./api/check";
 
 // Config for live / not live randdrop chains
 export const AirdropLiveStatus: { [K in ChainType]: boolean } = {
@@ -21,6 +25,16 @@ export const AirdropLiveStatus: { [K in ChainType]: boolean } = {
   stargaze: true,
   aura: true,
   osmosis: false,
+};
+
+export type ChainProps = {
+  name: string;
+  status: string;
+  refetch: any;
+  client: ChainSigningClient | undefined;
+  checkResponse: CheckResponse | undefined;
+  walletLoading: boolean;
+  logo: string;
 };
 
 const Home: NextPage = () => {
@@ -162,10 +176,58 @@ const Home: NextPage = () => {
     }
   );
 
+  const chains: ChainProps[] = [
+    {
+      name: "Aura network",
+      status: `${auraStatus}_${auraFetchStatus}`,
+      refetch: auraRefetch,
+      client: auraClient,
+      checkResponse: auraData,
+      walletLoading: walletLoading,
+      logo: "https://pbs.twimg.com/profile_images/1737029336895778816/kgcJuHH-_400x400.jpg",
+    },
+    {
+      name: "Juno",
+      status: `${junoStatus}_${junoFetchStatus}`,
+      refetch: junoRefetch,
+      client: junoClient,
+      checkResponse: junoData,
+      walletLoading: walletLoading,
+      logo: "https://pbs.twimg.com/profile_images/1637016727874674689/2C06aPqM_400x400.png",
+    },
+    {
+      name: "Stargaze",
+      status: `${stargazeStatus}_${stargazeFetchStatus}`,
+      refetch: stargazeRefetch,
+      client: stargazeClient,
+      checkResponse: stargazeData,
+      walletLoading: walletLoading,
+      logo: "https://pbs.twimg.com/profile_images/1507391623914737669/U3fR7nxh_400x400.jpg",
+    },
+    {
+      name: "Injective",
+      status: `${injectiveStatus}_${injectiveFetchStatus}`,
+      refetch: injectiveRefetch,
+      client: injectiveClient,
+      checkResponse: injectiveData,
+      walletLoading: walletLoading,
+      logo: "https://pbs.twimg.com/profile_images/1741980867453456384/OvMjkFJk_400x400.jpg",
+    },
+    {
+      name: "Osmosis",
+      status: `${osmosisStatus}_${osmosisFetchStatus}`,
+      refetch: osmosisRefetch,
+      client: osmosisClient,
+      checkResponse: osmosisData,
+      walletLoading: walletLoading,
+      logo: "https://pbs.twimg.com/profile_images/1737332416002260992/fK84ceN0_400x400.jpg",
+    },
+  ];
+
   return (
     <div className="flex flex-col min-h-screen md:h-screen p-2 bg-nois-blue text-nois-white/90">
       <Head>
-        <title>Nois Randdrop Checker</title>
+        <title>Nois Randdrop Checker by 0xSpit</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -226,7 +288,7 @@ const Home: NextPage = () => {
               </div>
             </div>
           ) : (
-            <div className="bg-red-800/0 w-full overflow-y-auto md:h-full grid grid-rows-5 lg:grid-cols-5 lg:px-8 lg:py-4">
+            <div className="w-full overflow-y-auto">
               {walletType === "metamask" ? (
                 <ChainCard
                   chain="injective"
@@ -237,48 +299,9 @@ const Home: NextPage = () => {
                   walletLoading={walletLoading}
                 />
               ) : (
-                <>
-                  <ChainCard
-                    chain="aura"
-                    chainStatus={`${auraStatus}_${auraFetchStatus}`}
-                    refetch={auraRefetch}
-                    client={auraClient}
-                    checkResponse={auraData}
-                    walletLoading={walletLoading}
-                  />
-                  <ChainCard
-                    chain="juno"
-                    chainStatus={`${junoStatus}_${junoFetchStatus}`}
-                    refetch={junoRefetch}
-                    client={junoClient}
-                    checkResponse={junoData}
-                    walletLoading={walletLoading}
-                  />
-                  <ChainCard
-                    chain="stargaze"
-                    chainStatus={`${stargazeStatus}_${stargazeFetchStatus}`}
-                    refetch={stargazeRefetch}
-                    client={stargazeClient}
-                    checkResponse={stargazeData}
-                    walletLoading={walletLoading}
-                  />
-                  <ChainCard
-                    chain="injective"
-                    chainStatus={`${injectiveStatus}_${injectiveFetchStatus}`}
-                    refetch={injectiveRefetch}
-                    client={injectiveClient}
-                    checkResponse={injectiveData}
-                    walletLoading={walletLoading}
-                  />
-                  <ChainCard
-                    chain="osmosis"
-                    chainStatus={`${osmosisStatus}_${osmosisFetchStatus}`}
-                    refetch={osmosisRefetch}
-                    client={osmosisClient}
-                    checkResponse={osmosisData}
-                    walletLoading={walletLoading}
-                  />
-                </>
+                <div className="flex flex-col divide-x divide-gray-600 mx-auto max-w-7xl">
+                  <ChainList chains={chains} />
+                </div>
               )}
             </div>
           )}
