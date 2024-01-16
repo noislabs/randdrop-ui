@@ -45,7 +45,6 @@ export const AirdropRegistry = {
     "contract": 'aura1femc3zxv4c43rwpy43na9gul4ssr8dkxe3m9v8afzlmhgj69sw6ql28x39'
   },
   "osmosis": {
-    "url": 'https://raw.githubusercontent.com/noislabs/randdrop-snapshots/v0.2.1/osmosis-randdrop-1.json',
     "contract": 'osmo1873ls0d60tg7hk00976teq9ywhzv45u3hk2urw8t3eau9eusa4eqtun9xn'
   }
 }
