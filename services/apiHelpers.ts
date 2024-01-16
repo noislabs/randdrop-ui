@@ -35,7 +35,6 @@ export const AirdropRegistry = {
     "contract": 'juno1pqcxmuc4nhkjqgymwraxzqj25yljdlnmu7rd675c6ypg9dakcwlszvk9gk'
   },
   "injective": {
-    "url": 'https://raw.githubusercontent.com/noislabs/randdrop-snapshots/v0.3.0/injective-randdrop-2.json',
     //"url": 'https://gist.githubusercontent.com/kaisbaccour/c26ede9d4219896bc03fb0fdfce310a3/raw/fa0825eb75607afad08ffb0fdead8567795150ad/injective-randdrop.json',
      "contract": 'inj1z4nmwyaujc89tqwfhd6wm6hugdr3f4jnllxfgk'
     // for testing
