@@ -35,7 +35,6 @@ export const AirdropRegistry = {
     "contract": 'juno1pqcxmuc4nhkjqgymwraxzqj25yljdlnmu7rd675c6ypg9dakcwlszvk9gk'
   },
   "injective": {
-    //"url": 'https://gist.githubusercontent.com/kaisbaccour/c26ede9d4219896bc03fb0fdfce310a3/raw/fa0825eb75607afad08ffb0fdead8567795150ad/injective-randdrop.json',
      "contract": 'inj1z4nmwyaujc89tqwfhd6wm6hugdr3f4jnllxfgk'
     // for testing
     //"url": 'https://gist.githubusercontent.com/hoangdv2429/f4569307b2191e5a40d468019297a35f/raw/bb5560436bb2f747393503fdc9a25c8327166d4e/injective-randdrop.json',
