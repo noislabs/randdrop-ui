@@ -6,7 +6,6 @@ import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import ChainList from "../components/chain-list";
-import { ChainCard } from "../components/chainCards";
 import { WalletConnectModal } from "../components/connectWalletModal";
 import { NoisFooter } from "../components/footer";
 import {
@@ -290,13 +289,8 @@ const Home: NextPage = () => {
           ) : (
             <div className="w-full overflow-y-auto">
               {walletType === "metamask" ? (
-                <ChainCard
-                  chain="injective"
-                  chainStatus={`${injectiveStatus}_${injectiveFetchStatus}`}
-                  refetch={injectiveRefetch}
-                  client={injectiveClient}
-                  checkResponse={injectiveData}
-                  walletLoading={walletLoading}
+                <ChainList
+                  chains={chains.filter((chain) => chain.name !== "Injective")}
                 />
               ) : (
                 <div className="flex flex-col divide-x divide-gray-600 mx-auto max-w-7xl">
