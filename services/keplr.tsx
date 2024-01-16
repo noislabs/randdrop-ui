@@ -8,7 +8,7 @@ import {
   osmosisChainConfig,
 } from "./chainConfig";
 import { Keplr } from "@keplr-wallet/types";
-import { ChainType } from "../pages/api/check";
+import { ChainType } from "../services/apiHelpers";
 
 declare global {
   interface Window {

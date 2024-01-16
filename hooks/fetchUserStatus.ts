@@ -1,5 +1,5 @@
 import { getInjectiveAddress } from "@injectivelabs/sdk-ts";
-import { ChainType, CheckResponse } from "../pages/api/check";
+import { ChainType, CheckResponse } from "../services/apiHelpers";
 
 // Not a hook but seems like a good place to put this
 export const fetchUserStatus = async ({
@@ -23,11 +23,11 @@ export const fetchUserStatus = async ({
     }
 
     const queryParams = new URLSearchParams({
-      address: walletAddr,
       chain: validateChain.data,
+      address: walletAddr,
     }).toString();
 
-    const res = await fetch(`/api/check?${queryParams}`, {
+    const res = await fetch(`https://randdrop-api.nois.network:443/api/check_user?${queryParams}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -36,6 +36,8 @@ export const fetchUserStatus = async ({
     });
     console.log(res);
     const resData = await res.json();
+    console.log("____")
+    console.log(resData);
 
     if (res.status !== 200) {
       throw new Error(JSON.stringify(resData));

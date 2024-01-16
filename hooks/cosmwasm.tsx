@@ -9,7 +9,7 @@ import {
 } from "@cosmjs/tendermint-rpc";
 import { QueryClient } from "@cosmjs/stargate";
 import { getChainConfig } from "../services/chainConfig";
-import { ChainType } from "../pages/api/check";
+import { ChainType } from "../services/apiHelpers";
 
 export const getBatchClient = async (chain: ChainType) => {
   const thisChain = getChainConfig(chain);

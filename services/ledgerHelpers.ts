@@ -1,4 +1,4 @@
-import { ChainType, CheckResponse } from "../pages/api/check";
+import { ChainType, CheckResponse } from "../services/apiHelpers";
 import { CosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { toBase64 } from "@cosmjs/encoding";
 import { getChainConfig } from "../services/chainConfig";
