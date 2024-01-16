@@ -4,6 +4,7 @@ import Head from "next/head";
 import { useMemo } from "react";
 // import { useMultiKeplr, useMultiWallet } from '../hooks/useKeplr'
 import { useQuery } from "@tanstack/react-query";
+import { Analytics } from "@vercel/analytics/react";
 import Image from "next/image";
 import ChainList from "../components/chain-list";
 import { WalletConnectModal } from "../components/connectWalletModal";
@@ -229,7 +230,7 @@ const Home: NextPage = () => {
         <title>Nois Randdrop Checker by 0xSpit</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      <Analytics />
       {/* Connect Wallet Header */}
       <div className="flex justify-between px-12 w-full border-b border-nois-white/10 ">
         <div

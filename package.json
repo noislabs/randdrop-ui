@@ -22,6 +22,7 @@
     "@metamask/sdk": "^0.14.1",
     "@next/bundle-analyzer": "^13.4.12",
     "@tanstack/react-query": "^4.29.12",
+    "@vercel/analytics": "^1.1.1",
     "antd": "^5.12.7",
     "bootstrap": "^5.3.2",
     "crypto-js": "^4.1.1",
