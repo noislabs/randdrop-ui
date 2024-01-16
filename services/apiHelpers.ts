@@ -39,7 +39,6 @@ export const AirdropRegistry = {
     //"contract": 'inj1hjl70antdrqlhunaesp8d6lv4nuy9rknfpn48w'
   },
   "stargaze": {
-    "url": 'https://raw.githubusercontent.com/noislabs/randdrop-snapshots/v0.2.1/stargaze-randdrop-2.json',
     "contract": 'stars1qytke02t6mrj6zvyjymrd4e6h3l78ecx2nwwf9huvcprehy7xmsqpqh7za'
   },
   "aura": {
