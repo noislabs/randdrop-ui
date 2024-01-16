@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { ChainType } from "../pages/api/check";
+import { ChainType } from "../services/apiHelpers";
 
 function getDiceColor(chain: ChainType) {
   switch (chain) {

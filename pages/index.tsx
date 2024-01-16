@@ -13,7 +13,7 @@ import { ChainCard } from '../components/chainCards'
 import { WalletConnectModal } from '../components/connectWalletModal'
 import { useAllMultiClients } from '../contexts/userClients'
 import { routeNewTab } from '../services/misc';
-import { ChainType, CheckResponse } from './api/check';
+import { ChainType, CheckResponse } from '../services/apiHelpers';
 
 // Config for live / not live randdrop chains
 export const AirdropLiveStatus: { [K in ChainType]: boolean } = {

@@ -1,5 +1,5 @@
 import { createContext, useContext, ReactNode, useState, useMemo, useCallback, useEffect } from "react";
-import { ChainType } from "../pages/api/check";
+import { ChainType } from "../services/apiHelpers";
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { LedgerSigner } from "@cosmjs/ledger-amino";
 import { GasPrice } from "@cosmjs/stargate";

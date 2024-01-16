@@ -9,7 +9,7 @@ import AuraLogo from "../public/AURA400x400.jpg";
 import OsmosisLogo from "../public/OSMOSIS400x400.png";
 import DiceLoader from '../components/diceLoader';
 import Progress from './progressBar';
-import { ChainType, CheckResponse } from '../pages/api/check';
+import { ChainType, CheckResponse, getContractAddress } from '../services/apiHelpers';
 import { parseTimestamp } from '../services/parsing'
 import { randdropClaimMsg } from '../services/contractTx'
 import { ethLedgerTxHelper } from '../services/ledgerHelpers';
@@ -17,7 +17,6 @@ import { routeNewTab } from '../services/misc';
 import { AirdropLiveStatus } from '../pages';
 import { signSendAndBroadcastOnInjective } from '../services/injective';
 import { calculatePercentage } from '../hooks/cosmwasm';
-import { getContractAddress } from '../pages/api/check';
 import { Popover, Spin } from 'antd';
 
 const BridgeLinks = {

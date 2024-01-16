@@ -1,5 +1,5 @@
 import { Keplr, ChainInfo } from "@keplr-wallet/types";
-import { ChainType } from "../pages/api/check";
+import { ChainType } from "../services/apiHelpers";
 
 /**
  * - Returns chainConfig for `chain`
