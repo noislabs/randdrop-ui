@@ -442,7 +442,7 @@ export const ClaimInfo = ({
               {(tokenLeft > 20_000_000 || claimPercentageLeft !== 0) && (
                 <button
                   onClick={() => handleClaimRanddrop()}
-                  className={`py-2 px-6 animate-pulse hover:animate-none hover:shaxdow-neon-md hover:bg-green-500/10 text-green-500 border border-green-500 rounded-xl bg-gradient-to-b from-green-500/10`}
+                  className="flex justify-center text-sm items-center rounded-lg px-4 py-1.5 border border-nois-light-green/30 text-nois-light-green/80 hover:text-nois-light-green hover:border-nois-light-green hover:bg-black"
                 >
                   {"Roll the dice!"}
                 </button>
