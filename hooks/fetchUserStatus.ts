@@ -34,13 +34,13 @@ export const fetchUserStatus = async ({
       },
       cache: "no-store",
     });
-    console.log(res);
-    const resData = await res.json();
 
-    if (res.status !== 200) {
-      throw new Error(JSON.stringify(resData));
+    if (!res.ok) {
+      console.log(res);
+      throw new Error(`Got non-2xx status in API call: ${res.status}`);
     }
 
+    const resData = await res.json();
     const vres = CheckResponse.safeParse(resData);
     if (!vres.success) {
       throw new Error("Invalid response from server");
