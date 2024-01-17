@@ -19,7 +19,7 @@ import { ChainType, CheckResponse } from '../services/apiHelpers';
 export const AirdropLiveStatus: { [K in ChainType]: boolean } = {
   "injective": true,
   "juno": true,
-  "stargaze": false,
+  "stargaze": true,
   "aura": false,
   "osmosis": false,
 };
@@ -202,7 +202,6 @@ const Home: NextPage = () => {
                     <ChainCard chain='injective' chainStatus={`${injectiveStatus}_${injectiveFetchStatus}`} refetch={injectiveRefetch} client={injectiveClient} checkResponse={injectiveData} walletLoading={walletLoading} />
                   ) : (
                     <>
-                      <ChainCard chain='aura' chainStatus={`${auraStatus}_${auraFetchStatus}`} refetch={auraRefetch} client={auraClient} checkResponse={auraData} walletLoading={walletLoading} />
                       <ChainCard chain='juno' chainStatus={`${junoStatus}_${junoFetchStatus}`} refetch={junoRefetch} client={junoClient} checkResponse={junoData} walletLoading={walletLoading} />
                       <ChainCard chain='stargaze' chainStatus={`${stargazeStatus}_${stargazeFetchStatus}`} refetch={stargazeRefetch} client={stargazeClient} checkResponse={stargazeData} walletLoading={walletLoading} />
                       <ChainCard chain='injective' chainStatus={`${injectiveStatus}_${injectiveFetchStatus}`} refetch={injectiveRefetch} client={injectiveClient} checkResponse={injectiveData} walletLoading={walletLoading} />
