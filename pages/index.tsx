@@ -19,7 +19,7 @@ import { ChainType, CheckResponse } from '../services/apiHelpers';
 export const AirdropLiveStatus: { [K in ChainType]: boolean } = {
   "injective": true,
   "juno": true,
-  "stargaze": true,
+  "stargaze": false,
   "aura": false,
   "osmosis": false,
 };
