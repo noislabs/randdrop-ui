@@ -20,7 +20,7 @@ import { calculatePercentage } from '../hooks/cosmwasm';
 import { Popover, Spin } from 'antd';
 
 const BridgeLinks = {
-  "injective": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=injective-1&token0=ibc%2FDD9182E8E2B13C89D6B4707C7B43E8DB6193F9FF486AFA0E6CF86B427B0D231A&token1=unois",
+  "injective": "https://ibc.fun/",
   "juno": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=juno-1&token0=ibc%2F1D9E14A1F00613ED39E4B8A8763A20C9BE5B5EA0198F2FE47EAE43CD91A0137B&token1=unois",
   "stargaze": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=stargaze-1&token0=ibc%2F0F181D9F5BB18A8496153C1666E934169515592C135E8E9FCCC355889858EAF9&token1=unois",
   "aura": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=xstaxy-1&token0=ibc%2F1FD48481DAA1B05575FE6D3E35929264437B8424A73243B207BCB67401C7F1FD&token1=unois",
