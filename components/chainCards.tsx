@@ -358,6 +358,7 @@ export const ClaimInfo = ({
       return;
     }
 
+    console.log("chainCards: ", client.walletType);
     // If walletType is ledger && chain is injective, use helper
     if (client.walletType === "metamask" && client.chain === "injective") {
       toast.loading("Processing your request...");
@@ -382,6 +383,7 @@ export const ClaimInfo = ({
         toast.error(`Visit our Discord for assistance`);
       });
     } else if (client.walletType === "ledger" && client.chain === "injective") {
+      console.log("right case");
       toast.loading("Processing your request...");
       ethLedgerTxHelper({
         client,
