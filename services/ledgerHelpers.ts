@@ -20,6 +20,7 @@ import {
 import { EthereumChainId } from "@injectivelabs/ts-types";
 import { ChainSigningClient } from "../contexts/userClients";
 import { bufferToHex } from 'ethereumjs-util';
+import { getInjectiveAddress } from "@injectivelabs/sdk-ts";
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Ethereum Ledger helpers for Injective
@@ -57,6 +58,11 @@ export const ethLedgerTxHelper = async ({
 
   // Get account sequence of user
   const {accountNumber, sequence} = await queryClient.getSequence(client.walletAddress);
+  console.log('walletAddress: ', client.walletAddress);
+    // check if input address start with 0x
+    if (client.walletAddress.startsWith("0x")) {
+      client.walletAddress = getInjectiveAddress(client.walletAddress);
+    }
 
   // Get latest block info
   const latestBlock = await queryClient.getBlock();
