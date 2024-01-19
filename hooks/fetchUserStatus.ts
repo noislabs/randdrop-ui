@@ -1,4 +1,5 @@
 import { ChainType, CheckResponse } from "../pages/api/check";
+import { getInjectiveAddress } from "@injectivelabs/sdk-ts";
 
 // Not a hook but seems like a good place to put this
 export const fetchUserStatus = async ({
@@ -9,6 +10,11 @@ export const fetchUserStatus = async ({
   chain: string;
 }) => {
   console.log(`Fetching for ${chain}`);
+
+  // check if input address start with 0x
+  if (walletAddr.startsWith("0x")) {
+    walletAddr = getInjectiveAddress(walletAddr);
+  }
 
   try {
     const validateChain = ChainType.safeParse(chain);
