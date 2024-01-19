@@ -44,7 +44,7 @@ const Home: NextPage = () => {
     return !( !junoClient && !injectiveClient && !auraClient && !osmosisClient && !stargazeClient)
   }, [ junoClient, injectiveClient, auraClient, osmosisClient, stargazeClient])
 
-  
+
 
   const {
     data: junoData,
@@ -211,7 +211,7 @@ const Home: NextPage = () => {
                 )
               }
             </div>
-            
+
           )}
         </div>
 
