@@ -56,13 +56,14 @@ export const ethLedgerTxHelper = async ({
   // Get query client, don't really need batch here since creating batch requires 2 trips anyway
   const queryClient = await CosmWasmClient.connect(chainConfig.rpc);
 
+  // check if input address start with 0x
+  if (client.walletAddress.startsWith("0x")) {
+    client.walletAddress = getInjectiveAddress(client.walletAddress);
+  }
+
   // Get account sequence of user
   const {accountNumber, sequence} = await queryClient.getSequence(client.walletAddress);
   console.log('walletAddress: ', client.walletAddress);
-    // check if input address start with 0x
-    if (client.walletAddress.startsWith("0x")) {
-      client.walletAddress = getInjectiveAddress(client.walletAddress);
-    }
 
   // Get latest block info
   const latestBlock = await queryClient.getBlock();
