@@ -6,7 +6,7 @@ import {
 import { ChainSigningClient, WalletType } from "../contexts/userClients";
 import { getChainConfig } from "./chainConfig";
 import { ChainId } from "@injectivelabs/ts-types";
-import { Network } from "@injectivelabs/networks";
+import { Network, getNetworkEndpoints } from "@injectivelabs/networks";
 import { randdropInjectiveClaimMsg } from "./contractTx";
 
 let walletStrategy: WalletStrategy;
@@ -19,35 +19,74 @@ export const getInjectiveClients = (client: ChainSigningClient) => {
     return { walletStrategy, msgBroadcaster };
   }
 
-  walletStrategy = new WalletStrategy({
-    chainId:
-      chainConfig.chainId === "injective-888"
-        ? ChainId.Testnet
-        : ChainId.Mainnet,
-    wallet: Wallet.Keplr,
-    disabledWallets: [
-      Wallet.Cosmostation,
-      Wallet.Ledger,
-      Wallet.LedgerCosmos,
-      Wallet.LedgerLegacy,
-      Wallet.WalletConnect,
-      Wallet.Metamask,
-      Wallet.Ninji,
-      Wallet.Phantom,
-      Wallet.Torus,
-      Wallet.TrustWallet,
-      Wallet.Trezor,
-    ],
-  });
+  if (client.walletType === "metamask") {
+    // TODO: need to choose the right endpoint for metamask
+    const endpoint = getNetworkEndpoints(Network.MainnetSentry);
 
-  msgBroadcaster = new MsgBroadcaster({
-    walletStrategy,
-    network:
-      chainConfig.chainId === "injective-888"
-        ? Network.TestnetSentry
-        : Network.MainnetSentry,
-    simulateTx: true,
-  });
+    walletStrategy = new WalletStrategy({
+      chainId:
+        chainConfig.chainId === "injective-888"
+          ? ChainId.Testnet
+          : ChainId.Mainnet,
+      wallet: Wallet.Metamask,
+      disabledWallets: [
+        Wallet.Keplr,
+        Wallet.Leap,
+        Wallet.Cosmostation,
+        Wallet.Ledger,
+        Wallet.LedgerCosmos,
+        Wallet.LedgerLegacy,
+        Wallet.WalletConnect,
+        Wallet.Ninji,
+        Wallet.Phantom,
+        Wallet.Torus,
+        Wallet.TrustWallet,
+        Wallet.Trezor,
+      ],
+      ethereumOptions: {
+        ethereumChainId: 888,
+        rpcUrl: endpoint.rpc,
+      },
+    });
+
+    msgBroadcaster = new MsgBroadcaster({
+      walletStrategy,
+      network:
+        chainConfig.chainId === "injective-888"
+          ? Network.TestnetSentry
+          : Network.MainnetSentry,
+      simulateTx: true,
+    });
+  } else {
+    walletStrategy = new WalletStrategy({
+      chainId:
+        chainConfig.chainId === "injective-888"
+          ? ChainId.Testnet
+          : ChainId.Mainnet,
+      wallet: Wallet.Keplr,
+      disabledWallets: [
+        Wallet.Cosmostation,
+        Wallet.Ledger,
+        Wallet.LedgerCosmos,
+        Wallet.LedgerLegacy,
+        Wallet.WalletConnect,
+        Wallet.Ninji,
+        Wallet.Phantom,
+        Wallet.Torus,
+        Wallet.TrustWallet,
+        Wallet.Trezor,
+      ],
+    });
+
+    msgBroadcaster = new MsgBroadcaster({
+      walletStrategy,
+      network:
+        chainConfig.chainId === "injective-888"
+          ? Network.TestnetSentry
+          : Network.MainnetSentry,
+      simulateTx: true,
+    });
+  }
 
   return { walletStrategy, msgBroadcaster };
 };
@@ -68,8 +107,20 @@ export const signSendAndBroadcastOnInjective = async ({
 }) => {
   const { msgBroadcaster, walletStrategy } = getInjectiveClients(client);
 
-  walletStrategy.setWallet(wallet === "keplr" ? Wallet.Keplr : Wallet.Leap);
+  switch (wallet) {
+    case "keplr":
+      walletStrategy.setWallet(Wallet.Keplr);
+      break;
+    case "leap":
+      walletStrategy.setWallet(Wallet.Leap);
+      break;
+    case "metamask":
+      walletStrategy.setWallet(Wallet.Metamask);
+    default:
+      break;
+  }
 
+  // broadcast but actually signandbroadcast
   return msgBroadcaster.broadcast({
     injectiveAddress: message.wallet,
     msgs: [randdropInjectiveClaimMsg(message)],

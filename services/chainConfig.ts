@@ -1,5 +1,5 @@
 import { Keplr, ChainInfo } from "@keplr-wallet/types";
-import { ChainType } from "../pages/api/check";
+import { ChainType } from "../services/apiHelpers";
 
 /**
  * - Returns chainConfig for `chain`
@@ -7,9 +7,6 @@ import { ChainType } from "../pages/api/check";
  * */
 export const getChainConfig = (chain: ChainType) => {
   switch (chain) {
-    case "uni": {
-      return uniChainConfig;
-    }
     case "juno": {
       return junoChainConfig;
     }
@@ -26,10 +23,10 @@ export const getChainConfig = (chain: ChainType) => {
       return injectiveChainConfig;
     }
     case "aura": {
-      //testnet
-      //return auraTestnetChainConfig;
-      //mainnet
       return auraChainConfig;
+    }
+    case "osmosis": {
+      return osmosisChainConfig;
     }
   }
 };
@@ -43,51 +40,6 @@ export const getChainConfig = (chain: ChainType) => {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Testnets
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// Juno Testnet (uni-6)
-export const uniChainConfig: ChainInfo = {
-  chainId: "uni-6",
-  chainName: "Juno Testnet",
-  rpc: "https://uni-rpc.reece.sh",
-  rest: "https://uni-rpc.reece.sh:443",
-  // rpc: "https://juno-testnet-rpc.polkachu.com/",
-  // rest: "https://juno-testnet-rpc.polkachu.com:443",
-  bip44: {
-    coinType: 118,
-  },
-  bech32Config: {
-    bech32PrefixAccAddr: "juno",
-    bech32PrefixAccPub: "junopub",
-    bech32PrefixValAddr: "junovaloper",
-    bech32PrefixValPub: "junovaloperpub",
-    bech32PrefixConsAddr: "junovalcons",
-    bech32PrefixConsPub: "junovalconspub",
-  },
-  currencies: [
-    {
-      coinDenom: "JUNOX",
-      coinMinimalDenom: "ujunox",
-      coinDecimals: 6,
-    },
-  ],
-  feeCurrencies: [
-    {
-      coinDenom: "JUNOX",
-      coinMinimalDenom: "ujunox",
-      coinDecimals: 6,
-      gasPriceStep: {
-        low: 0.05,
-        average: 0.05,
-        high: 0.1,
-      },
-    },
-  ],
-  stakeCurrency: {
-    coinDenom: "JUNOX",
-    coinMinimalDenom: "ujunox",
-    coinDecimals: 6,
-  },
-  features: [],
-};
 // Injective Testnet (injective-888)
 export const injective888ChainConfig: ChainInfo = {
   chainId: "injective-888",
@@ -275,7 +227,7 @@ export const junoChainConfig: ChainInfo = {
 export const injectiveChainConfig: ChainInfo = {
   chainId: "injective-1",
   chainName: "injective",
-  rpc: "https://injective-rpc.polkachu.com",
+  rpc: "https://rpc-injective.goldenratiostaking.net",
   rest: "https://injective-api.polkachu.com",
   bip44: {
     coinType: 60,
@@ -399,6 +351,51 @@ export const auraChainConfig: ChainInfo = {
   stakeCurrency: {
     coinDenom: "AURA",
     coinMinimalDenom: "uaura",
+    coinDecimals: 6,
+  },
+  features: [],
+};
+
+// osmosis Mainnet
+export const osmosisChainConfig: ChainInfo = {
+  chainId: "osmosis-1",
+  chainName: "osmosis",
+  //chainName: "osmosis-1 Mainnet",
+  rpc: "https://rpc.osmosis.zone",
+  rest: "https://lcd.osmosis.zone",
+  bip44: {
+    coinType: 118,
+  },
+  bech32Config: {
+    bech32PrefixAccAddr: "osmo",
+    bech32PrefixAccPub: "osmopub",
+    bech32PrefixValAddr: "osmovaloper",
+    bech32PrefixValPub: "osmovaloperpub",
+    bech32PrefixConsAddr: "osmovalcons",
+    bech32PrefixConsPub: "osmovalconspub",
+  },
+  currencies: [
+    {
+      coinDenom: "OSMO",
+      coinMinimalDenom: "uosmo",
+      coinDecimals: 6,
+    },
+  ],
+  feeCurrencies: [
+    {
+      coinDenom: "OSMO",
+      coinMinimalDenom: "uosmo",
+      coinDecimals: 6,
+      gasPriceStep: {
+        low: 0.0025,
+        average: 0.025,
+        high: 0.04,
+      },
+    },
+  ],
+  stakeCurrency: {
+    coinDenom: "OSMO",
+    coinMinimalDenom: "uosmo",
     coinDecimals: 6,
   },
   features: [],

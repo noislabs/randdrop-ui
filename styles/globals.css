@@ -7,6 +7,10 @@
     fill: #d4fff6;
 }
 
+.custom-progress-bar .progress-bar {
+   background-color: rgba(10, 3, 75, 0.765) !important; 
+   color: rgb(21, 3, 42) !important; 
+ }
 
 /* Basic spinner */
 .circle-spinner {
@@ -342,6 +346,153 @@
        }
     }
  }
+ .dice-osmosis {
+   width: 60px;
+   height: 60px;
+   position: relative;
+   transform-style: preserve-3d;
+   transform: rotateX(0deg) rotateY(0deg) translateX(0);
+   animation-name: rotate;
+   animation-iteration-count: infinite;
+   animation-duration: 8s;
+   animation-timing-function: ease-out;
+   
+   > div {
+      height: 60px;
+      width: 60px;
+      position: absolute;
+      background: #000;
+      box-shadow: 0 0 3px 1px #a2fcde;
+   }
+
+   span {
+      width: 8px;
+      height: 8px;
+      background: #a2fcde;
+      border-radius: 50%;
+      display: block;
+      position: absolute;
+   }
+
+   .front { 
+      transform: rotateY(0deg) translateZ(30px);
+
+      span {
+         &:nth-child(1) {
+            top: 10px;
+            left: 12px;
+         }
+         &:nth-child(2) {
+            top: 10px;
+            right: 12px;
+         }
+         &:nth-child(3) {
+            top: 26px;
+            left: 12px;
+         }
+         &:nth-child(4) {
+            top: 26px;
+            right: 12px;
+         }
+         &:nth-child(5) {
+            bottom: 10px;
+            left: 12px;
+         }
+         &:nth-child(6) {
+            bottom: 10px;
+            right: 12px;
+         }
+      }
+   }
+   .back { 
+      transform: rotateX(180deg) translateZ(30px);
+
+      span {
+         top: 26px;
+         left: 26px;
+      }
+   }
+   .right { 
+      transform: rotateY(90deg) translateZ(30px); 
+
+      span {
+         &:nth-child(1) {
+            top: 12px;
+            left: 12px;
+         }
+         &:nth-child(2) {
+            top: 12px;
+            right: 12px;
+         }
+         &:nth-child(3) {
+            top: 26px;
+            left: 26px;
+         }
+         &:nth-child(4) {
+            bottom: 12px;
+            left: 12px;
+         }
+         &:nth-child(5) {
+            bottom: 12px;
+            right: 12px;
+         }
+      }
+   }
+   .left { 
+      transform: rotateY(-90deg) translateZ(30px);
+
+      span {
+         &:nth-child(1) {
+            top: 12px;
+            right: 12px;
+         }
+         &:nth-child(2) {
+            bottom: 12px;
+            left: 12px;
+         }
+      }
+   }
+   .top { 
+      transform: rotateX(90deg) translateZ(30px);
+
+      span {
+         &:nth-child(1) {
+            top: 12px;
+            right: 12px;
+         }
+         &:nth-child(2) {
+            bottom: 12px;
+            left: 12px;
+         }
+         &:nth-child(3) {
+            bottom: 26px;
+            left: 26px;
+         }
+      }
+   }
+   .bottom { 
+      transform: rotateX(-90deg) translateZ(30px);
+
+      span {
+         &:nth-child(1) {
+            top: 12px;
+            right: 12px;
+         }
+         &:nth-child(2) {
+            top: 12px;
+            left: 12px;
+         }
+         &:nth-child(3) {
+            bottom: 12px;
+            left: 12px;
+         }
+         &:nth-child(4) {
+            bottom: 12px;
+            right: 12px;
+         }
+      }
+   }
+}
  .dice-injective {
     width: 60px;
     height: 60px;

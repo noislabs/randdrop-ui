@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { ChainType } from "../pages/api/check";
+import { ChainType } from "../services/apiHelpers";
 
 function getDiceColor(chain: ChainType) {
   switch (chain) {
@@ -7,6 +7,8 @@ function getDiceColor(chain: ChainType) {
       return "dice-injective";
     case "aura":
       return "dice-aura";
+      case "osmosis":
+        return "dice-osmosis";
     case "stargaze":
       return "dice-stargaze";
     default:

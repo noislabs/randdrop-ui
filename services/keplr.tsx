@@ -5,10 +5,10 @@ import {
   stargazeChainConfig,
   injectiveChainConfig,
   auraChainConfig,
-  uniChainConfig
+  osmosisChainConfig,
 } from "./chainConfig";
 import { Keplr } from "@keplr-wallet/types";
-import { ChainType } from "../pages/api/check";
+import { ChainType } from "../services/apiHelpers";
 
 declare global {
   interface Window {
@@ -93,14 +93,6 @@ export async function getLeap(): Promise<Keplr> {
 export async function suggestChainKeplr(chain: ChainType): Promise<void> {
   const keplr = await getKeplr();
   switch (chain) {
-    case "uni": {
-      try {
-        await keplr.experimentalSuggestChain(uniChainConfig);
-      } catch {
-        toast.error("Failed to add Juno Testnet to Keplr");
-      };
-      break;
-    }
     case "juno": {
       try {
         await keplr.experimentalSuggestChain(junoChainConfig);
@@ -133,20 +125,20 @@ export async function suggestChainKeplr(chain: ChainType): Promise<void> {
       };
       break;
     }
+    case "osmosis": {
+      try {
+        await keplr.experimentalSuggestChain(osmosisChainConfig);
+      } catch {
+        toast.error("Failed to add Osmosis to Keplr");
+      };
+      break;
+    }
   }
 }
 
 export async function suggestChainLeap(chain: ChainType): Promise<void> {
   const leap = await getLeap();
   switch (chain) {
-    case "uni": {
-      try {
-        await leap.experimentalSuggestChain(uniChainConfig);
-      } catch {
-        toast.error("Failed to add Juno Testnet to leap");
-      };
-      break;
-    }
     case "juno": {
       try {
         await leap.experimentalSuggestChain(junoChainConfig);
@@ -176,6 +168,14 @@ export async function suggestChainLeap(chain: ChainType): Promise<void> {
         await leap.experimentalSuggestChain(auraChainConfig);
       } catch {
         toast.error("Failed to add Aura to leap");
+      };
+      break;
+    }
+    case "osmosis": {
+      try {
+        await leap.experimentalSuggestChain(osmosisChainConfig);
+      } catch {
+        toast.error("Failed to add Osmosis to leap");
       };
       break;
     }
