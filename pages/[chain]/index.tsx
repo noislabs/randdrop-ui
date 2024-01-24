@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { toast } from 'react-hot-toast';
 import noisLogo from '../../public/nois_logo.png';
 import { routeNewTab } from '../../services/misc';
-import { ChainType, CheckResponse } from '../../services/apiHelpers';
+import { ChainType, CheckResponse, getContractAddress } from '../../services/apiHelpers';
 import { useRouter } from 'next/router';
 import { ChainLogos } from '../new_index';
 import { NoisFooter } from '../../components/footer';
@@ -21,6 +21,7 @@ import { fetchUserStatus } from '../../hooks/fetchUserStatus';
 import { signSendAndBroadcastOnInjective } from '../../services/injective';
 import { ethLedgerTxHelper } from '../../services/ledgerHelpers';
 import { randdropClaimMsg } from '../../services/contractTx';
+import { calculatePercentage } from '../../hooks/cosmwasm';
 
 // Config for live / not live randdrop chains
 export const AirdropLiveStatus: { [K in ChainType]: boolean } = {
@@ -40,6 +41,27 @@ export const cosmosErrorToast = (err: any) => {
   }
 }
 
+
+const getClaimedAmount = async (chain: ChainType) => {
+  const contractAddr = getContractAddress(chain);
+
+  if (contractAddr === "") {
+    toast.error(`No randdrop contract available for ${chain}`);
+    return;
+  }
+
+  const resp = await calculatePercentage(chain, contractAddr);
+
+  if (!resp) {
+    toast.error(`Unable to fetch contract balance for ${chain}`);
+    return;
+  }
+
+  console.log(resp);
+  return resp;
+
+}
+
 export default function ChainPage() {
 
   const router = useRouter();
@@ -55,6 +77,22 @@ export default function ChainPage() {
     setChain(page_chain as ChainType);
   }, [router.isReady])
 
+
+  const {
+    data: amountLeft,
+    status: amountLeftStatus,
+    fetchStatus: amountLeftFetchStatus,
+    refetch: amountLeftRefetch
+  } = useQuery(
+    [`${chain ?? "na"}_amountleftquery`],
+    () => getClaimedAmount(chain!),
+    {
+      enabled: !!(chain && AirdropLiveStatus[chain ?? "na"]),
+      refetchInterval: (data) => {
+        return 10_000;
+      }
+    }
+  );
 
   const {
     walletType,
@@ -276,7 +314,7 @@ export default function ChainPage() {
               )}
             </div>
             <div className="w-full flex flex-col px-10 py-4">
-            <ProgressBar percentageLeft={15}/>
+            <ProgressBar percentageLeft={((amountLeft?.percentageLeft ?? 0)).toFixed(2)}/>
               <span className="py-1 text-xs text-nois-white/40">
                 Tokens claimed this round
               </span>
@@ -383,7 +421,7 @@ const DropDown = ({currentChain}:{currentChain: ChainType}) => {
   )
 }
 
-const ProgressBar = ({ percentageLeft }: { percentageLeft: number }) => {
+const ProgressBar = ({ percentageLeft }: { percentageLeft: string }) => {
   const filled = useMemo(() => 100 - percentageLeft, [percentageLeft]);
 
   return (
