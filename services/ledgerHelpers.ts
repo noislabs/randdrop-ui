@@ -107,6 +107,9 @@ export const ethLedgerTxHelper = async ({
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   // Have user sign msg with Ledger
+  if (!client.ethLedgerClient) {
+    console.error("No ethLedgerClient available!! Please check connection");
+  }
   const result = await client.ethLedgerClient.ethApp.signEIP712HashedMessage(
     "44'/60'/0'/0/0",
     bufferToHex(domainHash(eip712TypedData)),
