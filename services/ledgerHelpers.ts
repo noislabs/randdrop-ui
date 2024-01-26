@@ -3,8 +3,8 @@ import { CosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { toBase64 } from "@cosmjs/encoding";
 import { getChainConfig } from "../services/chainConfig";
 import { HdPath, Slip10RawIndex } from "@cosmjs/crypto";
-import { 
-  MsgExecuteContract, 
+import {
+  MsgExecuteContract,
   DEFAULT_STD_FEE,
   domainHash,
   messageHash,
@@ -16,10 +16,11 @@ import {
   getEip712TypedData,
   Eip712ConvertTxArgs,
   Eip712ConvertFeeArgs,
+  getInjectiveAddress,
 } from "@injectivelabs/sdk-ts";
 import { EthereumChainId } from "@injectivelabs/ts-types";
 import { ChainSigningClient } from "../contexts/userClients";
-import { bufferToHex } from 'ethereumjs-util';
+import { bufferToHex } from "ethereumjs-util";
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Ethereum Ledger helpers for Injective
@@ -35,14 +36,14 @@ const DEFAULT_BLOCK_TIMEOUT_HEIGHT = 90;
  */
 export const ethLedgerTxHelper = async ({
   client,
-  checkResponse
-}:{
+  checkResponse,
+}: {
   client: ChainSigningClient;
   checkResponse: CheckResponse;
 }) => {
-
   // Throw err if no claim_contract or ethLedgerClient
-  if (!checkResponse.claim_contract) throw new Error("No claim_contract exists on checkResponse");
+  if (!checkResponse.claim_contract)
+    throw new Error("No claim_contract exists on checkResponse");
   if (!client.ethLedgerClient) throw new Error("No ethLedgerClient available");
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -56,7 +57,9 @@ export const ethLedgerTxHelper = async ({
   const queryClient = await CosmWasmClient.connect(chainConfig.rpc);
 
   // Get account sequence of user
-  const {accountNumber, sequence} = await queryClient.getSequence(client.walletAddress);
+  const { accountNumber, sequence } = await queryClient.getSequence(
+    client.walletAddress
+  );
 
   // Get latest block info
   const latestBlock = await queryClient.getBlock();
@@ -69,7 +72,7 @@ export const ethLedgerTxHelper = async ({
     sequence: sequence.toString(),
     timeoutHeight: timeoutHeight.toFixed(),
     chainId: chainConfig.chainId,
-  }
+  };
   const txFeeArgs: Eip712ConvertFeeArgs = DEFAULT_STD_FEE;
   const ethereumChainId = EthereumChainId.Mainnet;
   const randdropContract = checkResponse.claim_contract;
@@ -81,9 +84,9 @@ export const ethLedgerTxHelper = async ({
     msg: {
       participate: {
         amount: checkResponse.amount,
-        proof: checkResponse.proof
-      }
-    }
+        proof: checkResponse.proof,
+      },
+    },
   });
 
   // eip712 typed data to be signed/broadcasted with Ledger
@@ -91,7 +94,7 @@ export const ethLedgerTxHelper = async ({
     msgs: executeMsg,
     tx: txArgs,
     fee: txFeeArgs,
-    ethereumChainId: ethereumChainId
+    ethereumChainId: ethereumChainId,
   });
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -102,12 +105,12 @@ export const ethLedgerTxHelper = async ({
   const result = await client.ethLedgerClient.ethApp.signEIP712HashedMessage(
     "44'/60'/0'/0/0",
     bufferToHex(domainHash(eip712TypedData)),
-    bufferToHex(messageHash(eip712TypedData)),
+    bufferToHex(messageHash(eip712TypedData))
   );
 
   // Construct signature
-  const combined = `${result.r}${result.s}${result.v.toString(16)}`
-  const signature = combined.startsWith('0x') ? combined : `0x${combined}`
+  const combined = `${result.r}${result.s}${result.v.toString(16)}`;
+  const signature = combined.startsWith("0x") ? combined : `0x${combined}`;
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Preparing the transaction
@@ -115,7 +118,7 @@ export const ethLedgerTxHelper = async ({
 
   const { txRaw } = createTransaction({
     message: executeMsg,
-    memo: '',
+    memo: "",
     signMode: SIGN_AMINO,
     fee: DEFAULT_STD_FEE,
     pubKey: client.ethLedgerClient.pubKey,
@@ -130,24 +133,24 @@ export const ethLedgerTxHelper = async ({
   });
 
   const txRawEip712 = createTxRawEIP712(txRaw, web3Extension);
-  
+
   // Appending signature
-  const signatureBuff = Buffer.from(signature.replace('0x', ''), 'hex')
-  txRawEip712.signatures = [signatureBuff]
-  
+  const signatureBuff = Buffer.from(signature.replace("0x", ""), "hex");
+  txRawEip712.signatures = [signatureBuff];
+
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Broadcasting the transaction
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
   const txRestClient = new TxRestClient(chainConfig.rest);
-  const response = await txRestClient.broadcast(txRawEip712)
+  const response = await txRestClient.broadcast(txRawEip712);
 
   if (response.code !== 0) {
-    throw new Error(`Transaction failed: ${response.rawLog}`)
+    throw new Error(`Transaction failed: ${response.rawLog}`);
   }
 
   return response.txHash;
-}
+};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Paths  |  makeCosmosPath (118) and makeEthereumPath (60, Injective)
@@ -175,7 +178,7 @@ export function makeCosmosPath(a: number): HdPath {
  * Ethereum Path for Inejctive in the form `m/44'/60'/0'/0/a'
  * with 0 based account idx
  * 44' = purpose, Injective uses SLIP44 so it's still 44'
- * 60' = coin_type 
+ * 60' = coin_type
  * 0' = assumes account 0
  * 0 = receiving address (1 is change address)
  */
