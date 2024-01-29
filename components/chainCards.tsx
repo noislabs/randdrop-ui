@@ -27,6 +27,17 @@ const BridgeLinks = {
   "osmosis": "https://tfm.com/bridge?chainTo=nois-1&chainFrom=osmosis-1&token0=ibc%2F6928AFA9EA721938FED13B051F9DBF1272B16393D20C49EA5E4901BB76D94A90&token1=unois"
 }
 
+// Hot fix for out of gas error
+export const cosmosErrorToast = (err: any) => {
+  toast.error("Problem submitting transaction");
+  if (`${err}`.includes("gas wanted")) {
+    toast.error("Wallet does not have enough gas for transaction");
+  } else {
+    toast.error(`Error: ${err}`);
+  }
+}
+
+
 export const ChainCard = (props: {
   chain: ChainType;
   chainStatus: string;
@@ -378,8 +389,7 @@ export const ClaimInfo = ({
       }).catch((e) => {
         toast.dismiss();
         console.log(e);
-        toast.error(`Problem submitting transaction`)
-        toast.error(`Visit our Discord for assistance`);
+        cosmosErrorToast(e);
       });
     } else if (client.walletType === "ledger" && client.chain === "injective") {
       toast.loading("Processing your request...");
@@ -394,8 +404,7 @@ export const ClaimInfo = ({
       }).catch((e) => {
         toast.dismiss();
         console.log(`Error: ${e}`);
-        toast.error("Failure broadcasting transaction");
-        toast.error(`Error: ${e}`);
+        cosmosErrorToast(e);
       });
     } else if (client.chain === "injective") { // walletType === "keplr" || walletType === "leap"
       toast.loading("Processing your request...");
@@ -416,8 +425,7 @@ export const ClaimInfo = ({
       }).catch((e) => {
         toast.dismiss();
         console.log(e);
-        toast.error(`Problem submitting transaction`)
-        toast.error(`Visit our Discord for assistance`);
+        cosmosErrorToast(e);
       });
     } else if (client.signingClient !== undefined) {
       toast.loading("Processing your request...");
@@ -439,8 +447,7 @@ export const ClaimInfo = ({
       }).catch((e) => {
         toast.dismiss();
         console.log(e);
-        toast.error(`Problem submitting transaction`)
-        toast.error(`Visit our Discord for assistance`);
+        cosmosErrorToast(e);
       });
     }
   }, [client?.walletAddress])
