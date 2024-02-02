@@ -32,7 +32,7 @@ export type CheckResponse = z.infer<typeof CheckResponse>;
 
 export const AirdropRegistry = {
   "juno": {
-    "contract": 'juno1pqcxmuc4nhkjqgymwraxzqj25yljdlnmu7rd675c6ypg9dakcwlszvk9gk'
+    "contract": 'juno1qgyxtc6tkxj3zzzkdcq7anq0p3nfwvvjan8w8xaszwv0yrqkcmmsj0nkun'
   },
   "injective": {
      "contract": 'inj1z4nmwyaujc89tqwfhd6wm6hugdr3f4jnllxfgk'
