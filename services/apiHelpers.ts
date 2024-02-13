@@ -35,7 +35,7 @@ export const AirdropRegistry = {
     "contract": 'juno1qgyxtc6tkxj3zzzkdcq7anq0p3nfwvvjan8w8xaszwv0yrqkcmmsj0nkun'
   },
   "injective": {
-     "contract": 'inj1z4nmwyaujc89tqwfhd6wm6hugdr3f4jnllxfgk'
+     "contract": 'inj1qvdu8h2kuly89zpmfus4xtl77x39qh55xd8yc4'
     //"contract": 'inj1hjl70antdrqlhunaesp8d6lv4nuy9rknfpn48w'
   },
   "stargaze": {
