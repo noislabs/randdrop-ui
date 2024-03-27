@@ -181,7 +181,7 @@ export const noistestnetChainConfig: ChainInfo = {
 export const junoChainConfig: ChainInfo = {
   chainId: "juno-1",
   chainName: "juno",
-  rpc: "https://juno-rpc.reece.sh",
+  rpc: "https://juno-rpc.polkachu.com",
   rest: "https://juno-rpc.reece.sh:443",
   // rpc: "https://juno-rpc.polkachu.com/",
   // rest: "https://juno-api.polkachu.com:443",
@@ -227,7 +227,7 @@ export const junoChainConfig: ChainInfo = {
 export const injectiveChainConfig: ChainInfo = {
   chainId: "injective-1",
   chainName: "injective",
-  rpc: "https://rpc-injective.goldenratiostaking.net",
+  rpc: "https://injective-rpc.polkachu.com",
   rest: "https://injective-api.polkachu.com",
   bip44: {
     coinType: 60,
