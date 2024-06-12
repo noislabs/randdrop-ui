@@ -21,7 +21,7 @@ export const AirdropLiveStatus: { [K in ChainType]: boolean } = {
   "juno": false,
   "stargaze": true,
   "aura": false,
-  "osmosis": false,
+  "osmosis": true,
 };
 
 const Home: NextPage = () => {
